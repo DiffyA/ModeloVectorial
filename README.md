@@ -12,8 +12,8 @@ Q3 - Who won the first ACM Gerard Salton prize?
 
 The HTML documents that will be ranked are:
 
-- 2010-22-100.html
-- 2010-42-103.html
-- 2010-58-044.html
-- 2010-76-088.html
-- 2010-99-086.html
+- [2010-22-100.html](ModeloVectorial_4/src/main/resources/2010-22-100.html)
+- [2010-42-103.html](ModeloVectorial_4/src/main/resources/2010-42-103.html)
+- [2010-58-044.html](ModeloVectorial_4/src/main/resources/2010-58-044.html)
+- [2010-76-088.html](ModeloVectorial_4/src/main/resources/2010-76-088.html)
+- [2010-99-086.html](ModeloVectorial_4/src/main/resources/2010-99-086.html)
