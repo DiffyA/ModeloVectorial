@@ -1,6 +1,6 @@
-#Information Access and Retrieval
+# Information Access and Retrieval
 
-###Project for the Information Access and Retrieval class, given at Universidad Carlos III de Madrid.
+### Project for the Information Access and Retrieval class, given at Universidad Carlos III de Madrid.
 
 The goal of this assignment is to create a functioning [vector space model](https://en.wikipedia.org/wiki/Vector_space_model "Vector Space Model - Wikipedia") that can be applied in the field of information retrieval. This vector space model should be capable of retrieving and ranking HTML documents with respect to a given query and different similarity functions.
 
