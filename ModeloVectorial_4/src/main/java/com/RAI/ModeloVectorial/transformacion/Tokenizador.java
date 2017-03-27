@@ -1,6 +1,5 @@
 package com.RAI.ModeloVectorial.transformacion;
 
-import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.core.LowerCaseFilter;
@@ -9,8 +8,6 @@ import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
 import org.apache.lucene.analysis.standard.ClassicFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.util.AttributeFactory;
-import org.apache.lucene.util.Version;
 import org.tartarus.snowball.ext.PorterStemmer;
 
 import java.io.StringReader;
@@ -22,7 +19,6 @@ public class Tokenizador {
         stdToken.setReader(new StringReader(textFile));
         TokenStream tokenStream;
 
-        //You're code starts here
         tokenStream = new StopFilter(new ASCIIFoldingFilter(new ClassicFilter(new LowerCaseFilter(stdToken))), EnglishAnalyzer.getDefaultStopSet());
         tokenStream.reset();
 
