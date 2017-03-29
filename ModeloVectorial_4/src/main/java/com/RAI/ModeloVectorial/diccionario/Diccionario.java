@@ -13,10 +13,11 @@ public class Diccionario {
     private Vector<Termino> terminosConsulta;
 
     public Diccionario() {
+    	terminosDocumento = new HashMap<Documento, Vector<Termino>>();
+    	terminosConsulta = new Vector<Termino>();
     }
 
     public void addDictionaryEntry(Documento toAdd, String docText){
-
         String[] docContent = docText.split("\\s");
         terminosDocumento.put(toAdd, new Vector<Termino>());
         Vector<Termino> terms = terminosDocumento.get(toAdd);
