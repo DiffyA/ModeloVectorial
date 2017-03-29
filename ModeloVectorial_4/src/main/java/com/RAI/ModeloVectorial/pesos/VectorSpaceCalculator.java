@@ -11,3 +11,4 @@ public class VectorSpaceCalculator implements Calculator {
         return 0;
     }
 }
+
