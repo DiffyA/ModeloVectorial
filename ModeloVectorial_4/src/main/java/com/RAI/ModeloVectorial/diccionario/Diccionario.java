@@ -1,22 +1,16 @@
 package com.RAI.ModeloVectorial.diccionario;
 
-import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;
-import com.RAI.ModeloVectorial.core.Termino;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Vector;
 
 public class Diccionario {
 
-
-    private Vector<Termino> terminosConsulta;
     private HashMap<String, Vector<Entry>> allTerms;
 
     public Diccionario() {
-    	terminosConsulta = new Vector<Termino>();
     	allTerms = new HashMap<String, Vector<Entry>>();
     }
 

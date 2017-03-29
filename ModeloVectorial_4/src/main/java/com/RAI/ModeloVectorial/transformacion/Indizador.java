@@ -1,7 +1,6 @@
 package com.RAI.ModeloVectorial.transformacion;
 
 import com.RAI.ModeloVectorial.core.Documento;
-import com.RAI.ModeloVectorial.core.Termino;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 
 public class Indizador {
