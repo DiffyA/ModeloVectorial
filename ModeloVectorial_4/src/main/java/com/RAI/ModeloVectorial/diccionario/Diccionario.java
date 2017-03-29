@@ -15,9 +15,9 @@ public class Diccionario {
     public Diccionario() {
     }
 
-    public void addDictionaryEntry(Documento toAdd){
+    public void addDictionaryEntry(Documento toAdd, String docText){
 
-        String[] docContent = toAdd.getCleanContent().split("\\s");
+        String[] docContent = docText.split("\\s");
         terminosDocumento.put(toAdd, new Vector<Termino>());
         Vector<Termino> terms = terminosDocumento.get(toAdd);
         for (String term : docContent){
@@ -45,4 +45,9 @@ public class Diccionario {
         }
         list.add(new Termino(toAdd));
     }
+
+    public HashMap<Documento, Vector<Termino>> getTerminosDocumento() {
+        return terminosDocumento;
+    }
+
 }
