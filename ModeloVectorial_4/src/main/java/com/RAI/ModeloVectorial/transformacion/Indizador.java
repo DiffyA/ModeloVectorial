@@ -29,17 +29,17 @@ public class Indizador {
 
     public static String stemTerminos(String textToStem){ 
     	String[] terms = textToStem.split(" ");
-    	String stemmedText = "";
+    	StringBuilder stemmedText = new StringBuilder();
     	
     	/* Iterate through each term and stem them individually. We add a space at the end
     	 * because the Porter stemmer automatically removes all trailing whitespaces.
     	 * We need these spaces so that the terms can be split later on. 
     	 */
     	for (String t : terms) {
-    		stemmedText += Tokenizador.stemTerm(t) + " ";
+    		stemmedText.append(Tokenizador.stemTerm(t)).append(" ");
     	}
     	
-    	return stemmedText;
+    	return stemmedText.toString();
     	
 //    	return Tokenizador.stemTerm(textToStem); 
 	}

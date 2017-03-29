@@ -3,54 +3,80 @@ package com.RAI.ModeloVectorial.diccionario;
 import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Termino;
+import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Vector;
 
 public class Diccionario {
 
-    private HashMap<Documento,Vector<Termino> > terminosDocumento;
+
     private Vector<Termino> terminosConsulta;
+    private HashMap<String, Vector<Entry>> allTerms;
 
     public Diccionario() {
-    	terminosDocumento = new HashMap<Documento, Vector<Termino>>();
     	terminosConsulta = new Vector<Termino>();
+    	allTerms = new HashMap<String, Vector<Entry>>();
     }
 
     public void addDictionaryEntry(Documento toAdd, String docText){
         String[] docContent = docText.split("\\s");
-        terminosDocumento.put(toAdd, new Vector<Termino>());
-        Vector<Termino> terms = terminosDocumento.get(toAdd);
+
         for (String term : docContent){
-            addTerm(terms, term);
+            addTerm(toAdd, term);
         }
     }
 
-    public int buscarTermino(Documento doc, String termino){
+    public Vector<Documento> searchDocumentsContainingTerm(String term){
 
-        Vector<Termino> terminos = terminosDocumento.get(doc);
-        for (Termino t : terminos) {
-            if (t.getTermino().equals(termino)){
-                return t.getCount();
+        Vector<Documento> docList = new Vector<Documento>();
+        if (!allTerms.containsKey(term)){
+            return docList;
+        } else {
+
+           for (Entry e : allTerms.get(term)) { docList.add(e.getDocument()); }
+           return docList;
+        }
+    }
+
+    public int searchOccurencesTerm(String term, Documento doc){
+
+        Vector<Entry> docs = allTerms.get(term);
+        if (docs == null) return 0;
+
+        for (Entry e : docs) {
+            if (e.getDocument() == doc) {
+                return e.getCount();
             }
         }
         return 0;
     }
 
-    private void addTerm(Vector<Termino> list, String toAdd){
-        for (Termino t : list){
-            if (t.getTermino().equals(toAdd)){
-                t.increaseCount();
-                return;
+    private void addTerm(Documento doc, String toAdd){
+
+        //Ya existe el termino
+        if (allTerms.containsKey(toAdd)){
+
+            Vector<Entry> entryList = allTerms.get(toAdd);
+            //El termino existe, pero es la primera ocurrencia en este documento
+            for (Entry e : entryList){
+                if (e.getDocument() == doc) {
+                    return;
+                }
             }
+            entryList.add(new Entry(doc, Indizador.getTermOccurrence(toAdd, doc)));
+            return;
+            //El termino existe, y no es la primera ocurrencia
+
         }
-        list.add(new Termino(toAdd));
+        //No existe el termino
+        else {
+            Entry entry = new Entry(doc, Indizador.getTermOccurrence(toAdd, doc));
+            Vector <Entry> newEntry = new Vector<Entry>();
+            newEntry.add(entry);
+            allTerms.put(toAdd, newEntry);
+        }
     }
-
-    public HashMap<Documento, Vector<Termino>> getTerminosDocumento() {
-        return terminosDocumento;
-    }
-
-    public Vector<Termino> getTermVector(Documento doc) {return terminosDocumento.get(doc);}
 
 }
