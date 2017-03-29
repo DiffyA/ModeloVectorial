@@ -1,27 +1,30 @@
 package com.RAI.ModeloVectorial.transformacion;
 
 import com.RAI.ModeloVectorial.core.Documento;
+import com.RAI.ModeloVectorial.diccionario.Diccionario;
 
 public class Indizador {
 
-    public void tokenizarTerminos(Documento[] documentos){
+
+    public void indizar(Documento[] documentos, Diccionario dic) {
         for (Documento doc : documentos){
-            String tokenizedText = null;
+
+            String docText = doc.getCleanContent();
+            docText = tokenizarTerminos(docText);
+            docText = stemTerminos(docText);
+            dic.addDictionaryEntry(doc, docText);
+        }
+    }
+
+    public String tokenizarTerminos(String toTokenize){
 
             try {
-                tokenizedText = Tokenizador.removeStopWords(doc.getCleanContent());
+                return Tokenizador.removeStopWords(toTokenize);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            doc.setCleanContent(tokenizedText);
-        }
+            return null;
     }
 
-    public void stemTerminos(Documento[] documentos){
-
-        for (Documento doc : documentos){
-            String stemmedContent = Tokenizador.stemTerm(doc.getCleanContent());
-            doc.setCleanContent(stemmedContent);
-        }
-    }
+    public String stemTerminos(String textToStem){ return Tokenizador.stemTerm(textToStem); }
 }
