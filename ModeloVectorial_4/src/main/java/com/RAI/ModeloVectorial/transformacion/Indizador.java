@@ -6,7 +6,7 @@ import com.RAI.ModeloVectorial.diccionario.Diccionario;
 public class Indizador {
 
 
-    public void indizar(Documento[] documentos, Diccionario dic) {
+    public static void indizar(Documento[] documentos, Diccionario dic) {
         for (Documento doc : documentos){
 
             String docText = doc.getCleanContent();
@@ -16,7 +16,7 @@ public class Indizador {
         }
     }
 
-    public String tokenizarTerminos(String toTokenize){
+    public static String tokenizarTerminos(String toTokenize){
 
             try {
                 return Tokenizador.removeStopWords(toTokenize);
@@ -26,5 +26,5 @@ public class Indizador {
             return null;
     }
 
-    public String stemTerminos(String textToStem){ return Tokenizador.stemTerm(textToStem); }
+    public static String stemTerminos(String textToStem){ return Tokenizador.stemTerm(textToStem); }
 }

@@ -50,4 +50,6 @@ public class Diccionario {
         return terminosDocumento;
     }
 
+    public Vector<Termino> getTermVector(Documento doc) {return terminosDocumento.get(doc);}
+
 }
