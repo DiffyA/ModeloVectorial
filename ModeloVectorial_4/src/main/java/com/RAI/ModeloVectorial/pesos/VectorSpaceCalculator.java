@@ -6,7 +6,8 @@ import com.RAI.ModeloVectorial.diccionario.Diccionario;
 /**
  * Created by kgeetz on 3/29/17.
  */
-public interface Calculator {
-
-    public double calculate(Diccionario dic, Consulta consulta);
+public class VectorSpaceCalculator implements Calculator {
+    public double calculate(Diccionario dic, Consulta consulta) {
+        return 0;
+    }
 }
