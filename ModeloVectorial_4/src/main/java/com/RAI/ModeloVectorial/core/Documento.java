@@ -15,32 +15,26 @@ import com.RAI.ModeloVectorial.Interface.ITexto;
  *
  */
 public class Documento implements ITexto {
-	//private String htmlContent;
-	private String cleanContent;
+	private String filePath;
 	
 	public Documento(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getCleanContent() {
 		// Retrieve htmlFile from filePath
 		Document htmlFile = null;
 		try {
-			htmlFile = Jsoup.parse(new File(filePath),"UTF-8");
+			htmlFile = Jsoup.parse(new File(this.getFilePath()), "UTF-8");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		// Turn the htmlFile to a string.
-		//htmlContent = getHtmlFile().toString();
-		
-		// Obtain the parsed text from the htmlFile
-		cleanContent = htmlFile.text();
+		// Obtain the parsed (clean) text from the htmlFile
+		return htmlFile.text();
 	}
 
-	//public Document getHtmlFile() {return htmlFile;}
-
-	//public String getHtmlContent() {return htmlContent;}
-
-	public String getCleanContent() {
-		return cleanContent;
+	public String getFilePath() {
+		return filePath;
 	}
-	public void setCleanContent(String cleanContent) {this.cleanContent = cleanContent; }
-
 }
