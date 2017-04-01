@@ -19,4 +19,9 @@ public class Entry {
     public Documento getDocument() {return document;}
 
     public void increaseCount(){count++;}
+    
+    @Override
+    public String toString() {
+    	return "Appears in document " + document.getFilePath() + " with " + count + " occurrences.";
+    }
 }
