@@ -15,12 +15,19 @@ public class Diccionario {
     	allTerms = new HashMap<String, Vector<Entry>>();
     }
 
-    public void addDictionaryEntry(Documento toAdd, String docText){
-        String[] docContent = docText.split("\\s");
+    public void addDictionaryEntry(String term, Entry toAdd){
 
-        for (String term : docContent){
-            addTerm(toAdd, term);
+        //Ya existe el termino
+        if (allTerms.containsKey(term)){
+            allTerms.get(term).add(toAdd);
         }
+        //No existe el termino
+        else {
+            Vector<Entry> newTermVector = new Vector<Entry>();
+            newTermVector.add(toAdd);
+            allTerms.put(term, newTermVector);
+        }
+
     }
 
     public Vector<Documento> searchDocumentsContainingTerm(String term){
@@ -47,7 +54,7 @@ public class Diccionario {
         }
         return 0;
     }
-
+    /*
     private void addTerm(Documento doc, String toAdd){
 
     	// If the string is empty (to filter stopwords), jump out of this method.
@@ -86,7 +93,7 @@ public class Diccionario {
         			e.increaseCount();
         		}
         	}
-        */	
+
         }
         
         //No existe el termino
@@ -101,14 +108,15 @@ public class Diccionario {
              * For example: "These" is reduced to "" because of the stopword filter. Another word such as "an"
              * may also be reduced to "", increasing the count of that Entry (which should not exist in the first
              * place). For this reason, we only add strings that have not been classified as stopwords.
-             */
+
               
             Vector <Entry> newEntry = new Vector<Entry>();
             newEntry.add(entry);
             allTerms.put(toAdd, newEntry);
         }
     }
-    
+    */
+
     /**
      * Returns the whole dictionary structure.
      * @return
