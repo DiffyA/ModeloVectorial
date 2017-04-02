@@ -1,5 +1,7 @@
 package com.RAI.ModeloVectorial.transformacion;
 
+import java.util.Arrays;
+
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 
@@ -12,6 +14,17 @@ public class Indizador {
             String docText = doc.getCleanContent();
             docText = tokenizarTerminos(docText);
             docText = stemTerminos(docText);
+            
+            /* NOTE: Aqui falta o quitar duplicados del texto despues del filtrado, o cambiar la logica
+             * del diccionario a la hora de usar la funcion "addTerm" (linea 86) ya que llama a la funcion
+             * de "getTermOccurrence" para contar la cantidad de ocurrencias del termino en el documento,
+             * pero luego al encontrar duplicados, suma 1 y la cantidad es errónea.
+             * 
+             */
+            
+//            Set<String> docTextNoDuplicates = HashSet<String>(Arrays.asList(docText.split(" ")));
+            
+            
             dic.addDictionaryEntry(doc, docText);
         }
     }
