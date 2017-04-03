@@ -1,6 +1,7 @@
 package com.RAI.ModeloVectorial.pesos;
 
 import com.RAI.ModeloVectorial.core.Consulta;
+import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 
 /**
@@ -8,5 +9,5 @@ import com.RAI.ModeloVectorial.diccionario.Diccionario;
  */
 public interface Calculator {
 
-    public double calculate(Diccionario dic, Consulta consulta);
+    public double calculate(Diccionario dic, Documento doc, Consulta consulta, String term);
 }

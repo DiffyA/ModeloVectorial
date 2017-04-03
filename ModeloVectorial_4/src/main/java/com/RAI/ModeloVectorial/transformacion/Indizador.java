@@ -3,6 +3,7 @@ package com.RAI.ModeloVectorial.transformacion;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 import com.RAI.ModeloVectorial.diccionario.Entry;
@@ -75,4 +76,18 @@ public class Indizador {
     	
     	return counter;
     }
+
+    public static int getTermOccurrence(String term, Consulta consulta){
+
+		// Split the terms up into an array
+		String[] termsInDocument = consulta.getCleanContent().split(" ");
+		int counter = 0;
+
+		for (String t : termsInDocument) {
+			if (term.equals(t)) {
+				counter++;
+			}
+		}
+		return counter;
+	}
 }

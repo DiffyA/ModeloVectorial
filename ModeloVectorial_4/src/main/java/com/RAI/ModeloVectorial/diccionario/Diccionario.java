@@ -160,7 +160,25 @@ public class Diccionario {
     	}
     	
     	// If no term-document combination is found in the dictionary, return -1.
-    	return -1;
+    	return 0;
+    }
+
+    public Vector<Documento> getDocuments(){
+
+        Vector<Documento> docs = new Vector<Documento>();
+        for (String s : allTerms.keySet()){
+            Vector<Entry> entries = allTerms.get(s);
+            for (Entry e : entries) {
+                if (!docs.contains(e.getDocument())){
+                    docs.add(e.getDocument());
+                }
+            }
+        }
+        return docs;
+    }
+
+    public int getNumDocuments(){
+        return getDocuments().size();
     }
 }
 
