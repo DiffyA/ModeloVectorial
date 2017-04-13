@@ -12,4 +12,13 @@ public class Term {
 	public void increaseIDF() {
 		this.IDF++;
 	}
+	
+	public String getTerm() {
+		return term;
+	}
+	
+	@Override
+	public String toString() {
+		return this.getTerm();
+	}
 }
