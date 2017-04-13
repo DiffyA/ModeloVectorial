@@ -14,10 +14,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.RAI.ModeloVectorial.core.Documento;
+import com.RAI.ModeloVectorial.core.Occurrences;
+import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
-import com.RAI.ModeloVectorial.diccionario.Entry;
 
-public class InidizadorTest {
+public class IndizadorTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -35,26 +36,26 @@ public class InidizadorTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void testGetTermOccurrence() {
-		Documento doc = new Documento("src/test/resources/wordOccurrenceTest.txt");
-		
-		int occurrencesHello = 3;
-		int occurrencesTimes = 2;
-		int occurrencesWords = 2;
-		int occurrencesRepeated = 3;
-		
-		int resultOccurrencesHello = Indizador.getTermOccurrence("Hello", doc);
-		int resultOccurrencesTimes = Indizador.getTermOccurrence("times", doc);
-		int resultOccurrencesWords = Indizador.getTermOccurrence("Words", doc);
-		int resultOccurrencesRepeated = Indizador.getTermOccurrence("Repeated", doc);
-		
-		assertEquals(occurrencesHello, resultOccurrencesHello);
-		assertEquals(occurrencesTimes, resultOccurrencesWords);
-		assertEquals(occurrencesWords, resultOccurrencesTimes);
-		assertEquals(occurrencesRepeated, resultOccurrencesRepeated);
-		
-	}
+//	@Test
+//	public void testGetTermOccurrence() {
+//		Documento doc = new Documento("src/test/resources/wordOccurrenceTest.txt");
+//		
+//		int occurrencesHello = 3;
+//		int occurrencesTimes = 2;
+//		int occurrencesWords = 2;
+//		int occurrencesRepeated = 3;
+//		
+//		int resultOccurrencesHello = Indizador.getTermOccurrence("Hello", doc);
+//		int resultOccurrencesTimes = Indizador.getTermOccurrence("times", doc);
+//		int resultOccurrencesWords = Indizador.getTermOccurrence("Words", doc);
+//		int resultOccurrencesRepeated = Indizador.getTermOccurrence("Repeated", doc);
+//		
+//		assertEquals(occurrencesHello, resultOccurrencesHello);
+//		assertEquals(occurrencesTimes, resultOccurrencesWords);
+//		assertEquals(occurrencesWords, resultOccurrencesTimes);
+//		assertEquals(occurrencesRepeated, resultOccurrencesRepeated);
+//		
+//	}
 	
 	/**
 	 * Checks to see that an array of documents is indexed properly by the Indizador class into a Diccionario object.
@@ -94,7 +95,7 @@ public class InidizadorTest {
 		expectedTermsTotal.addAll(expectedTerms2); 
 		
 		System.out.println("expectedTermsTotal: " + expectedTermsTotal);
-		System.out.println("dicc.getTermList(): " +dicc.getTermList());
+		System.out.println("dicc.getTermList(): " + dicc.getTermList());
 //		Set<String> resultTerms1 = dicc.getTermList();
 		
 		assertEquals(expectedTermsTotal, dicc.getTermList());
@@ -127,9 +128,31 @@ public class InidizadorTest {
 		int occurrenceTest = 1;
 		int occurrenceNone = -1;
 		
-		assertEquals(occurrenceTerm, dicc.getTermOccurrenceInDocument("term", doc1));
+		assertEquals(occurrenceTerm, dicc.getTFInDocument(new Term("term", "term"), doc1));
+	}
+
+	/**
+	 * Checks that the indizar method is working properly.
+	 */
+	@Test
+	public void integrationTestIndizar03() {
+		System.out.println("TestIndizar03");
+		Diccionario dicc = new Diccionario();
+		Indizador indexer = new Indizador();
+		Documento doc1 = new Documento("src/test/resources/testIndizador/testDocument1.txt");
+//		Documento doc2 = new Documento("src/test/resources/testDiccionario/testGetTermOccurrenceInDocument2.txt");
+		
+		Documento[] docsToAdd = {doc1};
+		
+		System.out.println("Term list before adding: ");
+		System.out.println(dicc.getTermList());
+		
+		indexer.indizar(docsToAdd, dicc);
+		
+		System.out.println("Term list after adding: ");
+		System.out.println(dicc.getTermList());
 		
 		
 	}
-
+	
 }

@@ -4,14 +4,16 @@ import java.util.Set;
 
 public class Term {
 	private String term;
+	private String filteredTerm;
 	private Occurrences occurrences = new Occurrences(); 
 	
 	public Term(String term) {
-		this.term = term;
+		this.term = term.trim();
 	}
 	
-	public String getTerm() {
-		return term;
+	public Term(String term, String filteredTerm) {
+		this.term = term.trim();
+		this.filteredTerm = filteredTerm.trim();
 	}
 	
 	/**
@@ -34,6 +36,14 @@ public class Term {
 	
 	public int getTFInDocument(Documento doc) {
 		return occurrences.getTFInDocument(doc);
+	}
+	
+	public String getTerm() {
+		return term;
+	}
+	
+	public String getFilteredTerm() {
+		return filteredTerm;
 	}
 	
 	@Override

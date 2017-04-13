@@ -28,19 +28,19 @@ public class Diccionario {
      */
     public void addDictionaryEntry(Term term, Documento doc){
     	// If the term already exists in the dictionary, retrieve it and operate with it
-    	if (allTerms.containsKey(term.getTerm())) {
+    	if (allTerms.containsKey(term.getFilteredTerm())) {
     		
     		// Get the term and add an occurrence in the provided document.
-    		Term updatedTerm = allTerms.get(term.getTerm());
+    		Term updatedTerm = allTerms.get(term.getFilteredTerm());
     		updatedTerm.addOccurrenceInDocument(doc);
 
     		// Update the term in the dictionary.
-    		allTerms.put(updatedTerm.getTerm(), updatedTerm);
+    		allTerms.put(updatedTerm.getFilteredTerm(), updatedTerm);
     	}
     	// If the term doesn't exist in the dictionary, add it.
     	else {
     		term.addOccurrenceInDocument(doc);
-    		allTerms.put(term.getTerm(), term);
+    		allTerms.put(term.getFilteredTerm(), term);
     	}
     }
 
@@ -52,12 +52,12 @@ public class Diccionario {
     public Set<Documento> getDocumentsContainingTerm(Term term) {
     	
     	// If the term doesn't exist in the dictionary, return an empty set.
-    	if (!allTerms.containsKey(term.getTerm())) {
+    	if (!allTerms.containsKey(term.getFilteredTerm())) {
     		
     		return Collections.emptySet();
     	}
     	
-    	return allTerms.get(term.getTerm()).getListOfDocuments();
+    	return allTerms.get(term.getFilteredTerm()).getListOfDocuments();
     }
     
     /**
@@ -85,11 +85,11 @@ public class Diccionario {
     public int getTFInDocument(Term term, Documento doc) {
     	
     	// If the dictionary does not contain a key with the specified term, return 0.
-    	if (!allTerms.containsKey(term.toString())) {
+    	if (!allTerms.containsKey(term.getFilteredTerm())) {
     		return 0;
     	}
 
-    	return allTerms.get(term.getTerm()).getTFInDocument(doc);
+    	return allTerms.get(term.getFilteredTerm()).getTFInDocument(doc);
     	
     }
 

@@ -39,20 +39,20 @@ public class DiccionarioTest {
 
 	@Test
 	public void testAddDictionaryEntry() {
-		Term term1 = new Term("term1");
+		Term term1 = new Term("term1", "term1");
 		Documento doc1 = new Documento("doc1");
 		
 		// Check that the dictionary does not contain the term's string representation as key.
-		assertFalse(dicc.getAllTerms().containsKey(term1.getTerm()));
+		assertFalse(dicc.getAllTerms().containsKey(term1.getFilteredTerm()));
 		
 		// Add the term found in the given document
 		dicc.addDictionaryEntry(term1, doc1);
 		
 		// Now check that the dictionary in fact contains the term's hashcode as key.
-		assertTrue(dicc.getAllTerms().containsKey(term1.getTerm()));
+		assertTrue(dicc.getAllTerms().containsKey(term1.getFilteredTerm()));
 		
 		// Check the amount of occurrences of term1 in the dictionary is equal to 1.
-		Term termInDictionary = dicc.getAllTerms().get(term1.getTerm());
+		Term termInDictionary = dicc.getAllTerms().get(term1.getFilteredTerm());
 		int occurrencesInDoc1 = termInDictionary.getTFInDocument(doc1);
 
 		assertEquals(1, occurrencesInDoc1);
@@ -68,21 +68,21 @@ public class DiccionarioTest {
 		assertEquals(2, occurrencesInDoc1);
 		
 		// Now we will check the same for another term, to make sure everything is ok.
-		Term term2 = new Term("term2");
+		Term term2 = new Term("term2", "term2");
 		Documento doc2 = new Documento("doc2");
 		
-		assertFalse(dicc.getAllTerms().containsKey(term2.getTerm()));
+		assertFalse(dicc.getAllTerms().containsKey(term2.getFilteredTerm()));
 		
 		dicc.addDictionaryEntry(term2, doc1);
 		
-		assertTrue(dicc.getAllTerms().containsKey(term2.getTerm()));
-		assertEquals(1, dicc.getAllTerms().get(term2.getTerm()).getTFInDocument(doc1));
+		assertTrue(dicc.getAllTerms().containsKey(term2.getFilteredTerm()));
+		assertEquals(1, dicc.getAllTerms().get(term2.getFilteredTerm()).getTFInDocument(doc1));
 		
 		// Now check for a different document.
 		dicc.addDictionaryEntry(term2, doc2);
 		dicc.addDictionaryEntry(term2, doc2);
 		
-		assertEquals(2, dicc.getAllTerms().get(term2.getTerm()).getTFInDocument(doc2));
+		assertEquals(2, dicc.getAllTerms().get(term2.getFilteredTerm()).getTFInDocument(doc2));
 	}
 	
 	@Test
@@ -184,9 +184,9 @@ public class DiccionarioTest {
 		dicc.addDictionaryEntry(term3, doc1);
 		
 		// Check the sets.
-		expectedSet.add(term1.getTerm());
-		expectedSet.add(term2.getTerm());
-		expectedSet.add(term3.getTerm());
+		expectedSet.add(term1.getFilteredTerm());
+		expectedSet.add(term2.getFilteredTerm());
+		expectedSet.add(term3.getFilteredTerm());
 		
 		assertEquals(expectedSet.size(), dicc.getTermList().size());
 		assertTrue(expectedSet.containsAll(dicc.getTermList()));
