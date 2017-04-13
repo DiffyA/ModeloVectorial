@@ -127,8 +127,8 @@ public class DiccionarioTest {
 		Set<Documento> expectedSet = new HashSet<Documento>();
 		
 		// Check that both sets are equal in size and content
-		assertEquals(expectedSet.size(), dicc.getDocuments().size());
-		assertTrue(expectedSet.containsAll(dicc.getDocuments()));
+		assertEquals(expectedSet.size(), dicc.getDocumentList().size());
+		assertTrue(expectedSet.containsAll(dicc.getDocumentList()));
 		
 		// Start adding documents to the dictionary
 		dicc.addDictionaryEntry(term1, doc1);
@@ -136,8 +136,8 @@ public class DiccionarioTest {
 		// Check the sets
 		expectedSet.add(doc1);
 		
-		assertEquals(expectedSet.size(), dicc.getDocuments().size());
-		assertTrue(expectedSet.containsAll(dicc.getDocuments()));
+		assertEquals(expectedSet.size(), dicc.getDocumentList().size());
+		assertTrue(expectedSet.containsAll(dicc.getDocumentList()));
 		
 		// Add more documents
 		dicc.addDictionaryEntry(term1, doc2);
@@ -147,8 +147,8 @@ public class DiccionarioTest {
 		expectedSet.add(doc2);
 		expectedSet.add(doc3);
 		
-		assertEquals(expectedSet.size(), dicc.getDocuments().size());
-		assertTrue(expectedSet.containsAll(dicc.getDocuments()));
+		assertEquals(expectedSet.size(), dicc.getDocumentList().size());
+		assertTrue(expectedSet.containsAll(dicc.getDocumentList()));
 		
 		// Add all terms to all documents and perform final check
 		dicc.addDictionaryEntry(term1, doc1);
@@ -161,8 +161,39 @@ public class DiccionarioTest {
 		dicc.addDictionaryEntry(term3, doc2);
 		dicc.addDictionaryEntry(term3, doc3);
 		
-		assertEquals(expectedSet.size(), dicc.getDocuments().size());
-		assertTrue(expectedSet.containsAll(dicc.getDocuments()));
+		assertEquals(expectedSet.size(), dicc.getDocumentList().size());
+		assertTrue(expectedSet.containsAll(dicc.getDocumentList()));
+	}
+	
+	@Test
+	public void testGetTermList() {
+		Documento doc1 = new Documento("doc1");
+		
+		Term term1 = new Term("term1");
+		Term term2 = new Term("term2");
+		Term term3 = new Term("term3");
+		
+		Set<String> expectedSet = new HashSet<String>();
+		
+		// Initial safety check.
+		assertTrue(expectedSet.containsAll(dicc.getTermList()));
+		
+		// Start adding terms to the dictionary.
+		dicc.addDictionaryEntry(term1, doc1);
+		dicc.addDictionaryEntry(term2, doc1);
+		dicc.addDictionaryEntry(term3, doc1);
+		
+		// Check the sets.
+		expectedSet.add(term1.getTerm());
+		expectedSet.add(term2.getTerm());
+		expectedSet.add(term3.getTerm());
+		
+		assertEquals(expectedSet.size(), dicc.getTermList().size());
+		assertTrue(expectedSet.containsAll(dicc.getTermList()));
+		
+		
+		
+		
 	}
 	
 //	@Test
