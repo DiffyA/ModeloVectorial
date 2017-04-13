@@ -37,4 +37,9 @@ public class Documento implements ITexto {
 	public String getFilePath() {
 		return filePath;
 	}
+	
+	@Override
+	public String toString() {
+		return this.getFilePath();
+	}
 }
