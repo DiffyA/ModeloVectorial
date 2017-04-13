@@ -112,8 +112,57 @@ public class DiccionarioTest {
 		assertEquals(3, dicc.getTFInDocument(term1, doc1));
 		assertEquals(1, dicc.getTFInDocument(term1, doc2));
 		assertEquals(2, dicc.getTFInDocument(term1, doc3));
+	}
+	
+	@Test
+	public void testGetDocuments() {
+		Documento doc1 = new Documento("doc1");
+		Documento doc2 = new Documento("doc2");
+		Documento doc3 = new Documento("doc3");
 		
+		Term term1 = new Term("term1");
+		Term term2 = new Term("term2");
+		Term term3 = new Term("term3");
 		
+		Set<Documento> expectedSet = new HashSet<Documento>();
+		
+		// Check that both sets are equal in size and content
+		assertEquals(expectedSet.size(), dicc.getDocuments().size());
+		assertTrue(expectedSet.containsAll(dicc.getDocuments()));
+		
+		// Start adding documents to the dictionary
+		dicc.addDictionaryEntry(term1, doc1);
+		
+		// Check the sets
+		expectedSet.add(doc1);
+		
+		assertEquals(expectedSet.size(), dicc.getDocuments().size());
+		assertTrue(expectedSet.containsAll(dicc.getDocuments()));
+		
+		// Add more documents
+		dicc.addDictionaryEntry(term1, doc2);
+		dicc.addDictionaryEntry(term2, doc3);
+
+		// Check the sets
+		expectedSet.add(doc2);
+		expectedSet.add(doc3);
+		
+		assertEquals(expectedSet.size(), dicc.getDocuments().size());
+		assertTrue(expectedSet.containsAll(dicc.getDocuments()));
+		
+		// Add all terms to all documents and perform final check
+		dicc.addDictionaryEntry(term1, doc1);
+		dicc.addDictionaryEntry(term1, doc2);
+		dicc.addDictionaryEntry(term1, doc3);
+		dicc.addDictionaryEntry(term2, doc1);
+		dicc.addDictionaryEntry(term2, doc2);
+		dicc.addDictionaryEntry(term2, doc3);
+		dicc.addDictionaryEntry(term3, doc1);
+		dicc.addDictionaryEntry(term3, doc2);
+		dicc.addDictionaryEntry(term3, doc3);
+		
+		assertEquals(expectedSet.size(), dicc.getDocuments().size());
+		assertTrue(expectedSet.containsAll(dicc.getDocuments()));
 	}
 	
 //	@Test

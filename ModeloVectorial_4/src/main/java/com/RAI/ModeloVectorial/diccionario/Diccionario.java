@@ -100,36 +100,21 @@ public class Diccionario {
     	return allTerms.get(term.getTerm()).getTFInDocument(doc);
     	
     }
-//    /**
-//     * Returns the amount of occurrences of a given term in a given document.
-//     * @param term
-//     * @param document
-//     * @return
-//     */
-//    public int getTermOccurrenceInDocument(String term, Documento document) {
-//    	
-//    	// If the term doesn't exist in the dictionary, return -1.
-//    	if (!allTerms.containsKey(term)) {
-//    		return -1;
-//    	}
-//    	
-//    	// Obtain all the entries for the term
-//    	Vector<Occurrences> entries= allTerms.get(term);
-//    	
-//    	/* Iterate through all the entries, looking for the one 
-//    	 * which matches the document sent as a parameter.
-//    	 */
-//    	for (Occurrences e : entries) {
-//    		// Once found, return the amount of occurrences in that document.
-//    		if (e.getDocument() == document) {
-//    			return e.getCount();
-//    		}
-//    	}
-//    	
-//    	// If no term-document combination is found in the dictionary, return -1.
-//    	return 0;
-//    }
-//
+
+    /**
+     * Get a set of all the documents in the dictionary.
+     * @return
+     */
+    public Set<Documento> getDocuments() {
+    	Set<Documento> resultSet = new HashSet<Documento>();
+    	
+    	// Iterate through all the terms of the dictionary. This only iterates through the values!
+    	for (Term t : allTerms.values()) {
+    		resultSet.addAll(t.getListOfDocuments());
+    	}
+    	
+    	return resultSet;
+    }
 //    public Vector<Documento> getDocuments(){
 //
 //        Vector<Documento> docs = new Vector<Documento>();
