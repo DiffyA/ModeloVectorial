@@ -5,6 +5,7 @@ import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,6 +42,22 @@ public class Diccionario {
     		term.addOccurrenceInDocument(doc);
     		allTerms.put(term.getTerm(), term);
     	}
+    }
+
+    /**
+     * Returns a set of documents which contain the specified term.
+     * @param term
+     * @return
+     */
+    public Set<Documento> getDocumentsContainingTerm(Term term) {
+    	
+    	// If the term doesn't exist in the dictionary, return an empty set.
+    	if (!allTerms.containsKey(term.getTerm())) {
+    		
+    		return Collections.emptySet();
+    	}
+    	
+    	return allTerms.get(term.getTerm()).getListOfDocuments();
     }
 
 //    public Vector<Documento> searchDocumentsContainingTerm(String term){
@@ -105,7 +122,7 @@ public class Diccionario {
      * Get a set of all the documents in the dictionary.
      * @return
      */
-    public Set<Documento> getDocuments() {
+    public Set<Documento> getDocumentList() {
     	Set<Documento> resultSet = new HashSet<Documento>();
     	
     	// Iterate through all the terms of the dictionary. This only iterates through the values!
@@ -115,23 +132,4 @@ public class Diccionario {
     	
     	return resultSet;
     }
-//    public Vector<Documento> getDocuments(){
-//
-//        Vector<Documento> docs = new Vector<Documento>();
-//        for (String s : allTerms.keySet()){
-//            Vector<Occurrences> entries = allTerms.get(s);
-//            for (Occurrences e : entries) {
-//                if (!docs.contains(e.getDocument())){
-//                    docs.add(e.getDocument());
-//                }
-//            }
-//        }
-//        return docs;
-//    }
-//
-//    public int getNumDocuments(){
-//        return getDocuments().size();
-//    }
 }
-
-
