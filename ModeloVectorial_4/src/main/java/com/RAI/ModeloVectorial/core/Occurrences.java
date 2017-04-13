@@ -12,7 +12,7 @@ public class Occurrences {
 	 * @param doc
 	 * @return
 	 */
-    public int getOccurrencesInDocument(Documento doc) {
+    public int getTFInDocument(Documento doc) {
     	if (!occurrences.containsKey(doc)) {
     		return 0;
     	}

@@ -90,21 +90,21 @@ public class OccurrencesTest {
 		Documento doc2 = new Documento("");
 		
 		// Check that for a non-existing document, the occurrences are 0.
-		assertEquals(0, occurrences.getOccurrencesInDocument(doc1));
-		assertEquals(0, occurrences.getOccurrencesInDocument(doc2));
+		assertEquals(0, occurrences.getTFInDocument(doc1));
+		assertEquals(0, occurrences.getTFInDocument(doc2));
 		
 		// Now, start adding occurrences and check.
 		occurrences.addOccurrenceInDocument(doc1);
-		assertEquals(1, occurrences.getOccurrencesInDocument(doc1));
+		assertEquals(1, occurrences.getTFInDocument(doc1));
 		
 		occurrences.addOccurrenceInDocument(doc2);
-		assertEquals(1, occurrences.getOccurrencesInDocument(doc2));
+		assertEquals(1, occurrences.getTFInDocument(doc2));
 		
 		occurrences.addOccurrenceInDocument(doc2);
-		assertEquals(2, occurrences.getOccurrencesInDocument(doc2));
+		assertEquals(2, occurrences.getTFInDocument(doc2));
 		
 		occurrences.addOccurrenceInDocument(doc1);
-		assertEquals(2, occurrences.getOccurrencesInDocument(doc1));
+		assertEquals(2, occurrences.getTFInDocument(doc1));
 	}
 
 }
