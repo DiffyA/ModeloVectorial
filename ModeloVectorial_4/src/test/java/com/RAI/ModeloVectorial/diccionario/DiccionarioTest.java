@@ -30,6 +30,7 @@ public class DiccionarioTest {
 
 	@Before
 	public void setUp() throws Exception {
+		dicc.getAllTerms().clear();
 	}
 
 	@After
@@ -41,17 +42,17 @@ public class DiccionarioTest {
 		Term term1 = new Term("term1");
 		Documento doc1 = new Documento("doc1");
 		
-		// Check that the dictionary does not contain the term's hashcode as key.
-		assertFalse(dicc.getAllTerms().containsKey(term1.hashCode()));
+		// Check that the dictionary does not contain the term's string representation as key.
+		assertFalse(dicc.getAllTerms().containsKey(term1.getTerm()));
 		
 		// Add the term found in the given document
 		dicc.addDictionaryEntry(term1, doc1);
 		
 		// Now check that the dictionary in fact contains the term's hashcode as key.
-		assertTrue(dicc.getAllTerms().containsKey(term1.hashCode()));
+		assertTrue(dicc.getAllTerms().containsKey(term1.getTerm()));
 		
 		// Check the amount of occurrences of term1 in the dictionary is equal to 1.
-		Term termInDictionary = dicc.getAllTerms().get(term1.hashCode());
+		Term termInDictionary = dicc.getAllTerms().get(term1.getTerm());
 		int occurrencesInDoc1 = termInDictionary.getTFInDocument(doc1);
 
 		assertEquals(1, occurrencesInDoc1);
@@ -70,18 +71,47 @@ public class DiccionarioTest {
 		Term term2 = new Term("term2");
 		Documento doc2 = new Documento("doc2");
 		
-		assertFalse(dicc.getAllTerms().containsKey(term2.hashCode()));
+		assertFalse(dicc.getAllTerms().containsKey(term2.getTerm()));
 		
 		dicc.addDictionaryEntry(term2, doc1);
 		
-		assertTrue(dicc.getAllTerms().containsKey(term2.hashCode()));
-		assertEquals(1, dicc.getAllTerms().get(term2.hashCode()).getTFInDocument(doc1));
+		assertTrue(dicc.getAllTerms().containsKey(term2.getTerm()));
+		assertEquals(1, dicc.getAllTerms().get(term2.getTerm()).getTFInDocument(doc1));
 		
 		// Now check for a different document.
 		dicc.addDictionaryEntry(term2, doc2);
 		dicc.addDictionaryEntry(term2, doc2);
 		
-		assertEquals(2, dicc.getAllTerms().get(term2.hashCode()).getTFInDocument(doc2));
+		assertEquals(2, dicc.getAllTerms().get(term2.getTerm()).getTFInDocument(doc2));
+	}
+	
+	@Test
+	public void testGetTFInDocument() {
+		Documento doc1 = new Documento("doc1");
+		Documento doc2 = new Documento("doc2");
+		Documento doc3 = new Documento("doc3");
+		Term term1 = new Term("term1");
+		
+		// Assert that the occurrence is 0 since nothing has been added yet.
+		assertEquals(0, dicc.getTFInDocument(term1, doc1));
+		
+		// Add an entry
+		dicc.addDictionaryEntry(term1, doc1);
+		
+		// Now check that the value has updated
+		assertEquals(1, dicc.getTFInDocument(term1, doc1));
+		
+		// Add the same entry multiple times and for different documents.
+		dicc.addDictionaryEntry(term1, doc1);
+		dicc.addDictionaryEntry(term1, doc1);
+		dicc.addDictionaryEntry(term1, doc2);
+		dicc.addDictionaryEntry(term1, doc3);
+		dicc.addDictionaryEntry(term1, doc3);
+		
+		// Check the values
+		assertEquals(3, dicc.getTFInDocument(term1, doc1));
+		assertEquals(1, dicc.getTFInDocument(term1, doc2));
+		assertEquals(2, dicc.getTFInDocument(term1, doc3));
 		
 		
 	}

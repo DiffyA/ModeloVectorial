@@ -11,36 +11,35 @@ import java.util.Set;
 import java.util.Vector;
 
 public class Diccionario {
-	/* The key for the HashMap will be the hash of the value itself. Sort of an ID for the Term in question.
-	 * We use a HashMap because a HashSet will not allow us to retrieve the element without iterating through
-	 * the whole structure.
+	/* The key for the HashMap will be the String representation of the term. 
+	 * TODO: make it so the actual key is a stemmed and filtered version of the term.
+	 * Probably have to add more attributes to the Term class.
 	 */
-    private HashMap<Integer, Term> allTerms = new HashMap<Integer,Term>();
+    private HashMap<String, Term> allTerms = new HashMap<String, Term>();
 
+    /**
+     * Adds an entry to the dictionary, provided the term and the document it comes from.
+     * 
+     * TODO: Find a better key for the terms than the actual hashcode. Maybe make it so the Term object
+     * stores the stemmed and cleaned version of the word as well, and use that as a key.
+     * @param term
+     * @param doc
+     */
     public void addDictionaryEntry(Term term, Documento doc){
-
-//        //Ya existe el termino
-//        if (allTerms.containsKey(term)){
-//            allTerms.get(term).add(toAdd);
-//        }
-//        //No existe el termino
-//        else {
-//            Vector<Occurrences> newTermVector = new Vector<Occurrences>();
-//            newTermVector.add(toAdd);
-//            allTerms.put(term, newTermVector);
-//        }
     	// If the term already exists in the dictionary, retrieve it and operate with it
-    	if (allTerms.containsKey(term.hashCode())) {
+    	if (allTerms.containsKey(term.getTerm())) {
+    		
     		// Get the term and add an occurrence in the provided document.
-    		Term updatedTerm = allTerms.get(term.hashCode());
+    		Term updatedTerm = allTerms.get(term.getTerm());
     		updatedTerm.addOccurrenceInDocument(doc);
-//    		allTerms.get(term.hashCode()).addOccurrenceInDocument(doc);
-    		allTerms.put(updatedTerm.hashCode(), updatedTerm);
+
+    		// Update the term in the dictionary.
+    		allTerms.put(updatedTerm.getTerm(), updatedTerm);
     	}
     	// If the term doesn't exist in the dictionary, add it.
     	else {
     		term.addOccurrenceInDocument(doc);
-    		allTerms.put(term.hashCode(), term);
+    		allTerms.put(term.getTerm(), term);
     	}
     }
 
@@ -68,85 +67,39 @@ public class Diccionario {
 //        }
 //        return 0;
 //    }
-    /*
-    private void addTerm(Documento doc, String toAdd){
-
-    	// If the string is empty (to filter stopwords), jump out of this method.
-    	if (toAdd.equals("")) {
-    		return;
-    	}
-    	
-        //Ya existe el termino
-        if (allTerms.containsKey(toAdd)){
-
-//        	 Consultar con Kevin
-            Vector<Entry> entryList = allTerms.get(toAdd);
-            //El termino existe, pero es la primera ocurrencia en este documento
-            for (Entry e : entryList){
-                if (e.getDocument() == doc) {
-                    return;
-                }
-            }
-            entryList.add(new Entry(doc, Indizador.getTermOccurrence(toAdd, doc)));
-            return;
-            
-            //El termino existe, y no es la primera ocurrencia
-			
-        	
-    		/* Finds the entry which references the document provided as a parameter.
-    		 * First, obtain all the entries in the dictionary that reference the term.
-    		 * Then, iterate through those entries and check which one of them references
-    		 * the document provided as parameter.
-    		 * Add 1 to the occurrences of the term in that document once found.
-    		 */
-        	
-        	/*
-        	Vector<Entry> entryList = allTerms.get(toAdd);
-        	for (Entry e : entryList) {
-        		if (e.getDocument() == doc) {
-        			e.increaseCount();
-        		}
-        	}
-
-        }
-        
-        //No existe el termino
-        else {
-//            Entry entry = new Entry(doc, Indizador.getTermOccurrence(toAdd, doc));
-            Entry entry = new Entry(doc, Indizador.getTermOccurrence(toAdd, doc));
-            
-            /* It is possible that getTermOccurrence changes the Term (mainly because it calls the
-             * method which removes stopwords) to "". We do not want the empty string in our dictionary
-             * because other terms unassociated to the original one may be reduced to the empty string as well
-             * and we would get false data. 
-             * For example: "These" is reduced to "" because of the stopword filter. Another word such as "an"
-             * may also be reduced to "", increasing the count of that Entry (which should not exist in the first
-             * place). For this reason, we only add strings that have not been classified as stopwords.
-
-              
-            Vector <Entry> newEntry = new Vector<Entry>();
-            newEntry.add(entry);
-            allTerms.put(toAdd, newEntry);
-        }
-    }
-    */
-
+    
     /**
      * Returns the whole dictionary structure.
      * @return
      */
-    public HashMap<Integer, Term> getAllTerms() {
+    public HashMap<String, Term> getAllTerms() {
 		return allTerms;
 	}
-//    
-//    /**
-//     * Returns all the terms in the dictionary as a set of strings.
-//     * @return
-//     */
-//    public Set<String> getTermList() {
-//    	return allTerms.keySet();
-//    }
-// 
+    
+    /**
+     * This returns the keys used in the inner dictionary structure, so the term identifier.
+     * @return
+     */
+    public Set<String> getTermList() {
+    	return allTerms.keySet();
+    }
+ 
+    /**
+     * Returns the amount of occurrences of a given term in a given document.
+     * @param term
+     * @param document
+     * @return
+     */
+    public int getTFInDocument(Term term, Documento doc) {
+    	
+    	// If the dictionary does not contain a key with the specified term, return 0.
+    	if (!allTerms.containsKey(term.toString())) {
+    		return 0;
+    	}
+
+    	return allTerms.get(term.getTerm()).getTFInDocument(doc);
+    	
+    }
 //    /**
 //     * Returns the amount of occurrences of a given term in a given document.
 //     * @param term
