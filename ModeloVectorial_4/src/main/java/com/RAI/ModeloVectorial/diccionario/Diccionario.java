@@ -59,31 +59,6 @@ public class Diccionario {
     	
     	return allTerms.get(term.getTerm()).getListOfDocuments();
     }
-
-//    public Vector<Documento> searchDocumentsContainingTerm(String term){
-//
-//        Vector<Documento> docList = new Vector<Documento>();
-//        if (!allTerms.containsKey(term)){
-//            return docList;
-//        } else {
-//
-//           for (Occurrences e : allTerms.get(term)) { docList.add(e.getDocument()); }
-//           return docList;
-//        }
-//    }
-//
-//    public int searchOccurencesTerm(String term, Documento doc){
-//
-//        Vector<Occurrences> docs = allTerms.get(term);
-//        if (docs == null) return 0;
-//
-//        for (Occurrences e : docs) {
-//            if (e.getDocument() == doc) {
-//                return e.getCount();
-//            }
-//        }
-//        return 0;
-//    }
     
     /**
      * Returns the whole dictionary structure.
