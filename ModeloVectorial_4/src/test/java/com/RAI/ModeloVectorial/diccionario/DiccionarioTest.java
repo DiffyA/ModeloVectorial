@@ -2,11 +2,11 @@ package com.RAI.ModeloVectorial.diccionario;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.lucene.index.Term;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.RAI.ModeloVectorial.core.Documento;
+import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 public class DiccionarioTest {
@@ -37,29 +38,79 @@ public class DiccionarioTest {
 
 	@Test
 	public void testAddDictionaryEntry() {
-		Documento doc1 = new Documento("src/test/resources/testDiccionario/testAddDictionaryEntry.txt");
-		String testString = "These These terms should should go in the term vector";
+		Term term1 = new Term("term1");
+		Documento doc1 = new Documento("doc1");
 		
-		/* Since we are just testing this method by itself, we are introducing a dummy string.
-		 * The proper functionality of this method should be tested in an integration test,
-		 * where the class Indizador is the one to call it, after cleaning up the terms.
-		 */
-		dicc.addDictionaryEntry(doc1, testString);
+		// Check that the dictionary does not contain the term's hashcode as key.
+		assertFalse(dicc.getAllTerms().containsKey(term1.hashCode()));
+		
+		// Add the term found in the given document
+		dicc.addDictionaryEntry(term1, doc1);
+		
+		// Now check that the dictionary in fact contains the term's hashcode as key.
+		assertTrue(dicc.getAllTerms().containsKey(term1.hashCode()));
+		
+		// Check the amount of occurrences of term1 in the dictionary is equal to 1.
+		Term termInDictionary = dicc.getAllTerms().get(term1.hashCode());
+		int occurrencesInDoc1 = termInDictionary.getTFInDocument(doc1);
 
-		Set<String> expected = new HashSet<String>();
-		expected.add("These");
-		expected.add("terms");
-		expected.add("should");
-		expected.add("go");
-		expected.add("in");
-		expected.add("the");
-		expected.add("term");
-		expected.add("vector");
+		assertEquals(1, occurrencesInDoc1);
 		
-		Set<String> result = dicc.getAllTerms().keySet();
+		// Now we check if it works when adding the same term in the same document.
 		
-		assertEquals(expected, result);
+		// Once more, add the term found in the given document
+		dicc.addDictionaryEntry(term1, doc1);
+		
+		// Update the occurrences in doc1.
+		occurrencesInDoc1 = termInDictionary.getTFInDocument(doc1);
+		
+		assertEquals(2, occurrencesInDoc1);
+		
+		// Now we will check the same for another term, to make sure everything is ok.
+		Term term2 = new Term("term2");
+		Documento doc2 = new Documento("doc2");
+		
+		assertFalse(dicc.getAllTerms().containsKey(term2.hashCode()));
+		
+		dicc.addDictionaryEntry(term2, doc1);
+		
+		assertTrue(dicc.getAllTerms().containsKey(term2.hashCode()));
+		assertEquals(1, dicc.getAllTerms().get(term2.hashCode()).getTFInDocument(doc1));
+		
+		// Now check for a different document.
+		dicc.addDictionaryEntry(term2, doc2);
+		dicc.addDictionaryEntry(term2, doc2);
+		
+		assertEquals(2, dicc.getAllTerms().get(term2.hashCode()).getTFInDocument(doc2));
+		
+		
 	}
+	
+//	@Test
+//	public void testAddDictionaryEntry() {
+//		Documento doc1 = new Documento("src/test/resources/testDiccionario/testAddDictionaryEntry.txt");
+//		String testString = "These These terms should should go in the term vector";
+//		
+//		/* Since we are just testing this method by itself, we are introducing a dummy string.
+//		 * The proper functionality of this method should be tested in an integration test,
+//		 * where the class Indizador is the one to call it, after cleaning up the terms.
+//		 */
+////		dicc.addDictionaryEntry(doc1, testString);
+//
+//		Set<String> expected = new HashSet<String>();
+//		expected.add("These");
+//		expected.add("terms");
+//		expected.add("should");
+//		expected.add("go");
+//		expected.add("in");
+//		expected.add("the");
+//		expected.add("term");
+//		expected.add("vector");
+//		
+//		Set<String> result = dicc.getAllTerms().keySet();
+//		
+//		assertEquals(expected, result);
+//	}
 	
 	/**
 	 * TODO: Test the method AddTerm() before continuing with termOccurrence. There is a filtering issue.
