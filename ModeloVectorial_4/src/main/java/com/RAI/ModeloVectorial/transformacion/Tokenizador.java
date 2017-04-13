@@ -10,6 +10,8 @@ import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.tartarus.snowball.ext.PorterStemmer;
 
+import com.RAI.ModeloVectorial.core.Term;
+
 import java.io.StringReader;
 
 public class Tokenizador {
@@ -31,9 +33,9 @@ public class Tokenizador {
         return sb.toString();
     }
 
-    public static String stemTerm (String term) {
+    public static String stemTerm (Term term) {
         PorterStemmer stemmer = new PorterStemmer();
-        stemmer.setCurrent(term);
+        stemmer.setCurrent(term.getTerm());
         stemmer.stem();
         return stemmer.getCurrent();
     }

@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.RAI.ModeloVectorial.core.Term;
+
 public class TokenizadorTest {
 
 	@BeforeClass
@@ -38,13 +40,13 @@ public class TokenizadorTest {
 	
 	@Test
 	public void testStemTerm() {
-		String example1 = "catty";
-		String example2 = "conflated";
-		String example3 = "falling";
-		String example4 = "sized";
-		String example5 = "happy";
-		String example6 = "words";
-		String example7 = "word";
+		Term example1 = new Term("catty");
+		Term example2 = new Term("conflated");
+		Term example3 = new Term("falling");
+		Term example4 = new Term("sized");
+		Term example5 = new Term("happy");
+		Term example6 = new Term("words");
+		Term example7 = new Term("word");
 		
 		String expected1 = "catti";
 		String expected2 = "conflat";
