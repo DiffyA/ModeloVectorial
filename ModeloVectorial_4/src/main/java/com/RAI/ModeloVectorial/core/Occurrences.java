@@ -4,8 +4,34 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Occurrences {
+	/* The HashMap is composed of a Document and an Integer which represents the times that the term
+	 * appears in that document. In other words, that integer represents the TF (term frequency) of the term
+	 * in the document which appears as the key.
+	 */
 	private HashMap<Documento, Integer> occurrences = new HashMap<Documento, Integer>();
 
+//	/**
+//	 * Gets the amount of occurrences across all documents. This value refers to the
+//	 * "Ni" value in the formula for calculating the IDF
+//	 * @return
+//	 */
+//	public int getUniqueAppearances() {
+//		int count = 0;
+//		
+//		for (Documento d : occurrences.keySet()) {
+//			if (occurrences.get(d) > 0) {
+//				count ++;
+//			}
+//		}
+//		
+//		// Safety measure.
+//		if (count == 0) {
+//			return 0;
+//		}
+//		
+//		return count;
+//	}
+	
 	
 	/**
 	 * Returns the amount of occurrences in a given document.

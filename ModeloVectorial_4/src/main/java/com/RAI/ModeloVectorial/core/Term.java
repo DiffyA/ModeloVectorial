@@ -5,7 +5,8 @@ import java.util.Set;
 public class Term {
 	private String term;
 	private String filteredTerm;
-	private Occurrences occurrences = new Occurrences(); 
+	private Occurrences occurrences = new Occurrences();
+	private double IDF; 
 	
 	public Term(String term) {
 		this.term = term.trim();
@@ -14,6 +15,25 @@ public class Term {
 	public Term(String term, String filteredTerm) {
 		this.term = term.trim();
 		this.filteredTerm = filteredTerm.trim();
+	}
+	
+//	/**
+//	 * Gets the number of times this term appears at least once across the set of documents 
+//	 * stored in the occurrences.
+//	 * @return
+//	 */
+//	public int getUniqueAppearances() {
+//		return occurrences.getUniqueAppearances();
+//	}
+	
+	/**
+	 * Updates the IDF value for this term by calculating the logarithm of the division between
+	 * the total amount of documents and the amount of documents in which this term appears in.
+	 * @param numberOfDocuments
+	 * @param numberOfAppearances
+	 */
+	public void updateIDF(int numberOfDocuments, int numberOfAppearances) {
+		setIDF(Math.log10(numberOfDocuments/numberOfAppearances));
 	}
 	
 	/**
@@ -74,6 +94,14 @@ public class Term {
 		} else if (!term.equals(other.term))
 			return false;
 		return true;
+	}
+
+	public double getIDF() {
+		return IDF;
+	}
+
+	public void setIDF(double iDF) {
+		IDF = iDF;
 	}
 	
 	

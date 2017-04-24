@@ -38,7 +38,7 @@ public class DiccionarioTest {
 	}
 
 	@Test
-	public void testAddDictionaryEntry() {
+	public void testAddDictionaryEntry01() {
 		Term term1 = new Term("term1", "term1");
 		Documento doc1 = new Documento("doc1");
 		
@@ -48,7 +48,7 @@ public class DiccionarioTest {
 		// Add the term found in the given document
 		dicc.addDictionaryEntry(term1, doc1);
 		
-		// Now check that the dictionary in fact contains the term's hashcode as key.
+		// Now check that the dictionary in fact contains the term's filtered version as key.
 		assertTrue(dicc.getAllTerms().containsKey(term1.getFilteredTerm()));
 		
 		// Check the amount of occurrences of term1 in the dictionary is equal to 1.
@@ -83,6 +83,48 @@ public class DiccionarioTest {
 		dicc.addDictionaryEntry(term2, doc2);
 		
 		assertEquals(2, dicc.getAllTerms().get(term2.getFilteredTerm()).getTFInDocument(doc2));
+	}
+	
+	/**
+	 * Checks that the method addDictionaryEntry is in fact adding the document from which the term
+	 * originates from to the allDocuments Set of Document objects.
+	 */
+	@Test
+	public void testAddDictionaryEntry02() {
+		Term term1 = new Term("term1", "term1");
+		Term term2 = new Term("term2", "term2");
+		Documento doc1 = new Documento("doc1");
+		Documento doc2 = new Documento("doc2");
+		
+		Set<Documento> expected = new HashSet<Documento>();
+		Set<Documento> result = dicc.getAllDocuments();
+		
+		// Assert that both sets are clean.
+		assertEquals(expected, result);
+		
+		// Add a term to the dictionary
+		dicc.addDictionaryEntry(term1, doc1);
+		
+		// Proceed to test if it was added to the set of documents
+		expected.add(doc1);
+		
+		assertEquals(expected, result);
+		
+		// Add another term from another document
+		dicc.addDictionaryEntry(term2, doc2);
+		
+		expected.add(doc2);
+		assertEquals(expected, result);
+		
+		// Add a term1 which would also exist in doc2
+		dicc.addDictionaryEntry(term1, doc2);
+		
+		assertEquals(expected, result);
+		
+		// Do the same for term2 regarding doc1 for completeness
+		dicc.addDictionaryEntry(term2, doc1);
+		
+		assertEquals(expected, result);
 	}
 	
 	@Test
@@ -222,5 +264,35 @@ public class DiccionarioTest {
 		
 		assertEquals(expectedSet.size(), dicc.getDocumentsContainingTerm(term1).size());
 		assertTrue(expectedSet.containsAll(dicc.getDocumentsContainingTerm(term1)));
+	}
+	
+	@Test
+	public void testAddDocument() {
+		Documento doc1 = new Documento("doc1");
+		Documento doc2 = new Documento("doc2");
+		
+		Set<Documento> expected = new HashSet<Documento>();
+		Set<Documento> result = dicc.getAllDocuments();
+		
+		// Assert both sets are clean prior to the test.
+		assertEquals(expected, result);
+		
+		// Add doc1 to the dictionary and the expected set.
+		dicc.addDocument(doc1);
+		expected.add(doc1);
+		
+		// Assert both sets are equal.
+		assertEquals(expected, result);
+		
+		// Add doc1 again to make sure everything is fine.
+		dicc.addDocument(doc1);
+		assertEquals(expected, result);
+		
+		// Add the other document.
+		dicc.addDocument(doc2);
+		expected.add(doc2);
+		
+		// Final assert.
+		assertEquals(expected, result);
 	}
 }
