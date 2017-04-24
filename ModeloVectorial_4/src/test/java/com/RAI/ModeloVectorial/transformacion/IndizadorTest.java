@@ -151,8 +151,25 @@ public class IndizadorTest {
 		
 		System.out.println("Term list after adding: ");
 		System.out.println(dicc.getTermList());
-		
-		
 	}
+	
+//	@Test
+//	public void testFilterDocument() {
+//		Documento doc1 = new Documento("src/test/resources/testIndizador/testDocument1.txt");
+//		
+//		Set<String> result = Indizador.filterDocument(doc1);
+//		Set<String> expected = new HashSet<String>();
+//		
+//		expected.add("fall");
+//		expected.add("happi");
+//		expected.add("should");
+//		expected.add("go");
+//		expected.add("term");
+//		expected.add("vector");
+//		expected.add("conflat");
+//		expected.add("word");
+//		
+//		assertEquals(expected, result);
+//	}
 	
 }

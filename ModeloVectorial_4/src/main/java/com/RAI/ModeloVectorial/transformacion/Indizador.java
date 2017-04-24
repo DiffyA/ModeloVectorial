@@ -2,6 +2,7 @@ package com.RAI.ModeloVectorial.transformacion;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;
@@ -11,6 +12,27 @@ import com.RAI.ModeloVectorial.diccionario.Diccionario;
 
 public class Indizador {
 
+	public static Set<Term> filterDocument(Documento doc) {
+		Set<Term> termsInDocument = new HashSet<Term>();
+		
+		String docText = doc.getCleanContent();
+		String[] docTextSplit = docText.split(" ");
+		
+		for (String s : docTextSplit) {
+        	Term termToAdd;
+        	String term = s;
+        	String filteredTerm = tokenizarTerminos(term);
+        	filteredTerm = stemTerminos(filteredTerm);
+        	
+        	if (!filteredTerm.equals(" ")) {
+            	termToAdd = new Term(term.trim(), filteredTerm.trim());
+        		termsInDocument.add(termToAdd);
+    		}
+		}
+		
+		return termsInDocument;
+	}
+	
 
     public static void indizar(Documento[] documentos, Diccionario dic) {
         // Iterate through all documents

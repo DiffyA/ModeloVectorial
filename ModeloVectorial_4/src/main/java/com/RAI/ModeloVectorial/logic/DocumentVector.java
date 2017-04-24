@@ -16,5 +16,20 @@ import com.RAI.ModeloVectorial.core.Term;
  *
  */
 public class DocumentVector {
-	private HashMap<Term, Float> vector = new HashMap<Term, Float>();
+	private HashMap<Term, Double> vector = new HashMap<Term, Double>();
+	
+	public DocumentVector(HashMap<Term, Double> vector) {
+		this.vector = vector;
+	}
+	
+	@Override
+	public String toString() {
+		String output = "";
+		
+		for (Term t : vector.keySet()) {
+			output += t.getFilteredTerm() + ": " + vector.get(t) + "\n";
+		}
+		
+		return output;
+	}
 }
