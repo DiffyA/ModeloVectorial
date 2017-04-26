@@ -3,7 +3,7 @@ package com.RAI.ModeloVectorial.pesos;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 
-public class CalculatorTFIDF {
+public class CalculatorTFIDF implements IWeightCalculator{
 
 	/**
 	 * Obtains the TF * IDF weight of a term in a given document.

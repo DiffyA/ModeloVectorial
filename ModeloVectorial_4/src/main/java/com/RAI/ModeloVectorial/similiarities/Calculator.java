@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.pesos;
+package com.RAI.ModeloVectorial.similiarities;
 
 import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;

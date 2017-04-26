@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.pesos;
+package com.RAI.ModeloVectorial.similiarities;
 
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.logic.DocumentVector;

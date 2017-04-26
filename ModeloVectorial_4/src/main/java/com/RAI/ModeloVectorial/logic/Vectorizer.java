@@ -8,6 +8,7 @@ import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
+import com.RAI.ModeloVectorial.pesos.IWeightCalculator;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 /**
@@ -25,7 +26,7 @@ import com.RAI.ModeloVectorial.transformacion.Indizador;
  */
 public class Vectorizer {
 	
-	public DocumentVector toVector(Documento doc, Diccionario dicc, CalculatorTFIDF calc) {
+	public DocumentVector toVector(Documento doc, Diccionario dicc, IWeightCalculator calc) {
 		HashMap<Term, Double> vector = new HashMap<Term, Double>();
 		
 		// Obtain filtered terms of a document

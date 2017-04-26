@@ -9,7 +9,7 @@ import com.RAI.ModeloVectorial.core.Term;
  * @author vdegou
  *
  */
-public class CalculatorTF {
+public class CalculatorTF implements IWeightCalculator{
 
 	/**
 	 * Obtains the TF weight of a term in a given document.
