@@ -44,8 +44,8 @@ public class Diccionario {
     	if (!allDocuments.contains(doc)) {
     		addDocument(doc);
     		
-//    		// If a new document is added, the IDF of ALL terms in the dictionary must be updated.
-//    		updateIdfOfAllTerms();
+    		// If a new document is added, the IDF of ALL terms in the dictionary must be updated.
+			// updateIdfOfAllTerms();
     	}
     	
     	// If the term already exists in the dictionary, retrieve it and operate with it

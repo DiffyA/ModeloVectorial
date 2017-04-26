@@ -1,0 +1,12 @@
+package com.RAI.ModeloVectorial.pesos;
+
+import com.RAI.ModeloVectorial.logic.DocumentVector;
+
+/**
+ * Created by kgeetz on 4/26/17.
+ */
+public class VectorSpaceTFIDFCalculator implements Calculator {
+    public double calculate(DocumentVector docVec, DocumentVector queryVec) {
+        return 0;
+    }
+}

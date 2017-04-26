@@ -1,6 +1,7 @@
 package com.RAI.ModeloVectorial.logic;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import com.RAI.ModeloVectorial.core.Term;
 
@@ -24,12 +25,16 @@ public class DocumentVector {
 	
 	@Override
 	public String toString() {
-		String output = "";
+		StringBuilder output = new StringBuilder();
 		
 		for (Term t : vector.keySet()) {
-			output += t.getFilteredTerm() + ": " + vector.get(t) + "\n";
+			output.append(t.getFilteredTerm()).append(": ").append(vector.get(t)).append("\n");
 		}
 		
-		return output;
+		return output.toString();
+	}
+
+	public HashMap<Term, Double> getVector(){
+		return vector;
 	}
 }

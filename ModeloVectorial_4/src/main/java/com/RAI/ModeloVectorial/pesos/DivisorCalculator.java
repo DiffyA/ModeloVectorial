@@ -3,6 +3,7 @@ package com.RAI.ModeloVectorial.pesos;
 import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
+import com.RAI.ModeloVectorial.logic.DocumentVector;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.Vector;
  * Created by kgeetz on 3/29/17.
  */
 public class DivisorCalculator implements Calculator {
-    public double calculate(Diccionario dic, Documento doc,Consulta consulta, String term) {
+    public double calculate(DocumentVector docVec, DocumentVector queryVec){
 
         int n_i = dic.getNumDocuments();
         Set<String> terms = dic.getTermList();

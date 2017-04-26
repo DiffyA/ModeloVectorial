@@ -3,6 +3,7 @@ package com.RAI.ModeloVectorial.pesos;
 import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
+import com.RAI.ModeloVectorial.logic.DocumentVector;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 import java.util.Arrays;
@@ -12,8 +13,8 @@ import java.util.Vector;
 /**
  * Created by kgeetz on 3/29/17.
  */
-public class ScalarProductCalculator implements Calculator{
-    public double calculate(Diccionario dic, Documento doc, Consulta consulta, String term) {
+public class VectorSpaceTFCalculator implements Calculator {
+    public double calculate(DocumentVector docVec, DocumentVector queryVec) {
 
         int n_i = dic.getNumDocuments();
         Set<String> terms = dic.getTermList();
@@ -36,11 +37,22 @@ public class ScalarProductCalculator implements Calculator{
             docWeights.add(idf * termOccurrence);
         }
 
-        double sum = 0;
+        double scalarProduct = 0;
         for (int i = 0; i < queryWeights.size(); i++){
-            sum += queryWeights.get(i) * docWeights.get(i);
+            scalarProduct += queryWeights.get(i) * docWeights.get(i);
         }
 
-        return sum;
+        double divisor = 0;
+        double divisorQuery = 0;
+        for (int i = 0; i < docWeights.size(); i++){
+            divisor += docWeights.get(i) * docWeights.get(i);
+            divisorQuery += queryWeights.get(i) * queryWeights.get(i);
+        }
+        divisor = Math.sqrt(divisor);
+        divisor *= Math.sqrt(divisorQuery);
+
+
+        return scalarProduct / divisor;
     }
 }
+
