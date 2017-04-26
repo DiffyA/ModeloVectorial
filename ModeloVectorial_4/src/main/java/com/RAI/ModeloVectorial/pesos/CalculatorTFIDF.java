@@ -1,6 +1,6 @@
 package com.RAI.ModeloVectorial.pesos;
 
-import com.RAI.ModeloVectorial.core.Documento;
+import com.RAI.ModeloVectorial.Interface.ITexto;
 import com.RAI.ModeloVectorial.core.Term;
 
 public class CalculatorTFIDF implements IWeightCalculator{
@@ -11,7 +11,7 @@ public class CalculatorTFIDF implements IWeightCalculator{
 	 * @param doc
 	 * @return
 	 */
-	public double calculate(Term term, Documento doc) {
+	public double calculate(Term term, ITexto doc) {
 		int TF = term.getTFInDocument(doc);
 		double IDF = term.getIDF(); 
 		

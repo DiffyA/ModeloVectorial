@@ -2,6 +2,8 @@ package com.RAI.ModeloVectorial.core;
 
 import java.util.Set;
 
+import com.RAI.ModeloVectorial.Interface.ITexto;
+
 public class Term {
 	private String term;
 	private String filteredTerm;
@@ -41,7 +43,7 @@ public class Term {
 	 * @param doc
 	 * @return
 	 */
-	public Set<Documento> getListOfDocuments() {
+	public Set<ITexto> getListOfDocuments() {
 		return occurrences.getDocuments();
 	}
 	
@@ -50,11 +52,11 @@ public class Term {
 	 * Also increases the IDF of the current document.
 	 * @param doc
 	 */
-	public void addOccurrenceInDocument(Documento doc) {
+	public void addOccurrenceInDocument(ITexto doc) {
 		occurrences.addOccurrenceInDocument(doc);
 	}
 	
-	public int getTFInDocument(Documento doc) {
+	public int getTFInDocument(ITexto doc) {
 		return occurrences.getTFInDocument(doc);
 	}
 	

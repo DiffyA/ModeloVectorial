@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.RAI.ModeloVectorial.Interface.ITexto;
 import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Occurrences;
@@ -12,7 +13,57 @@ import com.RAI.ModeloVectorial.diccionario.Diccionario;
 
 public class Indizador {
 
-	public static Set<Term> filterDocument(Documento doc) {
+//	/**
+//	 * Processes the query terms with respect to the dictionary. 
+//	 * @param query
+//	 * @param dic
+//	 */
+//	public static void processQuery(Documento query, Diccionario dic) {
+//		Set<Term> termsInQuery = filterDocument(query);
+//		
+//		for (Term t : termsInQuery) {
+//			t.addOccurrenceInDocument(query);
+//		}
+//		
+////		dic.findTerms(termsInQuery);
+//		
+//		
+//	}
+	
+	/**
+	 * Returns a set of terms from the given ITexto object.
+	 * @param query
+	 * @return
+	 */
+	public static void processQuery(Consulta query) {
+		String queryString = query.getCleanContent();
+		String[] splitString = queryString.split(" ");
+		
+		for (String s : splitString) {
+        	Term termToAdd;
+        	String term = s;
+        	String filteredTerm = tokenizarTerminos(term);
+        	filteredTerm = stemTerminos(filteredTerm);
+        	
+        	if (!filteredTerm.equals(" ")) {
+        		
+        		// If it's a valid term and it already exists in the query, update that term reference TF
+        		// Since it's a set, we have to iterate through the set of terms until we find it
+        		for (Term t : query.getTerms()) {
+        			if (t.getFilteredTerm().equals(filteredTerm.trim())) {
+        				t.addOccurrenceInDocument(query);
+        			}
+                    	
+        		}
+        		termToAdd = new Term(term.trim(), filteredTerm.trim());
+            	termToAdd.addOccurrenceInDocument(query);
+            	query.getTerms().add(termToAdd);
+    		}
+		}
+		
+	}
+	
+	public static Set<Term> filterDocument(ITexto doc) {
 		Set<Term> termsInDocument = new HashSet<Term>();
 		
 		String docText = doc.getCleanContent();
@@ -26,6 +77,7 @@ public class Indizador {
         	
         	if (!filteredTerm.equals(" ")) {
             	termToAdd = new Term(term.trim(), filteredTerm.trim());
+            	termToAdd.addOccurrenceInDocument(doc);
         		termsInDocument.add(termToAdd);
     		}
 		}
@@ -68,6 +120,7 @@ public class Indizador {
             	 */
             	if (!filteredTerm.equals(" ")) {
             		termToAdd = new Term(term, filteredTerm);
+//            		termToAdd.addOccurrenceInDocument(doc);
             		
             		// Add the term to the dictionary, telling it also which document it comes from.
                 	dic.addDictionaryEntry(termToAdd, doc);

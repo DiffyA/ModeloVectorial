@@ -3,12 +3,14 @@ package com.RAI.ModeloVectorial.core;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.RAI.ModeloVectorial.Interface.ITexto;
+
 public class Occurrences {
 	/* The HashMap is composed of a Document and an Integer which represents the times that the term
 	 * appears in that document. In other words, that integer represents the TF (term frequency) of the term
 	 * in the document which appears as the key.
 	 */
-	private HashMap<Documento, Integer> occurrences = new HashMap<Documento, Integer>();
+	private HashMap<ITexto, Integer> occurrences = new HashMap<ITexto, Integer>();
 
 //	/**
 //	 * Gets the amount of occurrences across all documents. This value refers to the
@@ -38,7 +40,7 @@ public class Occurrences {
 	 * @param doc
 	 * @return
 	 */
-    public int getTFInDocument(Documento doc) {
+    public int getTFInDocument(ITexto doc) {
     	if (!occurrences.containsKey(doc)) {
     		return 0;
     	}
@@ -53,7 +55,7 @@ public class Occurrences {
      * to the hashmap, and one occurrence will be specified.
      * @param doc
      */
-    public void addOccurrenceInDocument(Documento doc){
+    public void addOccurrenceInDocument(ITexto doc){
     	if (!occurrences.containsKey(doc)) {
     		occurrences.put(doc, 1);
     	}
@@ -68,7 +70,7 @@ public class Occurrences {
      * at least once.
      * @return
      */
-    public Set<Documento> getDocuments() {
+    public Set<ITexto> getDocuments() {
     	return occurrences.keySet();
     }
     
@@ -76,7 +78,7 @@ public class Occurrences {
      * Returns the hashmap data structure containing the occurrences.
      * @return
      */
-    public HashMap<Documento, Integer> getOccurrences() {
+    public HashMap<ITexto, Integer> getOccurrences() {
     	return occurrences;
     }
 }

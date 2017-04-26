@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.RAI.ModeloVectorial.Interface.ITexto;
+import com.RAI.ModeloVectorial.core.Consulta;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
@@ -26,6 +28,28 @@ import com.RAI.ModeloVectorial.transformacion.Indizador;
  */
 public class Vectorizer {
 	
+	public DocumentVector toVector(Consulta query, Diccionario dicc, IWeightCalculator calc) {
+		HashMap<Term, Double> vector = new HashMap<Term, Double>();
+		
+		// Obtain filtered terms of the query
+		Set<Term> termsInQuery =  query.getTerms();
+		
+		// For each term in the query, we have to find its equivalent in the dictionary to read its actual IDF
+		for (Term queryTerm : termsInQuery) {
+			
+			// Update the IDF
+			queryTerm.setIDF(dicc.getAllTerms().get(queryTerm.getFilteredTerm()).getIDF());
+			
+			// Put it in the vector
+			vector.put(queryTerm, calc.calculate(queryTerm, query));
+		}
+		
+		// Create the DocumentVector object
+		DocumentVector queryVector = new DocumentVector(vector);
+		
+		return queryVector;
+	}
+	
 	public DocumentVector toVector(Documento doc, Diccionario dicc, IWeightCalculator calc) {
 		HashMap<Term, Double> vector = new HashMap<Term, Double>();
 		
@@ -38,6 +62,7 @@ public class Vectorizer {
 		// This only gets the Term objects stored in the dictionary that also belong in the document.
 		for (Term t : termsInDocument) {
 			Term termToAdd = dicc.getAllTerms().get(t.getFilteredTerm());
+			// TODO: Make a distinction here with class consulta and copy the IDF from the diccionario class to the term
 			termsInDictionary.add(termToAdd);
 		}
 		

@@ -1,5 +1,6 @@
 package com.RAI.ModeloVectorial.diccionario;
 
+import com.RAI.ModeloVectorial.Interface.ITexto;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
@@ -56,7 +57,7 @@ public class Diccionario {
     		updatedTerm.addOccurrenceInDocument(doc);
 
     		// Update the term in the dictionary.
-    		allTerms.put(updatedTerm.getFilteredTerm(), updatedTerm);
+//    		allTerms.put(updatedTerm.getFilteredTerm(), updatedTerm);
     	}
     	// If the term doesn't exist in the dictionary, add it.
     	else {
@@ -83,6 +84,31 @@ public class Diccionario {
     }
     
     /**
+     * Returns a set of term object references stored in the dictionary index.
+     * The point of this method is to pass it the terms in a query so it may take these
+     * terms, and via their filteredTerm attribute, return the actual occurrences of those
+     * terms if they exist within the dictionary.
+     * @param terms
+     * @return
+     */
+    public Set<Term> findTerms(Set<Term> terms) {
+    	Set<Term> foundTerms = new HashSet<Term>();
+    	
+    	// Iterate through all the given terms trying to find a match within the dictionary index
+    	for (Term t : terms) {
+    		Term foundTerm;
+    		String termIdentifier = t.getFilteredTerm();
+    		
+    		// If the index contains a key matching that of the provided term, get the reference
+    		if (allTerms.containsKey(termIdentifier)) {
+    			foundTerms.add(allTerms.get(termIdentifier));
+    		}
+    	}
+    	
+    	return foundTerms;
+    }
+    
+    /**
      * Adds a document specified as a parameter to the structure containing all documents in the dictionary.
      * @param doc
      */
@@ -95,7 +121,7 @@ public class Diccionario {
      * @param term
      * @return
      */
-    public Set<Documento> getDocumentsContainingTerm(Term term) {
+    public Set<ITexto> getDocumentsContainingTerm(Term term) {
     	
     	// If the term doesn't exist in the dictionary, return an empty set.
     	if (!allTerms.containsKey(term.getFilteredTerm())) {
@@ -143,8 +169,8 @@ public class Diccionario {
      * Get a set of all the documents in the dictionary.
      * @return
      */
-    public Set<Documento> getDocumentList() {
-    	Set<Documento> resultSet = new HashSet<Documento>();
+    public Set<ITexto> getDocumentList() {
+    	Set<ITexto> resultSet = new HashSet<ITexto>();
     	
     	// Iterate through all the terms of the dictionary. This only iterates through the values!
     	for (Term t : allTerms.values()) {
