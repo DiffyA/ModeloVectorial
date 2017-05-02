@@ -21,6 +21,8 @@ import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 public class CalculatorTFIDFtest {
 	CosineTFIDFCalculator calculator = new CosineTFIDFCalculator();
+	ScalarProductTFIDFCalculator SPCalculator = new ScalarProductTFIDFCalculator();
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
