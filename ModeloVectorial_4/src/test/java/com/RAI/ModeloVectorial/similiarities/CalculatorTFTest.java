@@ -71,8 +71,10 @@ public class CalculatorTFTest {
         System.out.println("Queryvector: \n" + queryVector);
 
         //Print out Vector comparisons
-        System.out.println("Docvector1 + query: " + cosCalculator.calculate(docVector1, queryVector));
-        System.out.println("Docvector2 + query: " + SPCalculator.calculate(docVector1, queryVector));
+        System.out.println("Cos, Docvector1 + query: " + cosCalculator.calculate(docVector1, queryVector));
+        System.out.println("SP, Docvector1 + query: " + SPCalculator.calculate(docVector1, queryVector));
+        System.out.println("Cos, Docvector2 + query: " + cosCalculator.calculate(docVector2, queryVector));
+        System.out.println("SP, Docvector2 + query: " + SPCalculator.calculate(docVector2, queryVector));
 
     }
 
