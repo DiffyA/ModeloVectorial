@@ -20,7 +20,7 @@ import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 public class CalculatorTFIDFtest {
-	CosineTFIDFCalculator calculator = new CosineTFIDFCalculator();
+	CosineTFIDFCalculator cosCalculator = new CosineTFIDFCalculator();
 	ScalarProductTFIDFCalculator SPCalculator = new ScalarProductTFIDFCalculator();
 
 	@BeforeClass
@@ -67,14 +67,21 @@ public class CalculatorTFIDFtest {
 		System.out.println("Terms in dictionary index:" + dicc.getTermList() + "\n");
 		
 		// Vectorize all documents, as well as the query
+
+		//Using Cosine
 		DocumentVector docVector1 = vectorizer.toVector(doc1, dicc, calculator);
 		DocumentVector docVector2 = vectorizer.toVector(doc2, dicc, calculator);
 		DocumentVector queryVector = vectorizer.toVector(query, dicc, calculator);
+
 		
 		// Print them out to check their contents.
 		System.out.println("Docvector1: \n" + docVector1);
 		System.out.println("Docvector2: \n" + docVector2);
 		System.out.println("Queryvector: \n" + queryVector);
+
+		//Print out Vector comparisons
+		System.out.println("Docvector1 + query: " + cosCalculator.calculate(docVector1, queryVector));
+		System.out.println("Docvector2 + query: " + SPCalculator.calculate(docVector1, queryVector));
 	}
 
 }

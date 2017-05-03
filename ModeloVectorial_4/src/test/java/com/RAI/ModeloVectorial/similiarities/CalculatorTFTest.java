@@ -14,7 +14,7 @@ import org.junit.*;
  * Created by kgeetz on 5/2/17.
  */
 public class CalculatorTFTest {
-    CosineTFCalculator calculator = new CosineTFCalculator();
+    CosineTFCalculator cosCalculator = new CosineTFCalculator();
     ScalarProductTFCalculator SPCalculator = new ScalarProductTFCalculator();
 
     @BeforeClass
@@ -69,6 +69,11 @@ public class CalculatorTFTest {
         System.out.println("Docvector1: \n" + docVector1);
         System.out.println("Docvector2: \n" + docVector2);
         System.out.println("Queryvector: \n" + queryVector);
+
+        //Print out Vector comparisons
+        System.out.println("Docvector1 + query: " + cosCalculator.calculate(docVector1, queryVector));
+        System.out.println("Docvector2 + query: " + SPCalculator.calculate(docVector1, queryVector));
+
     }
 
 }
