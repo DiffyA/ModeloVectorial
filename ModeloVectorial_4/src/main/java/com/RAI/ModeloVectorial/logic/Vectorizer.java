@@ -37,9 +37,10 @@ public class Vectorizer {
 		// For each term in the query, we have to find its equivalent in the dictionary to read its actual IDF
 		for (Term queryTerm : termsInQuery) {
 			
-			// Update the IDF
-			queryTerm.setIDF(dicc.getAllTerms().get(queryTerm.getFilteredTerm()).getIDF());
-			
+			// Update the IDF if dictionary index contains the term
+			if (dicc.getAllTerms().containsKey(queryTerm.getFilteredTerm())) {
+				queryTerm.setIDF(dicc.getAllTerms().get(queryTerm.getFilteredTerm()).getIDF());
+			}
 			// Put it in the vector
 			vector.put(queryTerm, calc.calculate(queryTerm, query));
 		}
