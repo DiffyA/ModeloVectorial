@@ -45,8 +45,10 @@ public class Diccionario {
     	if (!allDocuments.contains(doc)) {
     		addDocument(doc);
     		
-    		// If a new document is added, the IDF of ALL terms in the dictionary must be updated.
-			// updateIdfOfAllTerms();
+    		/* If a new document is added, the IDF of ALL terms in the dictionary must be updated, because
+    		 * the amount of documents in the dictionary increases which affects the IDF formula.
+    		 */
+			 updateIdfOfAllTerms();
     	}
     	
     	// If the term already exists in the dictionary, retrieve it and operate with it
@@ -54,7 +56,11 @@ public class Diccionario {
     		
     		// Get the term and add an occurrence in the provided document.
     		Term updatedTerm = allTerms.get(term.getFilteredTerm());
-    		updatedTerm.addOccurrenceInDocument(doc);
+//    		updatedTerm.addOccurrenceInDocument(doc);
+    		
+    		// Update term reference to updatedTerm object.
+    		term = updatedTerm;
+    		term.addOccurrenceInDocument(doc);
 
     		// Update the term in the dictionary.
 //    		allTerms.put(updatedTerm.getFilteredTerm(), updatedTerm);
@@ -68,8 +74,8 @@ public class Diccionario {
     	/* After everything is done, update the IDF of the term that was added. 
     	 * The IDF of this term must be updated even though all IDF's have been updated 
     	 * since the occurrences of this term have been modified. */
-//    	term.updateIDF(getAllDocuments().size(), term.getListOfDocuments().size());
-    	updateIdfOfAllTerms();
+    	term.updateIDF(getAllDocuments().size(), term.getListOfDocuments().size());
+//    	updateIdfOfAllTerms();
     }
     
     /**
