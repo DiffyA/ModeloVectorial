@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.modelo;
+package com.RAI.ModeloVectorial.model;
 
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
@@ -11,7 +11,14 @@ import com.RAI.ModeloVectorial.vector.Vectorizer;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTF;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
 
-public class Modelo {
+/**
+ * Entry-point for the project, given its main method, which represents the functionality
+ * of the developed vector-space model.
+ * 
+ * @author vdegou
+ *
+ */
+public class VectorSpaceModel {
 	
 	public static void main(String[] args) {
 		// Create the vectorizer
@@ -49,34 +56,6 @@ public class Modelo {
 		
 		// Index the documents in the dictionary.
 		Indexer.indizar(docArray, dicc);
-		
-		// Obtain document vectors from the documents.
-		// Vectors from TF
-		Vector[] docsTF = {vectorizer.toVector(document1, dicc, calcTF),
-				vectorizer.toVector(document2, dicc, calcTF),
-				vectorizer.toVector(document3, dicc, calcTF),
-				vectorizer.toVector(document4, dicc, calcTF),
-				vectorizer.toVector(document5, dicc, calcTF)};
-
-		// Vectors from TFIDF
-		Vector[] docsTFIDF = {vectorizer.toVector(document1, dicc, calcTFIDF),
-				vectorizer.toVector(document2, dicc, calcTFIDF),
-				vectorizer.toVector(document3, dicc, calcTFIDF),
-				vectorizer.toVector(document4, dicc, calcTFIDF),
-				vectorizer.toVector(document5, dicc, calcTFIDF)};
-		
-		// Obtain document vectors from the queries.
-		// Vectors from TF
-		Vector[] queriesTF = {vectorizer.toVector(query1, dicc, calcTF),
-				vectorizer.toVector(query2, dicc, calcTF),
-				vectorizer.toVector(query3, dicc, calcTF)
-		};
-		
-		// Vectors from TFIDF
-		Vector[] queriesTFIDF = {vectorizer.toVector(query1, dicc, calcTFIDF),
-				vectorizer.toVector(query2, dicc, calcTFIDF),
-				vectorizer.toVector(query3, dicc, calcTFIDF)
-		};
 		
 		// Calculating similarity with Scalar Product using TF weights.
 		System.out.println("* RELEVANCIA: ProductoEscalarTF");
@@ -191,7 +170,6 @@ public class Modelo {
 			}
 			System.out.println(stringToPrint);
 		}
-
 	}
 
 }
