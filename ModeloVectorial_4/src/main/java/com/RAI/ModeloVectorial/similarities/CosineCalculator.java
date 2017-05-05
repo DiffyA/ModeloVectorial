@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.similiarities;
+package com.RAI.ModeloVectorial.similarities;
 
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.vector.Vector;
@@ -6,12 +6,17 @@ import com.RAI.ModeloVectorial.vector.Vector;
 import static java.lang.Math.pow;
 
 /**
- * Created by kgeetz on 4/26/17.
+ * Class used to calculate the similarity function between two vectors
+ * using the Cosine formula.
+ * 
+ * @author kgeetz
+ *
  */
-public class CosineCalculator implements Calculator {
+public class CosineCalculator implements SimilarityFunction {
+	
     public double calculate(Vector docVec, Vector queryVec) {
 
-        Calculator calc = new ScalarProductCalculator();
+        SimilarityFunction calc = new ScalarProductCalculator();
         double scalarProduct = calc.calculate(docVec,queryVec);
 
         double divisor = 0;

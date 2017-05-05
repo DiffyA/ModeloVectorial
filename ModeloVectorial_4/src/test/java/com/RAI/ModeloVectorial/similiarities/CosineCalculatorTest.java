@@ -5,6 +5,7 @@ import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
+import com.RAI.ModeloVectorial.similarities.CosineCalculator;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 import com.RAI.ModeloVectorial.vector.Vector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;

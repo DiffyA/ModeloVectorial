@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.similiarities;
+package com.RAI.ModeloVectorial.similarities;
 
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.vector.Vector;
@@ -6,10 +6,15 @@ import com.RAI.ModeloVectorial.vector.Vector;
 import java.util.*;
 
 /**
- * Created by kgeetz on 3/29/17.
+ * Class used to calculate the similarity function between two vectors
+ * using the Scalar Product formula.
+ * 
+ * @author kgeetz
+ *
  */
-public class ScalarProductCalculator implements Calculator {
-    public double calculate(Vector docVec, Vector queryVec){
+public class ScalarProductCalculator implements SimilarityFunction {
+    
+	public double calculate(Vector docVec, Vector queryVec){
 
         HashMap<Term, Double> docTerms = docVec.getVector();
         HashMap<Term, Double> queryTerms = queryVec.getVector();
