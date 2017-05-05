@@ -76,10 +76,10 @@ public class IndizadorTest {
 		Indizador.indizar(arrayDocs, dicc);
 		
 		// Create duplicate strings that go through the same filtering process as the document in the "indizar" method.
-		String cleanString1 = Indizador.tokenizarTerminos(testString1);
+		String cleanString1 = Indizador.filterStopWords(testString1);
 		cleanString1 = Indizador.stemTerminos(cleanString1);
 		
-		String cleanString2 = Indizador.tokenizarTerminos(testString2);
+		String cleanString2 = Indizador.filterStopWords(testString2);
 		cleanString2 = Indizador.stemTerminos(cleanString2);
 		
 		// Create a set of strings containing the expected terms of each document.

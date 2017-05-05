@@ -4,57 +4,43 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.RAI.ModeloVectorial.Interface.ITexto;
-import com.RAI.ModeloVectorial.core.Consulta;
+import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
+import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 
 public class Indizador {
-
-//	/**
-//	 * Processes the query terms with respect to the dictionary. 
-//	 * @param query
-//	 * @param dic
-//	 */
-//	public static void processQuery(Documento query, Diccionario dic) {
-//		Set<Term> termsInQuery = filterDocument(query);
-//		
-//		for (Term t : termsInQuery) {
-//			t.addOccurrenceInDocument(query);
-//		}
-//		
-////		dic.findTerms(termsInQuery);
-//		
-//		
-//	}
 	
 	/**
-	 * Returns a set of terms from the given ITexto object.
+	 * Processes each term in the query, making the necessary changes to the query's set of terms
+	 * and each term's TF inside of the query.
 	 * @param query
 	 * @return
 	 */
-	public static void processQuery(Consulta query) {
+	public static void processQuery(Query query) {
 		String queryString = query.getCleanContent();
 		String[] splitString = queryString.split(" ");
 		
+		// Runs through each term in the query
 		for (String s : splitString) {
         	Term termToAdd;
         	String term = s;
-        	String filteredTerm = tokenizarTerminos(term);
+        	String filteredTerm = filterStopWords(term);
         	filteredTerm = stemTerminos(filteredTerm);
         	
+        	// Continue if the term passed the filters
         	if (!filteredTerm.equals(" ")) {
         		
-        		// If it's a valid term and it already exists in the query, update that term reference TF
-        		// Since it's a set, we have to iterate through the set of terms until we find it
+        		// If it already exists in the query, update that term's TF
         		for (Term t : query.getTerms()) {
         			if (t.getFilteredTerm().equals(filteredTerm.trim())) {
         				t.addOccurrenceInDocument(query);
         			}
-                    	
         		}
+        		
+        		// Add the term to the set of terms in the query. If it's repeated it won't matter since it's a Set.
         		termToAdd = new Term(term.trim(), filteredTerm.trim());
             	termToAdd.addOccurrenceInDocument(query);
             	query.getTerms().add(termToAdd);
@@ -63,7 +49,7 @@ public class Indizador {
 		
 	}
 	
-	public static Set<Term> filterDocument(ITexto doc) {
+	public static Set<Term> filterDocument(IText doc) {
 		Set<Term> termsInDocument = new HashSet<Term>();
 		
 		String docText = doc.getCleanContent();
@@ -72,7 +58,7 @@ public class Indizador {
 		for (String s : docTextSplit) {
         	Term termToAdd;
         	String term = s;
-        	String filteredTerm = tokenizarTerminos(term);
+        	String filteredTerm = filterStopWords(term);
         	filteredTerm = stemTerminos(filteredTerm);
         	
         	if (!filteredTerm.equals(" ")) {
@@ -85,42 +71,30 @@ public class Indizador {
 		return termsInDocument;
 	}
 	
-
+	/**
+	 * Takes an array of documents and indexes each term of each document 
+	 * in the chosen dictionary object.
+	 * @param documentos
+	 * @param dic
+	 */
     public static void indizar(Documento[] documentos, Diccionario dic) {
         // Iterate through all documents
     	for (Documento doc : documentos){
 
-    		// Clean up the text
+    		// Get the document text without HTML tags and split it
             String docText = doc.getCleanContent();
-//            docText = tokenizarTerminos(docText);
-//            docText = stemTerminos(docText);
-            
-            // 
-//			HashSet<String> docTextNoDuplicates = new HashSet<String>(Arrays.asList(docText.split(" ")));
-			
-//			for (String s : docTextNoDuplicates) {
-//				Occurrences newEntry = new Occurrences(doc, Indizador.getTermOccurrence(s, doc));
-//				dic.addDictionaryEntry(s, newEntry);
-//			}
-            
             String[] docTextSplit = docText.split(" ");
+            
             for (String s : docTextSplit) {
-            	/* First, we create the Term object and add to it the stemmed and tokenized version of the string
-            	 * it represents.
-            	 */
             	Term termToAdd;
             	String term = s;
-            	String filteredTerm = tokenizarTerminos(term);
+            	String filteredTerm = filterStopWords(term);
             	filteredTerm = stemTerminos(filteredTerm);
             	
-            	/* Only create the Term if it has not been reduced to "" or " " because of the filters.
-            	 * Normally terms get reduced to "" by the tokenizarTerminos method which removes Stop Words,
-            	 * but then a " " gets added in stemTerminos because it is needed in order to split long strings
-            	 * if a larger (more than one word) text is being filtered.
-            	 */
+            	// If the term has passed the filters
             	if (!filteredTerm.equals(" ")) {
+            		// Create the term object
             		termToAdd = new Term(term, filteredTerm);
-//            		termToAdd.addOccurrenceInDocument(doc);
             		
             		// Add the term to the dictionary, telling it also which document it comes from.
                 	dic.addDictionaryEntry(termToAdd, doc);
@@ -129,7 +103,17 @@ public class Indizador {
         }
     }
 
-    public static String tokenizarTerminos(String toTokenize){
+    /**
+     * Filters any stop words from the string passed as parameter.
+     * This method should receive a single word, not a String of words.
+     * If the word is a stop word, " " will be returned. Otherwise, its
+     * filtered version according to the method used is returned.
+     * 
+     * @param toTokenize
+     * @return
+     * @see com.RAI.ModeloVectorial.transformacion.Tokenizador#removeStopWords()
+     */
+    public static String filterStopWords(String toTokenize){
 
             try {
                 return Tokenizador.removeStopWords(toTokenize);
@@ -139,58 +123,27 @@ public class Indizador {
             return null;
     }
 
+    
+    /**
+     * Returns a String of words that have been stemmed.
+     * This method can take a String of multiple words.
+     * @param textToStem
+     * @return
+     * @see com.RAI.ModeloVectorial.transformacion.Tokenizador#stemTerm()
+     */
     public static String stemTerminos(String textToStem){ 
     	String[] terms = textToStem.split(" ");
     	StringBuilder stemmedText = new StringBuilder();
     	
     	/* Iterate through each term and stem them individually. We add a space at the end
     	 * because the Porter stemmer automatically removes all trailing whitespaces.
-    	 * We need these spaces so that the terms can be split later on. 
+    	 * We need these spaces so it doesn't return a single long word.
     	 */
     	for (String t : terms) {
     		stemmedText.append(Tokenizador.stemTerm(new Term(t))).append(" ");
     	}
     	
     	return stemmedText.toString();
-
 	}
     
-//    public static int getTermOccurrence(String term, Documento doc) {
-//    	// Document must be cleaned before processing
-//    	String docClean = tokenizarTerminos(doc.getCleanContent());
-//    	docClean = stemTerminos(docClean);
-//    	
-//    	// Term must also be cleaned before processing
-//    	String termClean = tokenizarTerminos(term);
-//    	termClean = stemTerminos(termClean);
-//    	
-//    	// Term must be trimmed because one of the previous functions adds a trailing whitespace.
-//    	termClean = termClean.trim();
-//
-//    	// Split the terms up into an array
-//    	String[] termsInDocument = docClean.split(" ");
-//    	int counter = 0;
-//    	
-//    	for (String t : termsInDocument) {
-//    		if (termClean.equals(t)) {
-//    			counter++;
-//    		}
-//    	}
-//    	
-//    	return counter;
-//    }
-
-//    public static int getTermOccurrence(String term, Consulta consulta){
-//
-//		// Split the terms up into an array
-//		String[] termsInDocument = consulta.getCleanContent().split(" ");
-//		int counter = 0;
-//
-//		for (String t : termsInDocument) {
-//			if (term.equals(t)) {
-//				counter++;
-//			}
-//		}
-//		return counter;
-//	}
 }

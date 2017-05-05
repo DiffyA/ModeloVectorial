@@ -1,6 +1,6 @@
 package com.RAI.ModeloVectorial.similiarities;
 
-import com.RAI.ModeloVectorial.core.Consulta;
+import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 import com.RAI.ModeloVectorial.logic.DocumentVector;

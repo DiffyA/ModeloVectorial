@@ -1,6 +1,6 @@
 package com.RAI.ModeloVectorial.similiarities;
 
-import com.RAI.ModeloVectorial.core.Consulta;
+import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
@@ -42,7 +42,7 @@ public class CosineCalculatorTest {
         Diccionario dicc = new Diccionario();
         Documento doc1 = new Documento("src/test/resources/testCalculatorTFIDFtest/testDocument1.txt");
         Documento doc2 = new Documento("src/test/resources/testCalculatorTFIDFtest/testDocument2.txt");
-        Consulta query = new Consulta("red car red");
+        Query query = new Query("red car red");
 
         // Add the documents to the dictionary
         Documento[] documentsToAdd = {doc1, doc2};

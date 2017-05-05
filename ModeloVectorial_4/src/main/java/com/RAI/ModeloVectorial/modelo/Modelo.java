@@ -1,6 +1,6 @@
 package com.RAI.ModeloVectorial.modelo;
 
-import com.RAI.ModeloVectorial.core.Consulta;
+import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 import com.RAI.ModeloVectorial.logic.DocumentVector;
@@ -40,12 +40,12 @@ public class Modelo {
 		Documento[] docArray = {document1, document2, document3, document4, document5};
 
 		// Create the queries.
-		Consulta query1 = new Consulta("What video game won Spike's best driving game award in 2006?");
-		Consulta query2 = new Consulta("What is the default combination of Kensington cables?");
-		Consulta query3 = new Consulta("Who won the first ACM Gerard Salton prize?");
+		Query query1 = new Query("What video game won Spike's best driving game award in 2006?");
+		Query query2 = new Query("What is the default combination of Kensington cables?");
+		Query query3 = new Query("Who won the first ACM Gerard Salton prize?");
 
 		// Create the query array.
-		Consulta[] queryArray = {query1, query2, query3};
+		Query[] queryArray = {query1, query2, query3};
 		
 		// Index the documents in the dictionary.
 		Indizador.indizar(docArray, dicc);
@@ -58,24 +58,12 @@ public class Modelo {
 				vectorizer.toVector(document4, dicc, calcTF),
 				vectorizer.toVector(document5, dicc, calcTF)};
 
-//		DocumentVector doc1TF = vectorizer.toVector(document1, dicc, calcTF);
-//		DocumentVector doc2TF = vectorizer.toVector(document2, dicc, calcTF);
-//		DocumentVector doc3TF = vectorizer.toVector(document3, dicc, calcTF);
-//		DocumentVector doc4TF = vectorizer.toVector(document4, dicc, calcTF);
-//		DocumentVector doc5TF = vectorizer.toVector(document5, dicc, calcTF);
-		
 		// Vectors from TFIDF
 		DocumentVector[] docsTFIDF = {vectorizer.toVector(document1, dicc, calcTFIDF),
 				vectorizer.toVector(document2, dicc, calcTFIDF),
 				vectorizer.toVector(document3, dicc, calcTFIDF),
 				vectorizer.toVector(document4, dicc, calcTFIDF),
 				vectorizer.toVector(document5, dicc, calcTFIDF)};
-		
-//		DocumentVector doc1TFIDF = vectorizer.toVector(document1, dicc, calcTFIDF);
-//		DocumentVector doc2TFIDF = vectorizer.toVector(document2, dicc, calcTFIDF);
-//		DocumentVector doc3TFIDF = vectorizer.toVector(document3, dicc, calcTFIDF);
-//		DocumentVector doc4TFIDF = vectorizer.toVector(document4, dicc, calcTFIDF);
-//		DocumentVector doc5TFIDF = vectorizer.toVector(document5, dicc, calcTFIDF);		
 		
 		// Obtain document vectors from the queries.
 		// Vectors from TF
@@ -84,21 +72,11 @@ public class Modelo {
 				vectorizer.toVector(query3, dicc, calcTF)
 		};
 		
-//		DocumentVector query1TF =  vectorizer.toVector(query1, dicc, calcTF);
-//		DocumentVector query2TF =  vectorizer.toVector(query2, dicc, calcTF);
-//		DocumentVector query3TF =  vectorizer.toVector(query3, dicc, calcTF);
-		
 		// Vectors from TFIDF
 		DocumentVector[] queriesTFIDF = {vectorizer.toVector(query1, dicc, calcTFIDF),
 				vectorizer.toVector(query2, dicc, calcTFIDF),
 				vectorizer.toVector(query3, dicc, calcTFIDF)
 		};
-		
-//		DocumentVector query1TFIDF =  vectorizer.toVector(query1, dicc, calcTFIDF);
-//		DocumentVector query2TFIDF =  vectorizer.toVector(query1, dicc, calcTFIDF);
-//		DocumentVector query3TFIDF =  vectorizer.toVector(query1, dicc, calcTFIDF);
-		
-//		System.out.println(query1TF);
 		
 		// Calculating similarity with Scalar Product using TF weights.
 		System.out.println("* RELEVANCIA: ProductoEscalarTF");
@@ -112,7 +90,7 @@ public class Modelo {
 			
 			String stringToPrint = "";
 			
-			for (Consulta query : queryArray) {
+			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
 				DocumentVector docVector = vectorizer.toVector(doc, dicc, calcTF);
@@ -141,7 +119,7 @@ public class Modelo {
 			
 			String stringToPrint = "";
 			
-			for (Consulta query : queryArray) {
+			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
 				DocumentVector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
@@ -170,7 +148,7 @@ public class Modelo {
 			
 			String stringToPrint = "";
 			
-			for (Consulta query : queryArray) {
+			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
 				DocumentVector docVector = vectorizer.toVector(doc, dicc, calcTF);
@@ -199,7 +177,7 @@ public class Modelo {
 			
 			String stringToPrint = "";
 			
-			for (Consulta query : queryArray) {
+			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
 				DocumentVector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);

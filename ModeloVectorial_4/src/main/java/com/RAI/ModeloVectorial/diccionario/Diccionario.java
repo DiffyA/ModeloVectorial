@@ -1,7 +1,7 @@
 package com.RAI.ModeloVectorial.diccionario;
 
-import com.RAI.ModeloVectorial.Interface.ITexto;
 import com.RAI.ModeloVectorial.core.Documento;
+import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
@@ -127,7 +127,7 @@ public class Diccionario {
      * @param term
      * @return
      */
-    public Set<ITexto> getDocumentsContainingTerm(Term term) {
+    public Set<IText> getDocumentsContainingTerm(Term term) {
     	
     	// If the term doesn't exist in the dictionary, return an empty set.
     	if (!allTerms.containsKey(term.getFilteredTerm())) {
@@ -175,8 +175,8 @@ public class Diccionario {
      * Get a set of all the documents in the dictionary.
      * @return
      */
-    public Set<ITexto> getDocumentList() {
-    	Set<ITexto> resultSet = new HashSet<ITexto>();
+    public Set<IText> getDocumentList() {
+    	Set<IText> resultSet = new HashSet<IText>();
     	
     	// Iterate through all the terms of the dictionary. This only iterates through the values!
     	for (Term t : allTerms.values()) {

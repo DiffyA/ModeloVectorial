@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.RAI.ModeloVectorial.Interface.ITexto;
-import com.RAI.ModeloVectorial.core.Consulta;
+import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
+import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.diccionario.Diccionario;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
@@ -28,7 +28,7 @@ import com.RAI.ModeloVectorial.transformacion.Indizador;
  */
 public class Vectorizer {
 	
-	public DocumentVector toVector(Consulta query, Diccionario dicc, IWeightCalculator calc) {
+	public DocumentVector toVector(Query query, Diccionario dicc, IWeightCalculator calc) {
 		HashMap<Term, Double> vector = new HashMap<Term, Double>();
 		
 		// Obtain filtered terms of the query

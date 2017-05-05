@@ -3,44 +3,27 @@ package com.RAI.ModeloVectorial.core;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.RAI.ModeloVectorial.Interface.ITexto;
-
+/**
+ * Represents the occurrences of a term inside of an object implementing the IText interface.
+ * In other words, this class is used to count the amount of times a specific term shows up
+ * in either a Query or a Document object.
+ * 
+ * @author vdegou
+ * @see com.RAI.ModeloVectorial.Term
+ */
 public class Occurrences {
 	/* The HashMap is composed of a Document and an Integer which represents the times that the term
 	 * appears in that document. In other words, that integer represents the TF (term frequency) of the term
 	 * in the document which appears as the key.
 	 */
-	private HashMap<ITexto, Integer> occurrences = new HashMap<ITexto, Integer>();
-
-//	/**
-//	 * Gets the amount of occurrences across all documents. This value refers to the
-//	 * "Ni" value in the formula for calculating the IDF
-//	 * @return
-//	 */
-//	public int getUniqueAppearances() {
-//		int count = 0;
-//		
-//		for (Documento d : occurrences.keySet()) {
-//			if (occurrences.get(d) > 0) {
-//				count ++;
-//			}
-//		}
-//		
-//		// Safety measure.
-//		if (count == 0) {
-//			return 0;
-//		}
-//		
-//		return count;
-//	}
-	
+	private HashMap<IText, Integer> occurrences = new HashMap<IText, Integer>();
 	
 	/**
 	 * Returns the amount of occurrences in a given document.
 	 * @param doc
 	 * @return
 	 */
-    public int getTFInDocument(ITexto doc) {
+    public int getTFInDocument(IText doc) {
     	if (!occurrences.containsKey(doc)) {
     		return 0;
     	}
@@ -55,7 +38,7 @@ public class Occurrences {
      * to the hashmap, and one occurrence will be specified.
      * @param doc
      */
-    public void addOccurrenceInDocument(ITexto doc){
+    public void addOccurrenceInDocument(IText doc){
     	if (!occurrences.containsKey(doc)) {
     		occurrences.put(doc, 1);
     	}
@@ -70,7 +53,7 @@ public class Occurrences {
      * at least once.
      * @return
      */
-    public Set<ITexto> getDocuments() {
+    public Set<IText> getDocuments() {
     	return occurrences.keySet();
     }
     
@@ -78,7 +61,7 @@ public class Occurrences {
      * Returns the hashmap data structure containing the occurrences.
      * @return
      */
-    public HashMap<ITexto, Integer> getOccurrences() {
+    public HashMap<IText, Integer> getOccurrences() {
     	return occurrences;
     }
 }

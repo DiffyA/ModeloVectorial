@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.RAI.ModeloVectorial.core.Consulta;
+import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Term;
 
 public class ConsultaTest {
@@ -31,7 +31,7 @@ public class ConsultaTest {
 
 	@Test
 	public void test() {
-		Consulta query = new Consulta("search query with a duplicate duplicate term");
+		Query query = new Query("search query with a duplicate duplicate term");
 		
 		System.out.println(query.getTerms());
 		

@@ -6,15 +6,14 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.RAI.ModeloVectorial.Interface.ITexto;
-
 /**
  * Provided a file path, an object of class Documento holds the contents 
  * of a file and allows for further operations with the Jsoup external library.
+ * 
  * @author vdegou
  *
  */
-public class Documento implements ITexto {
+public class Documento implements IText {
 	private String filePath;
 	
 	public Documento(String filePath) {
