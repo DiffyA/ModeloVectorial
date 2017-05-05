@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.transformacion;
+package com.RAI.ModeloVectorial.transformation;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -11,10 +11,16 @@ import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 
-public class Indizador {
+/**
+ * Class in charge of indexing Documents term by term into Dictionaries.
+ * 
+ * @author vdegou
+ *
+ */
+public class Indexer {
 	
 	/**
-	 * Processes each term in the query, making the necessary changes to the query's set of terms
+	 * Processes each term in the Query, making the necessary changes to the query's set of terms
 	 * and each term's TF inside of the query.
 	 * @param query
 	 * @return
@@ -49,6 +55,12 @@ public class Indizador {
 		
 	}
 	
+	/**
+	 * Processes each term in the Document, making the necessary changes to the Document's set of terms
+	 * and each term's TF inside of the Document.
+	 * @param doc
+	 * @return
+	 */
 	public static Set<Term> filterDocument(IText doc) {
 		Set<Term> termsInDocument = new HashSet<Term>();
 		
@@ -111,12 +123,12 @@ public class Indizador {
      * 
      * @param toTokenize
      * @return
-     * @see com.RAI.ModeloVectorial.transformacion.Tokenizador#removeStopWords()
+     * @see com.RAI.ModeloVectorial.transformation.Tokenizer#removeStopWords()
      */
     public static String filterStopWords(String toTokenize){
 
             try {
-                return Tokenizador.removeStopWords(toTokenize);
+                return Tokenizer.removeStopWords(toTokenize);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -129,7 +141,7 @@ public class Indizador {
      * This method can take a String of multiple words.
      * @param textToStem
      * @return
-     * @see com.RAI.ModeloVectorial.transformacion.Tokenizador#stemTerm()
+     * @see com.RAI.ModeloVectorial.transformation.Tokenizer#stemTerm()
      */
     public static String stemTerminos(String textToStem){ 
     	String[] terms = textToStem.split(" ");
@@ -140,7 +152,7 @@ public class Indizador {
     	 * We need these spaces so it doesn't return a single long word.
     	 */
     	for (String t : terms) {
-    		stemmedText.append(Tokenizador.stemTerm(new Term(t))).append(" ");
+    		stemmedText.append(Tokenizer.stemTerm(new Term(t))).append(" ");
     	}
     	
     	return stemmedText.toString();

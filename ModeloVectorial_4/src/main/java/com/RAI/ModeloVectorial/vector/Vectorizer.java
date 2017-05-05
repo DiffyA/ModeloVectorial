@@ -8,7 +8,7 @@ import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
-import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.transformation.Indexer;
 import com.RAI.ModeloVectorial.weightCalculator.IWeightCalculator;
 
 /**
@@ -68,7 +68,7 @@ public class Vectorizer {
 		HashMap<Term, Double> vector = new HashMap<Term, Double>();
 		
 		// Obtain filtered terms of a document
-		Set<Term> termsInDocument =  Indizador.filterDocument(doc);
+		Set<Term> termsInDocument =  Indexer.filterDocument(doc);
 		
 		// For each term in the document, we have to find the equivalent Term object stored in the dictionary.
 		Set<Term> termsInDictionary = new HashSet<Term>();

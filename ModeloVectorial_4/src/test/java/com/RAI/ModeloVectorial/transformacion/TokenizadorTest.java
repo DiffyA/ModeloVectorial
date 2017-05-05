@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.RAI.ModeloVectorial.core.Term;
+import com.RAI.ModeloVectorial.transformation.Tokenizer;
 
 public class TokenizadorTest {
 
@@ -33,7 +34,7 @@ public class TokenizadorTest {
 		String originalString = "The quick brown fox jumps over a dog.";
 		
 		String expected = "quick brown fox jumps over dog ";
-		String result = Tokenizador.removeStopWords(originalString);
+		String result = Tokenizer.removeStopWords(originalString);
 		
 		assertEquals(expected, result);
 	}
@@ -56,13 +57,13 @@ public class TokenizadorTest {
 		String expected6 = "word";
 		String expected7 = "word";
 		
-		String result1 = Tokenizador.stemTerm(example1);
-		String result2 = Tokenizador.stemTerm(example2);
-		String result3 = Tokenizador.stemTerm(example3);
-		String result4 = Tokenizador.stemTerm(example4);
-		String result5 = Tokenizador.stemTerm(example5);
-		String result6 = Tokenizador.stemTerm(example6);
-		String result7= Tokenizador.stemTerm(example7);
+		String result1 = Tokenizer.stemTerm(example1);
+		String result2 = Tokenizer.stemTerm(example2);
+		String result3 = Tokenizer.stemTerm(example3);
+		String result4 = Tokenizer.stemTerm(example4);
+		String result5 = Tokenizer.stemTerm(example5);
+		String result6 = Tokenizer.stemTerm(example6);
+		String result7= Tokenizer.stemTerm(example7);
 		
 		assertEquals(expected1, result1);
 		assertEquals(expected2, result2);

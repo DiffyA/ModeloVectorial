@@ -17,6 +17,7 @@ import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
+import com.RAI.ModeloVectorial.transformation.Indexer;
 
 public class IndizadorTest {
 	
@@ -73,14 +74,14 @@ public class IndizadorTest {
 		String testString2 = "This is is another another another term string to test";
 		
 		// Index all the documents into the array
-		Indizador.indizar(arrayDocs, dicc);
+		Indexer.indizar(arrayDocs, dicc);
 		
 		// Create duplicate strings that go through the same filtering process as the document in the "indizar" method.
-		String cleanString1 = Indizador.filterStopWords(testString1);
-		cleanString1 = Indizador.stemTerminos(cleanString1);
+		String cleanString1 = Indexer.filterStopWords(testString1);
+		cleanString1 = Indexer.stemTerminos(cleanString1);
 		
-		String cleanString2 = Indizador.filterStopWords(testString2);
-		cleanString2 = Indizador.stemTerminos(cleanString2);
+		String cleanString2 = Indexer.filterStopWords(testString2);
+		cleanString2 = Indexer.stemTerminos(cleanString2);
 		
 		// Create a set of strings containing the expected terms of each document.
 		Set<String> expectedTerms1 = new HashSet<String>(Arrays.asList(cleanString1.split(" ")));
@@ -114,7 +115,7 @@ public class IndizadorTest {
 		String testString2 = "This is is another another another term string to test";
 		
 		// Index all the documents into the array
-		Indizador.indizar(arrayDocs, dicc);
+		Indexer.indizar(arrayDocs, dicc);
 		
 		// Now we must check if the occurrences of each term in different documents are stored properly.
 		
@@ -138,7 +139,7 @@ public class IndizadorTest {
 	public void integrationTestIndizar03() {
 		System.out.println("TestIndizar03");
 		Dictionary dicc = new Dictionary();
-		Indizador indexer = new Indizador();
+		Indexer indexer = new Indexer();
 		Documento doc1 = new Documento("src/test/resources/testIndizador/testDocument1.txt");
 //		Documento doc2 = new Documento("src/test/resources/testDiccionario/testGetTermOccurrenceInDocument2.txt");
 		

@@ -3,7 +3,7 @@ package com.RAI.ModeloVectorial.core;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.transformation.Indexer;
 
 /**
  * Represents a query. Queries are used to search for documents 
@@ -21,7 +21,7 @@ public class Query implements IText{
 
 	public Query(String consulta) {
 		this.content = consulta;
-		Indizador.processQuery(this);
+		Indexer.processQuery(this);
 	}
 	
 	public String getCleanContent() {

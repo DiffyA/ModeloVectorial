@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.transformacion;
+package com.RAI.ModeloVectorial.transformation;
 
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -14,8 +14,22 @@ import com.RAI.ModeloVectorial.core.Term;
 
 import java.io.StringReader;
 
-public class Tokenizador {
+/**
+ * Class in charge of transforming, filtering, and tokenizing Strings
+ * into a normalized and stemmed version of themselves.
+ * 
+ * @author vdegou
+ *
+ */
+public class Tokenizer {
 
+	/**
+	 * Removes the stop words from a String.
+	 * 
+	 * @param textFile
+	 * @return
+	 * @throws Exception
+	 */
     public static String removeStopWords(String textFile) throws Exception {
         StandardTokenizer stdToken = new StandardTokenizer();
         stdToken.setReader(new StringReader(textFile));
@@ -33,6 +47,11 @@ public class Tokenizador {
         return sb.toString();
     }
 
+    /**
+     * Stems a term and normalizes it.
+     * @param term
+     * @return
+     */
     public static String stemTerm (Term term) {
         PorterStemmer stemmer = new PorterStemmer();
         stemmer.setCurrent(term.getTerm());

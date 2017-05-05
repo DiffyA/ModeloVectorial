@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
-import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.transformation.Indexer;
 import com.RAI.ModeloVectorial.vector.Vectorizer;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
 
@@ -42,7 +42,7 @@ public class VectorizerTest {
 		
 		Documento[] docsToIndex = {doc1, doc2};
 		
-		Indizador.indizar(docsToIndex, dicc);
+		Indexer.indizar(docsToIndex, dicc);
 		
 		System.out.println("Dicc document list: ");
 		System.out.println(dicc.getDocumentList());

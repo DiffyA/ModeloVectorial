@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
-import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.transformation.Indexer;
 
 public class DiccionarioTest {
 	private Dictionary dicc = new Dictionary();

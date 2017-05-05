@@ -5,7 +5,7 @@ import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.similiarities.CosineCalculator;
 import com.RAI.ModeloVectorial.similiarities.ScalarProductCalculator;
-import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.transformation.Indexer;
 import com.RAI.ModeloVectorial.vector.Vector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTF;
@@ -48,7 +48,7 @@ public class Modelo {
 		Query[] queryArray = {query1, query2, query3};
 		
 		// Index the documents in the dictionary.
-		Indizador.indizar(docArray, dicc);
+		Indexer.indizar(docArray, dicc);
 		
 		// Obtain document vectors from the documents.
 		// Vectors from TF

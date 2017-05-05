@@ -4,7 +4,7 @@ import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
-import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.transformation.Indexer;
 import com.RAI.ModeloVectorial.vector.Vector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
@@ -46,7 +46,7 @@ public class CosineCalculatorTest {
 
         // Add the documents to the dictionary
         Documento[] documentsToAdd = {doc1, doc2};
-        Indizador.indizar(documentsToAdd, dicc);
+        Indexer.indizar(documentsToAdd, dicc);
 
         // Print the term list stored in the dictionary index
         System.out.println("Terms in dictionary index:" + dicc.getTermList() + "\n");
