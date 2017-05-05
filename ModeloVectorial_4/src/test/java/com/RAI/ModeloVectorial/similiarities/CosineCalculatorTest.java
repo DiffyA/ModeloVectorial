@@ -8,14 +8,16 @@ import com.RAI.ModeloVectorial.logic.DocumentVector;
 import com.RAI.ModeloVectorial.logic.Vectorizer;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
+
+import static org.junit.Assert.*;
+
 import org.junit.*;
 
 /**
  * Created by kgeetz on 5/2/17.
  */
-public class CalculatorTFTest {
-    CosineTFCalculator cosCalculator = new CosineTFCalculator();
-    ScalarProductTFCalculator SPCalculator = new ScalarProductTFCalculator();
+public class CosineCalculatorTest {
+    CosineCalculator cosCalculator = new CosineCalculator();
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -37,21 +39,10 @@ public class CalculatorTFTest {
     public void testCalculate() {
         CalculatorTFIDF calculator = new CalculatorTFIDF();
         Vectorizer vectorizer = new Vectorizer();
-        CalculatorTFIDF calc = new CalculatorTFIDF();
         Diccionario dicc = new Diccionario();
         Documento doc1 = new Documento("src/test/resources/testCalculatorTFIDFtest/testDocument1.txt");
         Documento doc2 = new Documento("src/test/resources/testCalculatorTFIDFtest/testDocument2.txt");
         Consulta query = new Consulta("red car red");
-
-        // Double check the terms inside the query
-        System.out.println("Terms in the query: " + query.getTerms() + "\n");
-
-        // Iterate through the terms in the query to check that their TF is correct
-        // It should be 2 for RED, and 1 for CAR.
-        for (Term t : query.getTerms()) {
-            System.out.println("TF of " + t.getTerm() + ": " + t.getTFInDocument(query));
-        }
-        System.out.println("\n");
 
         // Add the documents to the dictionary
         Documento[] documentsToAdd = {doc1, doc2};
@@ -65,17 +56,21 @@ public class CalculatorTFTest {
         DocumentVector docVector2 = vectorizer.toVector(doc2, dicc, calculator);
         DocumentVector queryVector = vectorizer.toVector(query, dicc, calculator);
 
-        // Print them out to check their contents.
-        System.out.println("Docvector1: \n" + docVector1);
-        System.out.println("Docvector2: \n" + docVector2);
-        System.out.println("Queryvector: \n" + queryVector);
-
-        //Print out Vector comparisons
-        System.out.println("Cos, Docvector1 + query: " + cosCalculator.calculate(docVector1, queryVector));
-        System.out.println("SP, Docvector1 + query: " + SPCalculator.calculate(docVector1, queryVector));
-        System.out.println("Cos, Docvector2 + query: " + cosCalculator.calculate(docVector2, queryVector));
-        System.out.println("SP, Docvector2 + query: " + SPCalculator.calculate(docVector2, queryVector));
-
+        // Check the similarity between docVector1 and queryVector
+        // The following expected results have been calculated by hand:
+        double scalarProduct = 0.1812381165789131;
+        double divisor = 0.6534633223937912;
+        double expected = scalarProduct / divisor; 
+        
+        assertEquals(expected, cosCalculator.calculate(docVector1, queryVector), 0);
+        
+        // Check the similarity between docVector2 and queryVector
+        // The following expected results have been calculated by hand:
+        scalarProduct = 0; // This value is 0 because doc2 and the query do not share any terms.
+        divisor = 0.3624762331578262;
+        expected = scalarProduct / divisor; 
+        
+        assertEquals(expected, cosCalculator.calculate(docVector2, queryVector), 0);
     }
 
 }

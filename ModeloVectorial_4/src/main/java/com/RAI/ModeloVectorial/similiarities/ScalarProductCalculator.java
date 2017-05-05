@@ -3,12 +3,12 @@ package com.RAI.ModeloVectorial.similiarities;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.logic.DocumentVector;
 
-import java.util.HashMap;
+import java.util.*;
 
 /**
- * Created by kgeetz on 4/26/17.
+ * Created by kgeetz on 3/29/17.
  */
-public class ScalarProductTFIDFCalculator implements Calculator {
+public class ScalarProductCalculator implements Calculator {
     public double calculate(DocumentVector docVec, DocumentVector queryVec){
 
         HashMap<Term, Double> docTerms = docVec.getVector();

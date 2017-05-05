@@ -7,10 +7,8 @@ import com.RAI.ModeloVectorial.logic.DocumentVector;
 import com.RAI.ModeloVectorial.logic.Vectorizer;
 import com.RAI.ModeloVectorial.pesos.CalculatorTF;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
-import com.RAI.ModeloVectorial.similiarities.CosineTFCalculator;
-import com.RAI.ModeloVectorial.similiarities.CosineTFIDFCalculator;
-import com.RAI.ModeloVectorial.similiarities.ScalarProductTFCalculator;
-import com.RAI.ModeloVectorial.similiarities.ScalarProductTFIDFCalculator;
+import com.RAI.ModeloVectorial.similiarities.CosineCalculator;
+import com.RAI.ModeloVectorial.similiarities.ScalarProductCalculator;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 public class Modelo {
@@ -24,10 +22,8 @@ public class Modelo {
 		CalculatorTFIDF calcTFIDF = new CalculatorTFIDF();
 		
 		// Create the relevance metric calculators.
-		CosineTFCalculator similitudCosTF = new CosineTFCalculator();
-		CosineTFIDFCalculator similitudCosTFIDF = new CosineTFIDFCalculator();
-		ScalarProductTFCalculator similitudScalarTF = new ScalarProductTFCalculator();
-		ScalarProductTFIDFCalculator similitudScalarTFIDF = new ScalarProductTFIDFCalculator();
+		CosineCalculator similitudCos = new CosineCalculator();
+		ScalarProductCalculator similitudScalar = new ScalarProductCalculator();
 		
 		
 		// Create the dictionary
@@ -123,7 +119,7 @@ public class Modelo {
 				DocumentVector queryVector = vectorizer.toVector(query, dicc, calcTF);
 				
 				// Obtain similarity
-				double similarity = similitudScalarTF.calculate(docVector, queryVector);
+				double similarity = similitudScalar.calculate(docVector, queryVector);
 				
 				// Add content to stringToPrint
 				stringToPrint += similarity + "\t";
@@ -152,7 +148,7 @@ public class Modelo {
 				DocumentVector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
 				
 				// Obtain similarity
-				double similarity = similitudScalarTFIDF.calculate(docVector, queryVector);
+				double similarity = similitudScalar.calculate(docVector, queryVector);
 				
 				// Add content to stringToPrint
 				stringToPrint += similarity + "\t";
@@ -181,7 +177,7 @@ public class Modelo {
 				DocumentVector queryVector = vectorizer.toVector(query, dicc, calcTF);
 				
 				// Obtain similarity
-				double similarity = similitudCosTF.calculate(docVector, queryVector);
+				double similarity = similitudCos.calculate(docVector, queryVector);
 				
 				// Add content to stringToPrint
 				stringToPrint += similarity + "\t";
@@ -210,7 +206,7 @@ public class Modelo {
 				DocumentVector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
 				
 				// Obtain similarity
-				double similarity = similitudCosTFIDF.calculate(docVector, queryVector);
+				double similarity = similitudCos.calculate(docVector, queryVector);
 				
 				// Add content to stringToPrint
 				stringToPrint += similarity + "\t";
