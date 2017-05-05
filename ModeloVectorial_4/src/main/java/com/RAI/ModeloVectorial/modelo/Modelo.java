@@ -3,13 +3,13 @@ package com.RAI.ModeloVectorial.modelo;
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.core.Documento;
-import com.RAI.ModeloVectorial.pesos.CalculatorTF;
-import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
-import com.RAI.ModeloVectorial.similarities.CosineCalculator;
-import com.RAI.ModeloVectorial.similarities.ScalarProductCalculator;
+import com.RAI.ModeloVectorial.similiarities.CosineCalculator;
+import com.RAI.ModeloVectorial.similiarities.ScalarProductCalculator;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 import com.RAI.ModeloVectorial.vector.Vector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;
+import com.RAI.ModeloVectorial.weightCalculator.CalculatorTF;
+import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
 
 public class Modelo {
 	

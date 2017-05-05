@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
+import com.RAI.ModeloVectorial.weightCalculator.CalculatorTF;
 
 public class CalculatorTFtest {
 	CalculatorTF calculator = new CalculatorTF();

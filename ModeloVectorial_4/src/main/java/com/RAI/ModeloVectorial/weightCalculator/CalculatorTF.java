@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.pesos;
+package com.RAI.ModeloVectorial.weightCalculator;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.IText;

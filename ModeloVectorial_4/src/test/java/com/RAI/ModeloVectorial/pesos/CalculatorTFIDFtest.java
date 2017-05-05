@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
+import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
 
 public class CalculatorTFIDFtest {
 	CalculatorTFIDF calculator = new CalculatorTFIDF();

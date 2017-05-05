@@ -8,8 +8,8 @@ import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
-import com.RAI.ModeloVectorial.pesos.IWeightCalculator;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.weightCalculator.IWeightCalculator;
 
 /**
  * The Vectorizer class takes a document, a dictionary, and a calculator
