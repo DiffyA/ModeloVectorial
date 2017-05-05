@@ -1,8 +1,6 @@
-package com.RAI.ModeloVectorial.logic;
+package com.RAI.ModeloVectorial.vector;
 
 import java.util.HashMap;
-import java.util.Set;
-
 import com.RAI.ModeloVectorial.core.Term;
 
 /**
@@ -16,10 +14,10 @@ import com.RAI.ModeloVectorial.core.Term;
  * @author vdegou
  *
  */
-public class DocumentVector {
+public class Vector {
 	private HashMap<Term, Double> vector = new HashMap<Term, Double>();
 	
-	public DocumentVector(HashMap<Term, Double> vector) {
+	public Vector(HashMap<Term, Double> vector) {
 		this.vector = vector;
 	}
 	

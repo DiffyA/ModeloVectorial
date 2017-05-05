@@ -4,10 +4,10 @@ import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
-import com.RAI.ModeloVectorial.logic.DocumentVector;
-import com.RAI.ModeloVectorial.logic.Vectorizer;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.vector.Vector;
+import com.RAI.ModeloVectorial.vector.Vectorizer;
 
 import static org.junit.Assert.*;
 
@@ -52,9 +52,9 @@ public class CosineCalculatorTest {
         System.out.println("Terms in dictionary index:" + dicc.getTermList() + "\n");
 
         // Vectorize all documents, as well as the query
-        DocumentVector docVector1 = vectorizer.toVector(doc1, dicc, calculator);
-        DocumentVector docVector2 = vectorizer.toVector(doc2, dicc, calculator);
-        DocumentVector queryVector = vectorizer.toVector(query, dicc, calculator);
+        Vector docVector1 = vectorizer.toVector(doc1, dicc, calculator);
+        Vector docVector2 = vectorizer.toVector(doc2, dicc, calculator);
+        Vector queryVector = vectorizer.toVector(query, dicc, calculator);
 
         // Check the similarity between docVector1 and queryVector
         // The following expected results have been calculated by hand:

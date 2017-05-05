@@ -3,13 +3,13 @@ package com.RAI.ModeloVectorial.modelo;
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.core.Documento;
-import com.RAI.ModeloVectorial.logic.DocumentVector;
-import com.RAI.ModeloVectorial.logic.Vectorizer;
 import com.RAI.ModeloVectorial.pesos.CalculatorTF;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
 import com.RAI.ModeloVectorial.similiarities.CosineCalculator;
 import com.RAI.ModeloVectorial.similiarities.ScalarProductCalculator;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
+import com.RAI.ModeloVectorial.vector.Vector;
+import com.RAI.ModeloVectorial.vector.Vectorizer;
 
 public class Modelo {
 	
@@ -52,14 +52,14 @@ public class Modelo {
 		
 		// Obtain document vectors from the documents.
 		// Vectors from TF
-		DocumentVector[] docsTF = {vectorizer.toVector(document1, dicc, calcTF),
+		Vector[] docsTF = {vectorizer.toVector(document1, dicc, calcTF),
 				vectorizer.toVector(document2, dicc, calcTF),
 				vectorizer.toVector(document3, dicc, calcTF),
 				vectorizer.toVector(document4, dicc, calcTF),
 				vectorizer.toVector(document5, dicc, calcTF)};
 
 		// Vectors from TFIDF
-		DocumentVector[] docsTFIDF = {vectorizer.toVector(document1, dicc, calcTFIDF),
+		Vector[] docsTFIDF = {vectorizer.toVector(document1, dicc, calcTFIDF),
 				vectorizer.toVector(document2, dicc, calcTFIDF),
 				vectorizer.toVector(document3, dicc, calcTFIDF),
 				vectorizer.toVector(document4, dicc, calcTFIDF),
@@ -67,13 +67,13 @@ public class Modelo {
 		
 		// Obtain document vectors from the queries.
 		// Vectors from TF
-		DocumentVector[] queriesTF = {vectorizer.toVector(query1, dicc, calcTF),
+		Vector[] queriesTF = {vectorizer.toVector(query1, dicc, calcTF),
 				vectorizer.toVector(query2, dicc, calcTF),
 				vectorizer.toVector(query3, dicc, calcTF)
 		};
 		
 		// Vectors from TFIDF
-		DocumentVector[] queriesTFIDF = {vectorizer.toVector(query1, dicc, calcTFIDF),
+		Vector[] queriesTFIDF = {vectorizer.toVector(query1, dicc, calcTFIDF),
 				vectorizer.toVector(query2, dicc, calcTFIDF),
 				vectorizer.toVector(query3, dicc, calcTFIDF)
 		};
@@ -93,8 +93,8 @@ public class Modelo {
 			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
-				DocumentVector docVector = vectorizer.toVector(doc, dicc, calcTF);
-				DocumentVector queryVector = vectorizer.toVector(query, dicc, calcTF);
+				Vector docVector = vectorizer.toVector(doc, dicc, calcTF);
+				Vector queryVector = vectorizer.toVector(query, dicc, calcTF);
 				
 				// Obtain similarity
 				double similarity = similitudScalar.calculate(docVector, queryVector);
@@ -122,8 +122,8 @@ public class Modelo {
 			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
-				DocumentVector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
-				DocumentVector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
+				Vector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
+				Vector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
 				
 				// Obtain similarity
 				double similarity = similitudScalar.calculate(docVector, queryVector);
@@ -151,8 +151,8 @@ public class Modelo {
 			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
-				DocumentVector docVector = vectorizer.toVector(doc, dicc, calcTF);
-				DocumentVector queryVector = vectorizer.toVector(query, dicc, calcTF);
+				Vector docVector = vectorizer.toVector(doc, dicc, calcTF);
+				Vector queryVector = vectorizer.toVector(query, dicc, calcTF);
 				
 				// Obtain similarity
 				double similarity = similitudCos.calculate(docVector, queryVector);
@@ -180,8 +180,8 @@ public class Modelo {
 			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
-				DocumentVector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
-				DocumentVector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
+				Vector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
+				Vector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
 				
 				// Obtain similarity
 				double similarity = similitudCos.calculate(docVector, queryVector);

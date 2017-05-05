@@ -1,7 +1,7 @@
 package com.RAI.ModeloVectorial.similiarities;
 
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.logic.DocumentVector;
+import com.RAI.ModeloVectorial.vector.Vector;
 
 import static java.lang.Math.pow;
 
@@ -9,7 +9,7 @@ import static java.lang.Math.pow;
  * Created by kgeetz on 4/26/17.
  */
 public class CosineCalculator implements Calculator {
-    public double calculate(DocumentVector docVec, DocumentVector queryVec) {
+    public double calculate(Vector docVec, Vector queryVec) {
 
         Calculator calc = new ScalarProductCalculator();
         double scalarProduct = calc.calculate(docVec,queryVec);

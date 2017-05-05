@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.logic;
+package com.RAI.ModeloVectorial.vector;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,29 +6,34 @@ import java.util.Set;
 
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
-import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
-import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
 import com.RAI.ModeloVectorial.pesos.IWeightCalculator;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 /**
  * The Vectorizer class takes a document, a dictionary, and a calculator
  * to calculate the vector representation of a document, in the form of a
- * DocumentVector object. Refer to the DocumentVector class for furter information.
+ * DocumentVector object. Refer to the {@link com.RAI.ModeloVectorial.vector.Vector} class for further information.
  * 
- * It requires a Diccionario object because this is the object that allows us to obtain
+ * It requires a Dictionary object because this is the object that allows us to obtain
  * the IDF values for the terms, which is necessary in order to calculate the weight of the 
  * term. 
  * 
  * @author vdegou
- * @see com.RAI.ModeloVectorial.logic.DocumentVector
+ * @see com.RAI.ModeloVectorial.vector.Vector
  *
  */
 public class Vectorizer {
 	
-	public DocumentVector toVector(Query query, Dictionary dicc, IWeightCalculator calc) {
+	/**
+	 * Converts a Query into a Vector object, given a specific dictionary and a weight calculator instance.
+	 * @param query
+	 * @param dicc
+	 * @param calc
+	 * @return
+	 */
+	public Vector toVector(Query query, Dictionary dicc, IWeightCalculator calc) {
 		HashMap<Term, Double> vector = new HashMap<Term, Double>();
 		
 		// Obtain filtered terms of the query
@@ -46,12 +51,20 @@ public class Vectorizer {
 		}
 		
 		// Create the DocumentVector object
-		DocumentVector queryVector = new DocumentVector(vector);
+		Vector queryVector = new Vector(vector);
 		
 		return queryVector;
 	}
 	
-	public DocumentVector toVector(Documento doc, Dictionary dicc, IWeightCalculator calc) {
+	/**
+	 * Converts a Document into a Vector object, given a specific dictionary and a weight calculator instance.
+	 * 
+	 * @param doc
+	 * @param dicc
+	 * @param calc
+	 * @return
+	 */
+	public Vector toVector(Documento doc, Dictionary dicc, IWeightCalculator calc) {
 		HashMap<Term, Double> vector = new HashMap<Term, Double>();
 		
 		// Obtain filtered terms of a document
@@ -63,7 +76,6 @@ public class Vectorizer {
 		// This only gets the Term objects stored in the dictionary that also belong in the document.
 		for (Term t : termsInDocument) {
 			Term termToAdd = dicc.getAllTerms().get(t.getFilteredTerm());
-			// TODO: Make a distinction here with class consulta and copy the IDF from the diccionario class to the term
 			termsInDictionary.add(termToAdd);
 		}
 		
@@ -72,7 +84,7 @@ public class Vectorizer {
 			vector.put(t, calc.calculate(t, doc));
 		}
 		
-		DocumentVector docVector = new DocumentVector(vector);
+		Vector docVector = new Vector(vector);
 		
 		return docVector;
 	}
