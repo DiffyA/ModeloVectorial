@@ -9,7 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.RAI.ModeloVectorial.core.Documento;
-import com.RAI.ModeloVectorial.diccionario.Diccionario;
+import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
@@ -35,7 +35,7 @@ public class VectorizerTest {
 	public void testToVector() {
 		Vectorizer vectorizer = new Vectorizer();
 		CalculatorTFIDF calc = new CalculatorTFIDF();
-		Diccionario dicc = new Diccionario();
+		Dictionary dicc = new Dictionary();
 		Documento doc1 = new Documento("src/test/resources/testVectorizer/testDocument1.txt");
 		Documento doc2 = new Documento("src/test/resources/testVectorizer/testDocument2.txt");
 		

@@ -3,7 +3,7 @@ package com.RAI.ModeloVectorial.similiarities;
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.diccionario.Diccionario;
+import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.logic.DocumentVector;
 import com.RAI.ModeloVectorial.logic.Vectorizer;
 import com.RAI.ModeloVectorial.pesos.CalculatorTFIDF;
@@ -39,7 +39,7 @@ public class ScalarProductCalculatorTest {
     public void testCalculate() {
         CalculatorTFIDF calculatorTFIDF = new CalculatorTFIDF();
         Vectorizer vectorizer = new Vectorizer();
-        Diccionario dicc = new Diccionario();
+        Dictionary dicc = new Dictionary();
         Documento doc1 = new Documento("src/test/resources/testCalculatorTFIDFtest/testDocument1.txt");
         Documento doc2 = new Documento("src/test/resources/testCalculatorTFIDFtest/testDocument2.txt");
         Query query = new Query("red car red");

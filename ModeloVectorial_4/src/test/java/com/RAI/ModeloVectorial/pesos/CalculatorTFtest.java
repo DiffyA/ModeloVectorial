@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.diccionario.Diccionario;
+import com.RAI.ModeloVectorial.dictionary.Dictionary;
 
 public class CalculatorTFtest {
 	CalculatorTF calculator = new CalculatorTF();
@@ -38,7 +38,7 @@ public class CalculatorTFtest {
 	 */
 	@Test
 	public void testCalculate() {
-		Diccionario dicc = new Diccionario();
+		Dictionary dicc = new Dictionary();
 		Term term1 = new Term("term1", "term1");
 		Term term2 = new Term("term2", "term2");
 		Documento doc1 = new Documento("doc1");

@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.diccionario.Diccionario;
+import com.RAI.ModeloVectorial.dictionary.Dictionary;
 
 public class IndizadorTest {
 	
@@ -62,7 +62,7 @@ public class IndizadorTest {
 	 */
 	@Test
 	public void integrationTestIndizar01() {
-		Diccionario dicc = new Diccionario();
+		Dictionary dicc = new Dictionary();
 
 		Documento doc1 = new Documento("src/test/resources/testDiccionario/testGetTermOccurrenceInDocument1.txt");
 		Documento doc2 = new Documento("src/test/resources/testDiccionario/testGetTermOccurrenceInDocument2.txt");
@@ -103,7 +103,7 @@ public class IndizadorTest {
 	
 	@Test
 	public void integrationTestIndizar02() {
-		Diccionario dicc = new Diccionario();
+		Dictionary dicc = new Dictionary();
 
 		Documento doc1 = new Documento("src/test/resources/testDiccionario/testGetTermOccurrenceInDocument1.txt");
 		Documento doc2 = new Documento("src/test/resources/testDiccionario/testGetTermOccurrenceInDocument2.txt");
@@ -137,7 +137,7 @@ public class IndizadorTest {
 	@Test
 	public void integrationTestIndizar03() {
 		System.out.println("TestIndizar03");
-		Diccionario dicc = new Diccionario();
+		Dictionary dicc = new Dictionary();
 		Indizador indexer = new Indizador();
 		Documento doc1 = new Documento("src/test/resources/testIndizador/testDocument1.txt");
 //		Documento doc2 = new Documento("src/test/resources/testDiccionario/testGetTermOccurrenceInDocument2.txt");

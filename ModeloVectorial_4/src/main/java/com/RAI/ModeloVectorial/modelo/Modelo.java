@@ -1,8 +1,8 @@
 package com.RAI.ModeloVectorial.modelo;
 
 import com.RAI.ModeloVectorial.core.Query;
+import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.core.Documento;
-import com.RAI.ModeloVectorial.diccionario.Diccionario;
 import com.RAI.ModeloVectorial.logic.DocumentVector;
 import com.RAI.ModeloVectorial.logic.Vectorizer;
 import com.RAI.ModeloVectorial.pesos.CalculatorTF;
@@ -27,7 +27,7 @@ public class Modelo {
 		
 		
 		// Create the dictionary
-		Diccionario dicc = new Diccionario();
+		Dictionary dicc = new Dictionary();
 		
 		// Create the documents.
 		Documento document1 = new Documento("src/main/resources/2010-22-100.html");

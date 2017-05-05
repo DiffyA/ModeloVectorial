@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.diccionario;
+package com.RAI.ModeloVectorial.dictionary;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.IText;
@@ -13,11 +13,11 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
- * The Diccionario class is in charge of indexing terms and documents.
+ * The Dictionary class is in charge of indexing terms and documents.
  * It keeps a set of all the documents and a HashMap of all the terms
  * that have been indexed.
  * 
- * The Diccionario class is also in charge of updating the IDF of the
+ * The Dictionary class is also in charge of updating the IDF of the
  * terms it has currently indexed, given that the IDF depends on 
  * the structure containing all terms from all documents, which only this class
  * has.
@@ -25,11 +25,8 @@ import java.util.Vector;
  * @author vdegou
  *
  */
-public class Diccionario {
-	/* The key for the HashMap will be the String representation of the term. 
-	 * TODO: make it so the actual key is a stemmed and filtered version of the term.
-	 * Probably have to add more attributes to the Term class.
-	 */
+public class Dictionary {
+	// The key for the HashMap will be the filtered String representation of the term. 
     private HashMap<String, Term> allTerms = new HashMap<String, Term>();
     private Set<Documento> allDocuments = new HashSet<Documento>();
 
@@ -54,16 +51,12 @@ public class Diccionario {
     	// If the term already exists in the dictionary, retrieve it and operate with it
     	if (allTerms.containsKey(term.getFilteredTerm())) {
     		
-    		// Get the term and add an occurrence in the provided document.
+    		// Get the term.
     		Term updatedTerm = allTerms.get(term.getFilteredTerm());
-//    		updatedTerm.addOccurrenceInDocument(doc);
     		
-    		// Update term reference to updatedTerm object.
+    		// Update term reference to updatedTerm object and add an occurrence in the document.
     		term = updatedTerm;
     		term.addOccurrenceInDocument(doc);
-
-    		// Update the term in the dictionary.
-//    		allTerms.put(updatedTerm.getFilteredTerm(), updatedTerm);
     	}
     	// If the term doesn't exist in the dictionary, add it.
     	else {
@@ -84,7 +77,6 @@ public class Diccionario {
     public void updateIdfOfAllTerms() {
 		for (String s : allTerms.keySet()) {
 			Term currentTerm = allTerms.get(s);
-			
 			currentTerm.updateIDF(getAllDocuments().size(), currentTerm.getListOfDocuments().size());
 		}
     }
@@ -131,7 +123,6 @@ public class Diccionario {
     	
     	// If the term doesn't exist in the dictionary, return an empty set.
     	if (!allTerms.containsKey(term.getFilteredTerm())) {
-    		
     		return Collections.emptySet();
     	}
     	
@@ -168,7 +159,6 @@ public class Diccionario {
     	}
 
     	return allTerms.get(term.getFilteredTerm()).getTFInDocument(doc);
-    	
     }
 
     /**
@@ -186,6 +176,11 @@ public class Diccionario {
     	return resultSet;
     }
     
+    /**
+     * Returns the set containing all the documents which have been indexed
+     * in the dictionary.
+     * @return
+     */
     public Set<Documento> getAllDocuments() {
     	return allDocuments;
     }

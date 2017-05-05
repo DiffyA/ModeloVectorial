@@ -9,7 +9,7 @@ import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.diccionario.Diccionario;
+import com.RAI.ModeloVectorial.dictionary.Dictionary;
 
 public class Indizador {
 	
@@ -77,7 +77,7 @@ public class Indizador {
 	 * @param documentos
 	 * @param dic
 	 */
-    public static void indizar(Documento[] documentos, Diccionario dic) {
+    public static void indizar(Documento[] documentos, Dictionary dic) {
         // Iterate through all documents
     	for (Documento doc : documentos){
 

@@ -15,10 +15,11 @@ import org.junit.Test;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
+import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.transformacion.Indizador;
 
 public class DiccionarioTest {
-	private Diccionario dicc = new Diccionario();
+	private Dictionary dicc = new Dictionary();
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
