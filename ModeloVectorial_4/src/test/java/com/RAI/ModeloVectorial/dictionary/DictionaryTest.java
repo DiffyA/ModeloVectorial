@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.diccionario;
+package com.RAI.ModeloVectorial.dictionary;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +18,7 @@ import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.transformation.Indexer;
 
-public class DiccionarioTest {
+public class DictionaryTest {
 	private Dictionary dicc = new Dictionary();
 
 	@BeforeClass

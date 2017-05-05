@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.transformacion;
+package com.RAI.ModeloVectorial.transformation;
 
 import static org.junit.Assert.*;
 
@@ -19,7 +19,7 @@ import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.transformation.Indexer;
 
-public class IndizadorTest {
+public class IndexerTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

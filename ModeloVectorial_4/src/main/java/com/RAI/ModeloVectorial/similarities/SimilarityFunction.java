@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.similiarities;
+package com.RAI.ModeloVectorial.similarities;
 
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;

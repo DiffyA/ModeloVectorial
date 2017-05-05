@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.Core;
+package com.RAI.ModeloVectorial.core;
 
 import static org.junit.Assert.*;
 

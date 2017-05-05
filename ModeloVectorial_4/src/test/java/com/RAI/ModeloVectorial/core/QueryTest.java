@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.Core;
+package com.RAI.ModeloVectorial.core;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Term;
 
-public class ConsultaTest {
+public class QueryTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

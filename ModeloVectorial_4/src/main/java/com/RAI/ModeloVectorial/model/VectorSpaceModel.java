@@ -2,9 +2,9 @@ package com.RAI.ModeloVectorial.model;
 
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
+import com.RAI.ModeloVectorial.similarities.CosineCalculator;
+import com.RAI.ModeloVectorial.similarities.ScalarProductCalculator;
 import com.RAI.ModeloVectorial.core.Documento;
-import com.RAI.ModeloVectorial.similiarities.CosineCalculator;
-import com.RAI.ModeloVectorial.similiarities.ScalarProductCalculator;
 import com.RAI.ModeloVectorial.transformation.Indexer;
 import com.RAI.ModeloVectorial.vector.Vector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;

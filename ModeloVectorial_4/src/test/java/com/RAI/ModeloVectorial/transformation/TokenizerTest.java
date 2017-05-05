@@ -1,4 +1,4 @@
-package com.RAI.ModeloVectorial.transformacion;
+package com.RAI.ModeloVectorial.transformation;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.transformation.Tokenizer;
 
-public class TokenizadorTest {
+public class TokenizerTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
