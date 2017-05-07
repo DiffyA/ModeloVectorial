@@ -12,7 +12,7 @@ import java.util.*;
  * @author kgeetz
  *
  */
-public class ScalarProductCalculator implements SimilarityFunction {
+public class ScalarProductCalculator implements ISimilarityFunction {
     
 	public double calculate(Vector docVec, Vector queryVec){
 

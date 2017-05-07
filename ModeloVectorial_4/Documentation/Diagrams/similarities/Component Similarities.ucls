@@ -27,9 +27,9 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="4" language="java" name="com.RAI.ModeloVectorial.similarities.SimilarityFunction" 
+  <interface id="4" language="java" name="com.RAI.ModeloVectorial.similarities.ISimilarityFunction" 
     project="ModeloVectorial_4" 
-    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/similarities/SimilarityFunction.java" binary="false" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/similarities/ISimilarityFunction.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="362" y="218"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

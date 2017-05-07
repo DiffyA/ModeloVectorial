@@ -12,11 +12,11 @@ import static java.lang.Math.pow;
  * @author kgeetz
  *
  */
-public class CosineCalculator implements SimilarityFunction {
+public class CosineCalculator implements ISimilarityFunction {
 	
     public double calculate(Vector docVec, Vector queryVec) {
 
-        SimilarityFunction calc = new ScalarProductCalculator();
+        ISimilarityFunction calc = new ScalarProductCalculator();
         double scalarProduct = calc.calculate(docVec,queryVec);
 
         double divisor = 0;

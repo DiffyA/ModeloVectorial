@@ -12,7 +12,7 @@ import com.RAI.ModeloVectorial.core.Documento;
  * @author kgeetz
  *
  */
-public interface SimilarityFunction {
+public interface ISimilarityFunction {
 
 	/**
 	 * Calculates the similarity between two vectors.
