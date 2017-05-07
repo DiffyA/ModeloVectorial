@@ -127,9 +127,6 @@ public class Indexer {
             	}
             }
         }
-    	// If database insertion has been enabled, clear the dictionary structures to free memory.
-    	if (toDatabase)
-    		dic.clearAll();
     }
 
     /**
