@@ -85,13 +85,19 @@ public class Indexer {
 	
 	/**
 	 * Takes an array of documents and indexes each term of each document 
-	 * in the chosen dictionary object.
+	 * in the chosen dictionary object. 
+	 * If the boolean value toDatabase is set to false, the information
+	 * indexed will not be stored in the integrated database. If it is set to true,
+	 * the information will be stored in the database and cleared from main memory once
+	 * done.
+	 * The pretty print parameter allows for printing of the current term and document to the console.
 	 * @param documentos
 	 * @param dic
 	 */
-    public static void indizar(Documento[] documentos, Dictionary dic) {
+    public static void indizar(Documento[] documentos, Dictionary dic, boolean toDatabase, boolean prettyPrint) {
         // Iterate through all documents
     	for (Documento doc : documentos){
+        	String documentName = doc.toString().substring(doc.toString().lastIndexOf("/")+1);
 
     		// Get the document text without HTML tags and split it
             String docText = doc.getCleanContent();
@@ -108,11 +114,22 @@ public class Indexer {
             		// Create the term object
             		termToAdd = new Term(term, filteredTerm);
             		
-            		// Add the term to the dictionary, telling it also which document it comes from.
-                	dic.addDictionaryEntry(termToAdd, doc);
+            		/* Add the term to the dictionary, telling it also which document it comes from.
+            		 * Depending on the value of toDatabase, call one method or the other.
+            		 */
+            		if (toDatabase) 
+            			dic.addDictionaryEntryToDatabase(termToAdd, doc);
+            		else 
+            			dic.addDictionaryEntry(termToAdd, doc);
+            		
+            		if (prettyPrint)
+            			System.out.println("*** Indexed term: " + termToAdd.getFilteredTerm() + " of Doc: " + documentName);
             	}
             }
         }
+    	// If database insertion has been enabled, clear the dictionary structures to free memory.
+    	if (toDatabase)
+    		dic.clearAll();
     }
 
     /**

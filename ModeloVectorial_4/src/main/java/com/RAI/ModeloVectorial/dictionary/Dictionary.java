@@ -4,6 +4,7 @@ import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
+import com.RAI.ModeloVectorial.database.DatabaseManager;
 import com.RAI.ModeloVectorial.transformation.Indexer;
 
 import java.util.Collections;
@@ -72,6 +73,62 @@ public class Dictionary {
     }
     
     /**
+     * Adds an entry to the dictionary, provided the term and the document it comes from. However,
+     * this method passes the information indexed directly to the database. Once it is done indexing,
+     * it clears the internal structures of the dictionary object in order to not take up space in 
+     * main memory.
+     * 
+     * @param term
+     * @param doc
+     * @param toDatabase
+     */
+    public void addDictionaryEntryToDatabase(Term term, Documento doc){
+    	// Make a database manager
+//    	Action action = new Action();
+    	String documentName = doc.toString().substring(doc.toString().lastIndexOf("/")+1);
+
+//    	action.connect();
+    	
+    	// If the document does not exist in the dictionary, add it.
+    	if (!allDocuments.contains(doc)) {
+    		addDocument(doc);
+    		
+    		/* If a new document is added, the IDF of ALL terms in the dictionary must be updated, because
+    		 * the amount of documents in the dictionary increases which affects the IDF formula.
+    		 */
+			 updateIdfOfAllTerms();
+    	}
+    	
+    	// If the term already exists in the dictionary, retrieve it and operate with it
+    	if (allTerms.containsKey(term.getFilteredTerm())) {
+    		
+    		// Get the term.
+    		Term updatedTerm = allTerms.get(term.getFilteredTerm());
+    		
+    		// Update term reference to updatedTerm object and add an occurrence in the document.
+    		term = updatedTerm;
+    		term.addOccurrenceInDocument(doc);
+    		
+    	}
+    	// If the term doesn't exist in the dictionary, add it.
+    	else {
+    		term.addOccurrenceInDocument(doc);
+    		allTerms.put(term.getFilteredTerm(), term);
+    	}
+    	
+    	/* After everything is done, update the IDF of the term that was added. 
+    	 * The IDF of this term must be updated even though all IDF's have been updated 
+    	 * since the occurrences of this term have been modified. */
+    	term.updateIDF(getAllDocuments().size(), term.getListOfDocuments().size());
+    	
+		// Add term to the DB DocTerm table, updating the existing row.
+		DatabaseManager.saveDocTerm(documentName, term.getFilteredTerm(), term.getTFInDocument(doc));
+		
+		// Add term to the DB Term table, reflecting its IDF.
+		DatabaseManager.saveTerm(term.getFilteredTerm(), term.getIDF());
+    }
+    
+    /**
      * Iterates through the terms in the dictionary and updates the IDF value of each one.
      */
     public void updateIdfOfAllTerms() {
@@ -112,6 +169,14 @@ public class Dictionary {
      */
     public void addDocument(Documento doc) {
     	allDocuments.add(doc);
+    }
+    
+    /**
+     * Clears the structures containing information.
+     */
+    public void clearAll() {
+    	this.getAllDocuments().clear();
+    	this.getAllTerms().clear();
     }
     
     /**
