@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.0" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <package id="1" language="java" name="com.RAI.ModeloVectorial.similarities" project="ModeloVectorial_4" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/similarities" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="188" y="500"/>    
+    <display autosize="true" stereotype="false" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="2" language="java" name="com.RAI.ModeloVectorial.model" project="ModeloVectorial_4" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/model" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="524" y="506"/>    
+    <display autosize="true" stereotype="false" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="3" language="java" name="com.RAI.ModeloVectorial.dictionary" project="ModeloVectorial_4" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/dictionary" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="36" width="594" x="52" y="416"/>    
+    <display autosize="false" stereotype="false" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="4" language="java" name="com.RAI.ModeloVectorial.vector" project="ModeloVectorial_4" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/vector" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="524" y="353"/>    
+    <display autosize="true" stereotype="false" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="5" language="java" name="com.RAI.ModeloVectorial.transformation" project="ModeloVectorial_4" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/transformation" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="596" x="53" y="246"/>    
+    <display autosize="false" stereotype="false" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="6" language="java" name="com.RAI.ModeloVectorial.weightCalculator" project="ModeloVectorial_4" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/weightCalculator" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="212" y="349"/>    
+    <display autosize="true" stereotype="false" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="com.RAI.ModeloVectorial.core" project="ModeloVectorial_4" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/core" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="39" width="592" x="57" y="164"/>    
+    <display autosize="false" stereotype="false" sort-features="false" accessors="true"/>  
+  </package>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

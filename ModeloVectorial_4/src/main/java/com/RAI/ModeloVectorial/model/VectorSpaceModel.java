@@ -1,12 +1,16 @@
 package com.RAI.ModeloVectorial.model;
 
 import com.RAI.ModeloVectorial.core.Query;
+import com.RAI.ModeloVectorial.database.Controller;
 import com.RAI.ModeloVectorial.database.DatabaseManager;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.similarities.CosineCalculator;
 import com.RAI.ModeloVectorial.similarities.ScalarProductCalculator;
 
+import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.transformation.Indexer;
@@ -71,7 +75,7 @@ public class VectorSpaceModel {
 	 * @param prettyPrint Boolean value which determine if the currently indexed term is printed to the console.
 	 * the index in the database or not.
 	 */
-	public void index(boolean toDatabase, boolean prettyPrint) {
+	public void index(Documento[] documentsToIndex, boolean toDatabase, boolean prettyPrint) {
 		/* Index the documents in the dictionary.
 		 * We also configure SQLite to make a single transaction after everything
 		 * has been committed in order to save time.
@@ -83,7 +87,7 @@ public class VectorSpaceModel {
 			DatabaseManager.connect.setAutoCommit(false);
 			
 			startTime = System.currentTimeMillis();
-			Indexer.indizar(docArray, dicc, toDatabase, prettyPrint);
+			Indexer.indizar(documentsToIndex, dicc, toDatabase, prettyPrint);
 			estimatedTime = System.currentTimeMillis() - startTime;
 			
 			DatabaseManager.connect.setAutoCommit(true);
@@ -93,7 +97,7 @@ public class VectorSpaceModel {
 			e.printStackTrace();
 		}
 		System.out.println("\n\n\n*** END OF INDEXING ***");
-		System.out.println("Estimated time taken to index " + docArray.length + 
+		System.out.println("Estimated time taken to index " + documentsToIndex.length + 
 				" documents and around " + dicc.getAllTerms().size() + 
 				" terms: " + estimatedTime + "ms \n\n\n");
 	}
@@ -232,14 +236,30 @@ public class VectorSpaceModel {
 		// Indexes the documents in the docArray, making sure they go to the database.
 		// First boolean determines whether or not to store information in database.
 		// Second boolean determines whether or not to pretty print current term to console.
-		model.index(true, true);
+//		model.index(true, true);
 		
 		// Executes the similarity functions between the 5 documents and 3 queries.
-		model.similarityFunctions();
+//		model.similarityFunctions();
 				
 		// Selects all from the DocTerms table (Doc, Term, TF).
 //		DatabaseManager.mostrarDocTerms();
 //		DatabaseManager.mostrarTerms();
+		
+		// Test DIR 
+		File EIREX = new File("src/main/resources/2010-documents.biased");
+//		Controller.guardarDirArchivos(EIREX);
+		
+		// Mock list needed for createDocArray() method.
+		ArrayList<Documento> docList = new ArrayList<Documento>();
+		Documento[] documents = Controller.createDocArray(EIREX, docList);	
+		
+		
+		// Indexing the EIREX list.
+//		model.index(documents, true, true);
+
+		// Create the document array.
+//		model.index(Arrays.copyOfRange(documents, 0, 1000), false, false);
+		model.index(documents, false, true);
 		
 		// Close database connection.
 		DatabaseManager.close();
