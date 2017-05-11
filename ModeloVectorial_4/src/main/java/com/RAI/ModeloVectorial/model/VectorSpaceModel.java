@@ -48,80 +48,25 @@ public class VectorSpaceModel {
 	public ISimilarityFunction similitudScalar = new ScalarProductCalculator();
 	
 	/**
- 	 * Indexes the documents found in the docArray structure.
-	 * By setting the parameter to True, the method will store the indexed documents 
-	 * and relevant information in the database, in which case the dictionary structures will be cleared
-	 * afterwards to free up main memory. Otherwise, it won't be sent to the database
-	 * and all data will be kept in memory inside of the Dictionary object.  
-	 * 
-	 * NOTE: if toDatabase is set to true, this method will populate the DocTerm (Document, Term, TF) and
-	 * Term(Term, IDF) tables with the indexed information.
-	 * 
-	 * @param toDatabase Boolean value which will determine whether or not to store
+	 * Wrapper method to index an array of documents into the model's dictionary structure
+	 * and pretty print to console if desired.
 	 * @param prettyPrint Boolean value which determine if the currently indexed term is printed to the console.
 	 * the index in the database or not.
 	 */
 	public void index(Documento[] documentsToIndex, boolean prettyPrint) {
-		/* Index the documents in the dictionary.
-		 * We also configure SQLite to make a single transaction after everything
-		 * has been committed in order to save time.
-		 */
 		long startTime = 0;
 		long estimatedTime = 0;
 		
-		try {
-//			DatabaseManager.connect.setAutoCommit(false);
+		startTime = System.currentTimeMillis();
+		Indexer.indizar(documentsToIndex, dicc, prettyPrint);
+		estimatedTime = System.currentTimeMillis() - startTime;
 			
-			startTime = System.currentTimeMillis();
-			Indexer.indizar(documentsToIndex, dicc, prettyPrint);
-			estimatedTime = System.currentTimeMillis() - startTime;
-			
-			DatabaseManager.connect.setAutoCommit(true);
-			
-		} catch (SQLException e) {
-			System.out.println("Error indexing the documents.");
-			e.printStackTrace();
-		}
 		System.out.println("\n\n\n*** END OF INDEXING ***");
 		System.out.println("Estimated time taken to index " + documentsToIndex.length + 
 				" documents and around " + dicc.getAllTerms().size() + 
 				" terms: " + estimatedTime + "ms \n\n\n");
 	}
-	
-	
-	/**
-	 * First creates the structures in memory, then passes them all to the DB to store.
-	 * @param documentsToIndex
-	 * @param toDatabase
-	 * @param prettyPrint
-	 */
-	public void index1(Documento[] documentsToIndex, boolean toDatabase, boolean prettyPrint) {
-		/* Index the documents in the dictionary.
-		 * We also configure SQLite to make a single transaction after everything
-		 * has been committed in order to save time.
-		 */
-		long startTime = 0;
-		long estimatedTime = 0;
 		
-		try {
-			DatabaseManager.connect.setAutoCommit(false);
-			
-			startTime = System.currentTimeMillis();
-			Indexer.indizar(documentsToIndex, dicc, prettyPrint);
-			estimatedTime = System.currentTimeMillis() - startTime;
-			
-			DatabaseManager.connect.setAutoCommit(true);
-			
-		} catch (SQLException e) {
-			System.out.println("Error indexing the documents.");
-			e.printStackTrace();
-		}
-		System.out.println("\n\n\n*** END OF INDEXING ***");
-		System.out.println("Estimated time taken to index " + documentsToIndex.length + 
-				" documents and around " + dicc.getAllTerms().size() + 
-				" terms: " + estimatedTime + "ms \n\n\n");
-	}
-	
 	/**
 	 * Calculates and prints the similarities between all the queries in the queryArray and 
 	 * all the documents in the docArray.
