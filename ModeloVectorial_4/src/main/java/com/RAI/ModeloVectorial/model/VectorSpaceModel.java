@@ -69,19 +69,10 @@ public class VectorSpaceModel {
 		long startTime = 0;
 		long estimatedTime = 0;
 		
-		try {
-//			DatabaseManager.connect.setAutoCommit(false);
+		startTime = System.currentTimeMillis();
+		Indexer.indizar(documentsToIndex, dicc, prettyPrint);
+		estimatedTime = System.currentTimeMillis() - startTime;
 			
-			startTime = System.currentTimeMillis();
-			Indexer.indizar(documentsToIndex, dicc, prettyPrint);
-			estimatedTime = System.currentTimeMillis() - startTime;
-			
-			DatabaseManager.connect.setAutoCommit(true);
-			
-		} catch (SQLException e) {
-			System.out.println("Error indexing the documents.");
-			e.printStackTrace();
-		}
 		System.out.println("\n\n\n*** END OF INDEXING ***");
 		System.out.println("Estimated time taken to index " + documentsToIndex.length + 
 				" documents and around " + dicc.getAllTerms().size() + 

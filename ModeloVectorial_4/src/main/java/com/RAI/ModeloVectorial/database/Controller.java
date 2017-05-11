@@ -150,7 +150,7 @@ public class Controller {
 		long startTime = 0;
 		long estimatedTime = 0;
 		
-		System.out.println("Indexing Term(term, idf).");
+		System.out.println("*** Indexing Term(term, idf).");
 		
 		try {
 			DatabaseManager.connect.setAutoCommit(false);
@@ -160,7 +160,7 @@ public class Controller {
 			for (Term term : allTerms.values()) {
 				currentTerm++;
 				DatabaseManager.saveTerm(term.getFilteredTerm(), term.getIDF());
-				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
+//				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
 			}
 			
 			
@@ -170,10 +170,9 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		System.out.println("Time taken: " + estimatedTime + "ms.");
-		System.out.println("Stored " + termsToStore + " terms in the DB.");
 		
+		System.out.println("--- Stored " + termsToStore + " terms in the DB.");
+		System.out.println("--- Time taken to persist Term table: " + estimatedTime + "ms.");
 	}
 	
 	/**
@@ -187,7 +186,7 @@ public class Controller {
 		long startTime = 0;
 		long estimatedTime = 0;
 		
-		System.out.println("Indexing Term(term, idf).");
+		System.out.println("*** Indexing DocTerm(Document, Term, TF).");
 		
 		try {
 			DatabaseManager.connect.setAutoCommit(false);
@@ -209,7 +208,7 @@ public class Controller {
 					DatabaseManager.saveDocTerm(documentName, term.getFilteredTerm(), term.getTFInDocument(doc));
 				}
 				
-				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
+//				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
 			}
 			
 			
@@ -220,8 +219,7 @@ public class Controller {
 			e.printStackTrace();
 		}
 
-		System.out.println("Time taken: " + estimatedTime + "ms.");
-		System.out.println("Stored " + termsToStore + " terms in the DB.");
+		System.out.println("--- Time taken to persist DocTerm table: " + estimatedTime + "ms.");
 	}
 	
 	
