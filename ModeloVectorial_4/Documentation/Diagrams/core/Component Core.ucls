@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.2.0" icons="true" automaticImage="JPEG" always-add-relationships="false" 
-  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
-  router="FAN">  
-  <package id="1" language="java" name="com.RAI.ModeloVectorial.core" project="ModeloVectorial_4" 
-    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/core" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="797" width="1135" x="1" y="19"/>    
-    <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
-  </package>  
-  <class id="2" language="java" name="com.RAI.ModeloVectorial.core.Documento" project="ModeloVectorial_4" 
+<class-diagram version="1.2.0" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="com.RAI.ModeloVectorial.core.Documento" project="ModeloVectorial_4" 
     file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/core/Documento.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="707" y="343"/>    
@@ -17,7 +11,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.RAI.ModeloVectorial.core.Query" project="ModeloVectorial_4" 
+  <class id="2" language="java" name="com.RAI.ModeloVectorial.core.Query" project="ModeloVectorial_4" 
     file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/core/Query.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="408" y="334"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -26,7 +20,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="4" language="java" name="com.RAI.ModeloVectorial.core.IText" project="ModeloVectorial_4" 
+  <interface id="3" language="java" name="com.RAI.ModeloVectorial.core.IText" project="ModeloVectorial_4" 
     file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/core/IText.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="568" y="158"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -35,7 +29,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="5" language="java" name="com.RAI.ModeloVectorial.core.Occurrences" project="ModeloVectorial_4" 
+  <class id="4" language="java" name="com.RAI.ModeloVectorial.core.Occurrences" project="ModeloVectorial_4" 
     file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/core/Occurrences.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="888" y="629"/>    
@@ -45,7 +39,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="com.RAI.ModeloVectorial.core.Term" project="ModeloVectorial_4" 
+  <class id="5" language="java" name="com.RAI.ModeloVectorial.core.Term" project="ModeloVectorial_4" 
     file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/core/Term.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="178" y="629"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -54,30 +48,38 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="7">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="8" name="occurrences"/>      
-      <multiplicity id="9" minimum="0" maximum="1"/>    
+  <association id="6">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="7" name="terms">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="8" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="10">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
+  <realization id="9">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
   </realization>  
-  <realization id="11">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="4"/>  
-  </realization>  
-  <association id="12">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="13" name="terms"/>      
-      <multiplicity id="14" minimum="0" maximum="2147483647"/>    
+  <association id="10">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="11" name="occurrences">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="12" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="13">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

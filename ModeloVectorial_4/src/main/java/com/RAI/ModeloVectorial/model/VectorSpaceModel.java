@@ -1,16 +1,21 @@
 package com.RAI.ModeloVectorial.model;
 
 import com.RAI.ModeloVectorial.core.Query;
+import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.database.Controller;
 import com.RAI.ModeloVectorial.database.DatabaseManager;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.similarities.CosineCalculator;
+import com.RAI.ModeloVectorial.similarities.ISimilarityFunction;
 import com.RAI.ModeloVectorial.similarities.ScalarProductCalculator;
 
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+
+import org.omg.Messaging.SyncScopeHelper;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.transformation.Indexer;
@@ -18,6 +23,7 @@ import com.RAI.ModeloVectorial.vector.Vector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTF;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
+import com.RAI.ModeloVectorial.weightCalculator.IWeightCalculator;
 
 /**
  * Entry-point for the project, given its main method, which represents the functionality
@@ -27,39 +33,19 @@ import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
  *
  */
 public class VectorSpaceModel {
+	// Create the dictionary
+	public Dictionary dicc = new Dictionary();
+	
 	// Create the vectorizer
-	Vectorizer vectorizer = new Vectorizer();
+	public Vectorizer vectorizer = new Vectorizer();
 	
 	// Create the weight calculators.
-	CalculatorTF calcTF = new CalculatorTF();
-	CalculatorTFIDF calcTFIDF = new CalculatorTFIDF();
+	public IWeightCalculator calcTF = new CalculatorTF();
+	public IWeightCalculator calcTFIDF = new CalculatorTFIDF();
 	
 	// Create the relevance metric calculators.
-	CosineCalculator similitudCos = new CosineCalculator();
-	ScalarProductCalculator similitudScalar = new ScalarProductCalculator();
-	
-	
-	// Create the dictionary
-	Dictionary dicc = new Dictionary();
-	
-	// Create the documents.
-	Documento document1 = new Documento("src/main/resources/2010-22-100.html");
-	Documento document2 = new Documento("src/main/resources/2010-42-103.html");
-	Documento document3 = new Documento("src/main/resources/2010-58-044.html");
-	Documento document4 = new Documento("src/main/resources/2010-76-088.html");
-	Documento document5 = new Documento("src/main/resources/2010-99-086.html");
-	
-	// Create the document array.
-	Documento[] docArray = {document1, document2, document3, document4, document5};
-//	Documento[] docArray = {document1};
-	
-	// Create the queries.
-	Query query1 = new Query("What video game won Spike's best driving game award in 2006?");
-	Query query2 = new Query("What is the default combination of Kensington cables?");
-	Query query3 = new Query("Who won the first ACM Gerard Salton prize?");
-
-	// Create the query array.
-	Query[] queryArray = {query1, query2, query3};
+	public ISimilarityFunction similitudCos = new CosineCalculator();
+	public ISimilarityFunction similitudScalar = new ScalarProductCalculator();
 	
 	/**
  	 * Indexes the documents found in the docArray structure.
@@ -75,7 +61,7 @@ public class VectorSpaceModel {
 	 * @param prettyPrint Boolean value which determine if the currently indexed term is printed to the console.
 	 * the index in the database or not.
 	 */
-	public void index(Documento[] documentsToIndex, boolean toDatabase, boolean prettyPrint) {
+	public void index(Documento[] documentsToIndex, boolean prettyPrint) {
 		/* Index the documents in the dictionary.
 		 * We also configure SQLite to make a single transaction after everything
 		 * has been committed in order to save time.
@@ -84,10 +70,10 @@ public class VectorSpaceModel {
 		long estimatedTime = 0;
 		
 		try {
-			DatabaseManager.connect.setAutoCommit(false);
+//			DatabaseManager.connect.setAutoCommit(false);
 			
 			startTime = System.currentTimeMillis();
-			Indexer.indizar(documentsToIndex, dicc, toDatabase, prettyPrint);
+			Indexer.indizar(documentsToIndex, dicc, prettyPrint);
 			estimatedTime = System.currentTimeMillis() - startTime;
 			
 			DatabaseManager.connect.setAutoCommit(true);
@@ -102,7 +88,45 @@ public class VectorSpaceModel {
 				" terms: " + estimatedTime + "ms \n\n\n");
 	}
 	
-	public void similarityFunctions() {
+	
+	/**
+	 * First creates the structures in memory, then passes them all to the DB to store.
+	 * @param documentsToIndex
+	 * @param toDatabase
+	 * @param prettyPrint
+	 */
+	public void index1(Documento[] documentsToIndex, boolean toDatabase, boolean prettyPrint) {
+		/* Index the documents in the dictionary.
+		 * We also configure SQLite to make a single transaction after everything
+		 * has been committed in order to save time.
+		 */
+		long startTime = 0;
+		long estimatedTime = 0;
+		
+		try {
+			DatabaseManager.connect.setAutoCommit(false);
+			
+			startTime = System.currentTimeMillis();
+			Indexer.indizar(documentsToIndex, dicc, prettyPrint);
+			estimatedTime = System.currentTimeMillis() - startTime;
+			
+			DatabaseManager.connect.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			System.out.println("Error indexing the documents.");
+			e.printStackTrace();
+		}
+		System.out.println("\n\n\n*** END OF INDEXING ***");
+		System.out.println("Estimated time taken to index " + documentsToIndex.length + 
+				" documents and around " + dicc.getAllTerms().size() + 
+				" terms: " + estimatedTime + "ms \n\n\n");
+	}
+	
+	/**
+	 * Calculates and prints the similarities between all the queries in the queryArray and 
+	 * all the documents in the docArray.
+	 */
+	public void printSimilarityFunctions(Documento[] docArray, Query[] queryArray) {
 		System.out.println("*** SIMILARITY FUNCTIONS ***");
 		// Calculating similarity with Scalar Product using TF weights.
 		System.out.println("* RELEVANCIA: ProductoEscalarTF");
@@ -219,50 +243,52 @@ public class VectorSpaceModel {
 		}
 	}
 	
+	/**
+	 * Drops affected tables and creates them again, to have a clean start.
+	 */
+	public void cleanDatabase() {
+		DatabaseManager.dropTable("DocTerm");
+		DatabaseManager.dropTable("Term");
+		
+		DatabaseManager.createTable("DocTerm");
+		DatabaseManager.createTable("Term");
+	}
+	
 	public static void main(String[] args) {
+		// Make an instance of the VectorSpaceModel
 		VectorSpaceModel model = new VectorSpaceModel();
+		
+		// Create the documents.
+		Documento document1 = new Documento("src/main/resources/2010-22-100.html");
+		Documento document2 = new Documento("src/main/resources/2010-42-103.html");
+		Documento document3 = new Documento("src/main/resources/2010-58-044.html");
+		Documento document4 = new Documento("src/main/resources/2010-76-088.html");
+		Documento document5 = new Documento("src/main/resources/2010-99-086.html");
+		
+		// Create the document array.
+		Documento[] docArray = {document1, document2, document3, document4, document5};
+		
+		// Create the queries.
+		Query query1 = new Query("What video game won Spike's best driving game award in 2006?");
+		Query query2 = new Query("What is the default combination of Kensington cables?");
+		Query query3 = new Query("Who won the first ACM Gerard Salton prize?");
+
+		// Create the query array.
+		Query[] queryArray = {query1, query2, query3};
 		
 		// Connect to the DB.
 		DatabaseManager.connect();
 		
-		// Drop pre-existing tables
-		DatabaseManager.dropTable("DocTerm");
-		DatabaseManager.dropTable("Term");
+		// Clean the database (OPTIONAL)
+		// model.cleanDatabase();
 		
-		// Create table
-		DatabaseManager.createTable("DocTerm"); // (Doc, Term, TF)
-		DatabaseManager.createTable("Term"); // (Term, IDF)
-		
-		// Indexes the documents in the docArray, making sure they go to the database.
-		// First boolean determines whether or not to store information in database.
-		// Second boolean determines whether or not to pretty print current term to console.
-//		model.index(true, true);
+		// Indexes the documents in the docArray. Boolean tells us whether to print to console or not.
+		model.index(docArray, true);
 		
 		// Executes the similarity functions between the 5 documents and 3 queries.
-//		model.similarityFunctions();
-				
-		// Selects all from the DocTerms table (Doc, Term, TF).
-//		DatabaseManager.mostrarDocTerms();
-//		DatabaseManager.mostrarTerms();
-		
-		// Test DIR 
-		File EIREX = new File("src/main/resources/2010-documents.biased");
-//		Controller.guardarDirArchivos(EIREX);
-		
-		// Mock list needed for createDocArray() method.
-		ArrayList<Documento> docList = new ArrayList<Documento>();
-		Documento[] documents = Controller.createDocArray(EIREX, docList);	
-		
-		
-		// Indexing the EIREX list.
-//		model.index(documents, true, true);
+		model.printSimilarityFunctions(docArray, queryArray);
 
-		// Create the document array.
-//		model.index(Arrays.copyOfRange(documents, 0, 1000), false, false);
-		model.index(documents, false, true);
-		
-		// Close database connection.
+		// Close the database
 		DatabaseManager.close();
-		
 	}
 }

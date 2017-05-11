@@ -94,9 +94,14 @@ public class Indexer {
 	 * @param documentos
 	 * @param dic
 	 */
-    public static void indizar(Documento[] documentos, Dictionary dic, boolean toDatabase, boolean prettyPrint) {
+    public static void indizar(Documento[] documentos, Dictionary dic, boolean prettyPrint) {
         // Iterate through all documents
+    	int amountOfDocs = documentos.length;
+    	int currentDoc = 0;
+    	
     	for (Documento doc : documentos){
+    		currentDoc++; 
+    		
         	String documentName = doc.toString().substring(doc.toString().lastIndexOf("/")+1);
 
     		// Get the document text without HTML tags and split it
@@ -114,18 +119,14 @@ public class Indexer {
             		// Create the term object
             		termToAdd = new Term(term, filteredTerm);
             		
-            		/* Add the term to the dictionary, telling it also which document it comes from.
-            		 * Depending on the value of toDatabase, call one method or the other.
-            		 */
-            		if (toDatabase) 
-            			dic.addDictionaryEntryToDatabase(termToAdd, doc);
-            		else 
-            			dic.addDictionaryEntry(termToAdd, doc);
-            		
-            		if (prettyPrint)
-            			System.out.println("*** Indexed term: " + termToAdd.getFilteredTerm() + " of Doc: " + documentName);
+            		// Add it to the dictionary
+        			dic.addDictionaryEntry(termToAdd, doc);
             	}
             }
+            
+            if (prettyPrint)
+    			System.out.println("*** Indexed doc: " + currentDoc + " of " + amountOfDocs + " total documents.");
+            
         }
     }
 

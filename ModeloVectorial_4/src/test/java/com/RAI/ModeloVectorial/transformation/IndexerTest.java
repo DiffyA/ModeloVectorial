@@ -74,7 +74,7 @@ public class IndexerTest {
 		String testString2 = "This is is another another another term string to test";
 		
 		// Index all the documents into the array
-		Indexer.indizar(arrayDocs, dicc, false, false);
+		Indexer.indizar(arrayDocs, dicc, false);
 		
 		// Create duplicate strings that go through the same filtering process as the document in the "indizar" method.
 		String cleanString1 = Indexer.filterStopWords(testString1);
@@ -115,7 +115,7 @@ public class IndexerTest {
 		String testString2 = "This is is another another another term string to test";
 		
 		// Index all the documents into the array
-		Indexer.indizar(arrayDocs, dicc, false, false);
+		Indexer.indizar(arrayDocs, dicc, false);
 		
 		// Now we must check if the occurrences of each term in different documents are stored properly.
 		
@@ -148,7 +148,7 @@ public class IndexerTest {
 		System.out.println("Term list before adding: ");
 		System.out.println(dicc.getTermList());
 		
-		indexer.indizar(docsToAdd, dicc, false, false);
+		indexer.indizar(docsToAdd, dicc, false);
 		
 		System.out.println("Term list after adding: ");
 		System.out.println(dicc.getTermList());

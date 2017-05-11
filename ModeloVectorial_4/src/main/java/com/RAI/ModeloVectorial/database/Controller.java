@@ -1,12 +1,14 @@
 package com.RAI.ModeloVectorial.database;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
 import com.RAI.ModeloVectorial.core.Documento;
+import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Term;
 
 public class Controller {
@@ -135,6 +137,91 @@ public class Controller {
 	    Documento[] docArray = emptyList.toArray(new Documento[emptyList.size()]);
 	    
 	    return docArray;
+	}
+	
+	/**
+	 * Takes the structure created in the dictionary and stores it in the database.
+	 * Term(term, IDF)
+	 * @param allTerms
+	 */
+	public static void storeTerms(HashMap<String, Term> allTerms) {
+		int termsToStore = allTerms.values().size();
+		int currentTerm = 0;
+		long startTime = 0;
+		long estimatedTime = 0;
+		
+		System.out.println("Indexing Term(term, idf).");
+		
+		try {
+			DatabaseManager.connect.setAutoCommit(false);
+			startTime = System.currentTimeMillis();
+			
+			
+			for (Term term : allTerms.values()) {
+				currentTerm++;
+				DatabaseManager.saveTerm(term.getFilteredTerm(), term.getIDF());
+				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
+			}
+			
+			
+			DatabaseManager.connect.setAutoCommit(true);
+			estimatedTime = System.currentTimeMillis() - startTime;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("Time taken: " + estimatedTime + "ms.");
+		System.out.println("Stored " + termsToStore + " terms in the DB.");
+		
+	}
+	
+	/**
+	 * Takes the structure created in the dictionary and stores it in the database.
+	 * DocTerm(Doc, Term, Tf)
+	 * @param allTerms
+	 */
+	public static void storeDocTerms(HashMap<String, Term> allTerms) {
+		int termsToStore = allTerms.values().size();
+		int currentTerm = 0;
+		long startTime = 0;
+		long estimatedTime = 0;
+		
+		System.out.println("Indexing Term(term, idf).");
+		
+		try {
+			DatabaseManager.connect.setAutoCommit(false);
+			startTime = System.currentTimeMillis();
+			
+			
+			for (Term term : allTerms.values()) {
+				currentTerm++;
+				DatabaseManager.saveTerm(term.getFilteredTerm(), term.getIDF());
+				
+//				Documento doc = (Documento) term.getListOfDocuments().iterator().next();
+				
+				for (IText doc : term.getListOfDocuments()) {
+					Documento currentDoc = (Documento) doc;
+					String documentName = currentDoc.toString().substring(currentDoc.toString().lastIndexOf("\\")+1);
+					
+//					System.out.println(documentName);
+					
+					DatabaseManager.saveDocTerm(documentName, term.getFilteredTerm(), term.getTFInDocument(doc));
+				}
+				
+				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
+			}
+			
+			
+			DatabaseManager.connect.setAutoCommit(true);
+			estimatedTime = System.currentTimeMillis() - startTime;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("Time taken: " + estimatedTime + "ms.");
+		System.out.println("Stored " + termsToStore + " terms in the DB.");
 	}
 	
 	

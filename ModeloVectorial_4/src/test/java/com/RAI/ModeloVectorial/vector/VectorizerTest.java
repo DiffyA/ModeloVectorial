@@ -42,7 +42,7 @@ public class VectorizerTest {
 		
 		Documento[] docsToIndex = {doc1, doc2};
 		
-		Indexer.indizar(docsToIndex, dicc, false, false);
+		Indexer.indizar(docsToIndex, dicc, false);
 		
 		System.out.println("Dicc document list: ");
 		System.out.println(dicc.getDocumentList());

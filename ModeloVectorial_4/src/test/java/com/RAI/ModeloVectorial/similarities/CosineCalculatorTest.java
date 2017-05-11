@@ -47,7 +47,7 @@ public class CosineCalculatorTest {
 
         // Add the documents to the dictionary
         Documento[] documentsToAdd = {doc1, doc2};
-        Indexer.indizar(documentsToAdd, dicc, false, false);
+        Indexer.indizar(documentsToAdd, dicc, false);
 
         // Print the term list stored in the dictionary index
         System.out.println("Terms in dictionary index:" + dicc.getTermList() + "\n");
