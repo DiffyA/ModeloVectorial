@@ -14,10 +14,10 @@ import com.RAI.ModeloVectorial.core.Term;
  * @author vdegou
  *
  */
-public class Vector {
+public class DocVector {
 	private HashMap<Term, Double> vector = new HashMap<Term, Double>();
 	
-	public Vector(HashMap<Term, Double> vector) {
+	public DocVector(HashMap<Term, Double> vector) {
 		this.vector = vector;
 	}
 	

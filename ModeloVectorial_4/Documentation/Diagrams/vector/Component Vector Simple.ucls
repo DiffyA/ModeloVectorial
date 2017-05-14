@@ -16,8 +16,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.RAI.ModeloVectorial.vector.Vector" project="ModeloVectorial_4" 
-    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/vector/Vector.java" binary="false" 
+  <class id="3" language="java" name="com.RAI.ModeloVectorial.vector.DocVector" project="ModeloVectorial_4" 
+    file="/ModeloVectorial_4/src/main/java/com/RAI/ModeloVectorial/vector/DocVector.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="438" y="226"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

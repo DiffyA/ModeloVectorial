@@ -6,8 +6,20 @@ public class DatabaseTest {
 		DatabaseManager.connect();
 //		DatabaseManager.dropTable("DocTerm");
 //		DatabaseManager.dropTable("Term");
-		DatabaseManager.mostrarDocTerms();
+//		DatabaseManager.mostrarDocTerms();
 //		DatabaseManager.mostrarTerms();
+		
+//		DatabaseManager.createTable("Relevancias");
+//		DatabaseManager.dropTable("Relevancias");
+		
+//		DatabaseManager.storeRelevance("src/main/resources/2010.union.trel");
+		
+//		DatabaseManager.mostrarRelevancias();
+		
+		
+		DatabaseManager.obtainAllTFIDFVectors();
+		
+		
 		DatabaseManager.close();
 	}
 }

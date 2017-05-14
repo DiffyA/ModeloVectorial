@@ -19,7 +19,7 @@ import org.omg.Messaging.SyncScopeHelper;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.transformation.Indexer;
-import com.RAI.ModeloVectorial.vector.Vector;
+import com.RAI.ModeloVectorial.vector.DocVector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTF;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
@@ -134,8 +134,8 @@ public class VectorSpaceModel {
 			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
-				Vector docVector = vectorizer.toVector(doc, dicc, calcTF);
-				Vector queryVector = vectorizer.toVector(query, dicc, calcTF);
+				DocVector docVector = vectorizer.toVector(doc, dicc, calcTF);
+				DocVector queryVector = vectorizer.toVector(query, dicc, calcTF);
 				
 				// Obtain similarity
 				double similarity = similitudScalar.calculate(docVector, queryVector);
@@ -163,8 +163,8 @@ public class VectorSpaceModel {
 			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
-				Vector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
-				Vector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
+				DocVector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
+				DocVector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
 				
 				// Obtain similarity
 				double similarity = similitudScalar.calculate(docVector, queryVector);
@@ -192,8 +192,8 @@ public class VectorSpaceModel {
 			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
-				Vector docVector = vectorizer.toVector(doc, dicc, calcTF);
-				Vector queryVector = vectorizer.toVector(query, dicc, calcTF);
+				DocVector docVector = vectorizer.toVector(doc, dicc, calcTF);
+				DocVector queryVector = vectorizer.toVector(query, dicc, calcTF);
 				
 				// Obtain similarity
 				double similarity = similitudCos.calculate(docVector, queryVector);
@@ -221,8 +221,8 @@ public class VectorSpaceModel {
 			for (Query query : queryArray) {
 				
 				// Obtain vectors to compare
-				Vector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
-				Vector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
+				DocVector docVector = vectorizer.toVector(doc, dicc, calcTFIDF);
+				DocVector queryVector = vectorizer.toVector(query, dicc, calcTFIDF);
 				
 				// Obtain similarity
 				double similarity = similitudCos.calculate(docVector, queryVector);

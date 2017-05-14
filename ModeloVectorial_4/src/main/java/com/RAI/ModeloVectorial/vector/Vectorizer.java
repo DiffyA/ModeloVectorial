@@ -14,14 +14,14 @@ import com.RAI.ModeloVectorial.weightCalculator.IWeightCalculator;
 /**
  * The Vectorizer class takes a document, a dictionary, and a calculator
  * to calculate the vector representation of a document, in the form of a
- * DocumentVector object. Refer to the {@link com.RAI.ModeloVectorial.vector.Vector} class for further information.
+ * DocumentVector object. Refer to the {@link com.RAI.ModeloVectorial.vector.DocVector} class for further information.
  * 
  * It requires a Dictionary object because this is the object that allows us to obtain
  * the IDF values for the terms, which is necessary in order to calculate the weight of the 
  * term. 
  * 
  * @author vdegou
- * @see com.RAI.ModeloVectorial.vector.Vector
+ * @see com.RAI.ModeloVectorial.vector.DocVector
  *
  */
 public class Vectorizer {
@@ -33,7 +33,7 @@ public class Vectorizer {
 	 * @param calc
 	 * @return
 	 */
-	public Vector toVector(Query query, Dictionary dicc, IWeightCalculator calc) {
+	public DocVector toVector(Query query, Dictionary dicc, IWeightCalculator calc) {
 		HashMap<Term, Double> vector = new HashMap<Term, Double>();
 		
 		// Obtain filtered terms of the query
@@ -51,7 +51,7 @@ public class Vectorizer {
 		}
 		
 		// Create the DocumentVector object
-		Vector queryVector = new Vector(vector);
+		DocVector queryVector = new DocVector(vector);
 		
 		return queryVector;
 	}
@@ -64,7 +64,7 @@ public class Vectorizer {
 	 * @param calc
 	 * @return
 	 */
-	public Vector toVector(Documento doc, Dictionary dicc, IWeightCalculator calc) {
+	public DocVector toVector(Documento doc, Dictionary dicc, IWeightCalculator calc) {
 		HashMap<Term, Double> vector = new HashMap<Term, Double>();
 		
 		// Obtain filtered terms of a document
@@ -84,7 +84,7 @@ public class Vectorizer {
 			vector.put(t, calc.calculate(t, doc));
 		}
 		
-		Vector docVector = new Vector(vector);
+		DocVector docVector = new DocVector(vector);
 		
 		return docVector;
 	}

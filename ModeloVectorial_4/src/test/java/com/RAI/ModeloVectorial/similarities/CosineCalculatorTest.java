@@ -6,7 +6,7 @@ import com.RAI.ModeloVectorial.core.Term;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.similarities.CosineCalculator;
 import com.RAI.ModeloVectorial.transformation.Indexer;
-import com.RAI.ModeloVectorial.vector.Vector;
+import com.RAI.ModeloVectorial.vector.DocVector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
 
@@ -53,9 +53,9 @@ public class CosineCalculatorTest {
         System.out.println("Terms in dictionary index:" + dicc.getTermList() + "\n");
 
         // Vectorize all documents, as well as the query
-        Vector docVector1 = vectorizer.toVector(doc1, dicc, calculator);
-        Vector docVector2 = vectorizer.toVector(doc2, dicc, calculator);
-        Vector queryVector = vectorizer.toVector(query, dicc, calculator);
+        DocVector docVector1 = vectorizer.toVector(doc1, dicc, calculator);
+        DocVector docVector2 = vectorizer.toVector(doc2, dicc, calculator);
+        DocVector queryVector = vectorizer.toVector(query, dicc, calculator);
 
         // Check the similarity between docVector1 and queryVector
         // The following expected results have been calculated by hand:

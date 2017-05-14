@@ -1,7 +1,7 @@
 package com.RAI.ModeloVectorial.similarities;
 
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.vector.Vector;
+import com.RAI.ModeloVectorial.vector.DocVector;
 
 import static java.lang.Math.pow;
 
@@ -14,7 +14,7 @@ import static java.lang.Math.pow;
  */
 public class CosineCalculator implements ISimilarityFunction {
 	
-    public double calculate(Vector docVec, Vector queryVec) {
+    public double calculate(DocVector docVec, DocVector queryVec) {
 
         ISimilarityFunction calc = new ScalarProductCalculator();
         double scalarProduct = calc.calculate(docVec,queryVec);

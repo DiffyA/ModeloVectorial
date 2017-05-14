@@ -2,6 +2,7 @@ package com.RAI.ModeloVectorial.model;
 
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Term;
+import com.RAI.ModeloVectorial.crawler.Crawler;
 import com.RAI.ModeloVectorial.database.Controller;
 import com.RAI.ModeloVectorial.database.DatabaseManager;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.transformation.Indexer;
-import com.RAI.ModeloVectorial.vector.Vector;
+import com.RAI.ModeloVectorial.vector.DocVector;
 import com.RAI.ModeloVectorial.vector.Vectorizer;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTF;
 import com.RAI.ModeloVectorial.weightCalculator.CalculatorTFIDF;
@@ -90,6 +91,11 @@ public class DocumentRecoveryEngine {
 		
 		// ---------- OBTAINING THE QUERIES FROM THE FILE --------------------------
 		// TODO: Obtain the queries from the file
+		// This will be done using JSoup to retrieve the relevant information from the 2010-topics.xml and 2010.union.trel files
+		
+		ArrayList<Query> queries = Crawler.getQueries("src/main/resources/2010-topics.xml");
+		
+		
 		
 	}
 }

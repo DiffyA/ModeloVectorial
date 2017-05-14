@@ -1,15 +1,19 @@
 package com.RAI.ModeloVectorial.database;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.*;
 
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
+import com.RAI.ModeloVectorial.vector.DocVector;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,16 +54,26 @@ public class DatabaseManager {
 		if(table.equals("Documentos")){
 			statement = "CREATE TABLE Documentos (name VARCHAR2(20) NULL, filepath VARCHAR2(80) NOT NULL, PRIMARY KEY (filepath))";
 		}
-		if(table.equals("DocTerm")){
-			statement = "CREATE TABLE DocTerm (doc VARCHAR2(20) NOT NULL, term VARCHAR2(20) NOT NULL, termFrec NUMBER(6) NOT NULL, PRIMARY KEY (doc, term))";
+		else if(table.equals("DocTerm")){
+			statement = "CREATE TABLE DocTerm (doc VARCHAR2(80) NOT NULL, term VARCHAR2(20) NOT NULL, termFrec NUMBER(6) NOT NULL, PRIMARY KEY (doc, term))";
 		}
-		if(table.equals("Term")){
+		else if(table.equals("Term")){
 			statement = "CREATE TABLE Term (term VARCHAR2(20) NOT NULL, idf NUMBER(6) NOT NULL, PRIMARY KEY (term))";
 		}
+		else if(table.equals("Relevancias")){
+			statement = "CREATE TABLE Relevancias (consulta VARCHAR2(20) NOT NULL, documento VARCHAR2(80) NOT NULL, relevancia NUMBER(1) NOT NULL, PRIMARY KEY (consulta, documento))";
+		}
+		else if(table.equals("TermQuery")){
+			statement = "CREATE TABLE TermQuery (id VARCHAR2(20) NOT NULL, term VARCHAR2(20) NOT NULL, PRIMARY KEY (id, term))";
+		}
+		/*else{
+			statement = "CREATE TABLE "+table+" (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))";
+			System.out.println(statement);
+		}*/
         try {
-        	PreparedStatement st = connect.prepareStatement(statement);	
+        	PreparedStatement st = connect.prepareStatement(statement.toString());	
         	st.execute();
-            System.out.println("*** Tabla creada");
+            System.out.println("*** Tabla '"+table+"' creada");
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -77,15 +91,75 @@ public class DatabaseManager {
 		if(table.equals("Term")){
 			statement = "DROP TABLE IF EXISTS Term";
 		}
+		if(table.equals("Relevancias")){
+			statement = "DROP TABLE IF EXISTS Relevancias";
+		}
+		if(table.equals("TermQuery")){
+			statement = "DROP TABLE IF EXISTS TermQuery";
+		}
 		try {
         	PreparedStatement st = connect.prepareStatement(statement);	
             st.execute();
-            //System.out.println("*** Tabla Documentos borrada");
+            System.out.println("*** Tabla "+table+" borrada");
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
     }
 	
+	public static void storeRelevance(String filepath){
+		File file = new File(filepath);	//Ruta donde buscar las relevancias.
+		
+		try{
+			Scanner scanner = new Scanner(file);
+			connect.setAutoCommit(false);
+		    while(scanner.hasNext()){
+		    	String[] line = scanner.nextLine().split("\t");
+		    	//System.out.println("line "+line[1]+" "+line[2]+" "+line[3]);
+				//																		(query, doc, rel)
+		    	PreparedStatement st = connect.prepareStatement("insert into Relevancias values (?,?,?)");
+	        	//for(int i=0; i<line.length; i++){
+	        		st.setString(1, line[1]);
+	        		st.setString(2, line[2]);
+	        		st.setString(3, line[3]);
+	        		st.execute();
+	        		System.out.println("insertada relevancia: "+line[1]+" "+line[2]+" "+line[3]);
+	        	//}
+		    }
+		    scanner.close();
+		    System.out.println("*** Relevancias guardadas");
+		    connect.setAutoCommit(true);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        } catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
+	
+	public static ArrayList<String> consultarDocsRelevantes(String query, int rel){
+        ResultSet result = null;
+        try {
+        	PreparedStatement st = connect.prepareStatement("SELECT documento FROM Relevancias WHERE consulta=? AND relevancia>=?");
+        	st.setString(1, query);
+        	st.setInt(2, rel);
+            result = st.executeQuery();
+            
+            ArrayList<String> relevantes = new ArrayList<String>();
+            
+			while(result.next()){
+				relevantes.add(result.getObject(1).toString());
+			}
+			
+			//Aqui no hace falta hacer el BUBBLE SORT
+            
+            return relevantes;
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return null;
+    }
 	
 	public static void saveDocTerm(String d, String t, double tf){
         try{
@@ -429,6 +503,28 @@ public class DatabaseManager {
         return null;
     }
 	
+	public static void mostrarRelevancias() {
+        ResultSet result = null;
+        try {
+            PreparedStatement st = connect.prepareStatement("select * from Relevancias");
+            result = st.executeQuery();
+            System.out.println("--- Mostrar Relevancias ---");
+            int i=0;
+            while (result.next()) {
+            	System.out.print(result.getString("consulta"));
+                System.out.print("\t"+result.getString("documento"));
+                System.out.println("\t"+result.getString("relevancia"));
+                if(i<10){
+                	i++;
+                }else{
+                	i=0;
+                }
+            }
+            System.out.println("");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+	}
 	
 	public static void mostrarDocTerms(){
         ResultSet result = null;
@@ -613,6 +709,31 @@ public class DatabaseManager {
         return null;
     }
 	
+	/**
+	 * Returns a list of all documents in the DB expressed as TFIDF vectors.
+	 */
+	public static void obtainAllTFIDFVectors() {
+		ArrayList<DocVector> vectors = new ArrayList<DocVector>();
+		
+		 ResultSet result = null;
+	        try {
+	        	PreparedStatement st = connect.prepareStatement("SELECT * FROM Documentos");
+	        	result = st.executeQuery();
+	        	int rows = result.getInt(1);
+	        	System.out.println("rows: "+rows);
+	        	
+	            for (int i=0; result.next(); i++) {
+	            	Documento doc = new Documento(result.getString("filepath"));
+	                System.out.print("File path: ");
+	                System.out.println(doc.getFilePath());
+//	                System.out.println("=======================");
+	            }
+	            //System.out.println("");
+	        } catch (SQLException ex) {
+	            System.err.println(ex.getMessage());
+	        }
+	        
+	}
 	
 //	public void saveAllDocuments(Set<Documento> sd){
 //        try{

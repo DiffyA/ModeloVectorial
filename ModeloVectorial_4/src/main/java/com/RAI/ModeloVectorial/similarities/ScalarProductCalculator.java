@@ -1,7 +1,7 @@
 package com.RAI.ModeloVectorial.similarities;
 
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.vector.Vector;
+import com.RAI.ModeloVectorial.vector.DocVector;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class ScalarProductCalculator implements ISimilarityFunction {
     
-	public double calculate(Vector docVec, Vector queryVec){
+	public double calculate(DocVector docVec, DocVector queryVec){
 
         HashMap<Term, Double> docTerms = docVec.getVector();
         HashMap<Term, Double> queryTerms = queryVec.getVector();

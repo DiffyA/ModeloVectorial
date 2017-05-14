@@ -2,7 +2,7 @@ package com.RAI.ModeloVectorial.similarities;
 
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
-import com.RAI.ModeloVectorial.vector.Vector;
+import com.RAI.ModeloVectorial.vector.DocVector;
 import com.RAI.ModeloVectorial.core.Documento;
 
 /**
@@ -20,5 +20,5 @@ public interface ISimilarityFunction {
 	 * @param queryVec
 	 * @return the similarity value
 	 */
-    public double calculate(Vector docVec, Vector queryVec);
+    public double calculate(DocVector docVec, DocVector queryVec);
 }
