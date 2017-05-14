@@ -17,11 +17,17 @@ import com.RAI.ModeloVectorial.transformation.Indexer;
  */
 public class Query implements IText{
 	private String content;
+	private String id;
 	private Set<Term> terms = new HashSet<Term>();
 
 	public Query(String consulta) {
 		this.content = consulta;
 		Indexer.processQuery(this);
+	}
+	
+	public Query(String id, String query) {
+		this.id = id;
+		this.content = query;
 	}
 	
 	public String getCleanContent() {
@@ -30,6 +36,10 @@ public class Query implements IText{
 	
 	public Set<Term> getTerms() {
 		return terms;
+	}
+	
+	public String getId() {
+		return id;
 	}
 	
 }
