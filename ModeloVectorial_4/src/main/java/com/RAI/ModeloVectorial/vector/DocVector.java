@@ -16,9 +16,19 @@ import com.RAI.ModeloVectorial.core.Term;
  */
 public class DocVector {
 	private HashMap<Term, Double> vector = new HashMap<Term, Double>();
+	private String id;
 	
 	public DocVector(HashMap<Term, Double> vector) {
 		this.vector = vector;
+	}
+	
+	public DocVector(HashMap<Term, Double> vector, String id) {
+		this.vector = vector;
+		this.id = id;
+	}
+	
+	public String getId() {
+		return this.id;
 	}
 	
 	@Override
