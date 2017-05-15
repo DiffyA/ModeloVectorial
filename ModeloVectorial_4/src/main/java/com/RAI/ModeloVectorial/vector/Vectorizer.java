@@ -7,6 +7,7 @@ import java.util.Set;
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.Term;
+import com.RAI.ModeloVectorial.database.DatabaseManager;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.transformation.Indexer;
 import com.RAI.ModeloVectorial.weightCalculator.IWeightCalculator;
@@ -88,4 +89,35 @@ public class Vectorizer {
 		
 		return docVector;
 	}
+	
+	/**
+	 * Creates a vector given a query, getting the information from the DB.
+	 * @param query
+	 * @param calc
+	 * @return
+	 */
+	public DocVector toVector(Query query) {
+		HashMap<Term, Double> vector = new HashMap<Term, Double>();
+		
+		// Obtain terms of the query
+		Set<Term> termsInQuery =  query.getTerms();
+		
+		for (Term t : termsInQuery) {
+			int termTF = t.getTFInDocument(query);
+			double termIDF = DatabaseManager.obtainIDFofTerm(t.getFilteredTerm());
+			
+			vector.put(new Term(t.getFilteredTerm()), termTF * termIDF);
+			
+			//System.out.println(t.getFilteredTerm() + t.getTFInDocument(query));
+			
+			// Store TF of terms
+//			TFofTerms.put(t.getFilteredTerm(), t.getTFInDocument(query));
+		}
+		
+		DocVector docVector = new DocVector(vector, query.getId(), 0);
+		
+		return docVector;
+	}
+	
+	
 }

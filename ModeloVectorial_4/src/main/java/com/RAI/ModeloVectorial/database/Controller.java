@@ -1,7 +1,10 @@
 package com.RAI.ModeloVectorial.database;
 
 import java.io.File;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -10,6 +13,7 @@ import java.util.Vector;
 import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Term;
+import com.RAI.ModeloVectorial.vector.DocVector;
 
 public class Controller {
 	
@@ -139,6 +143,34 @@ public class Controller {
 	    return docArray;
 	}
 	
+	public static void storeDocs(Set<Documento> documents){
+		int docsToStore = documents.size();
+		int currentDoc = 0;
+		long startTime = 0;
+		long estimatedTime = 0;
+		
+		System.out.println("*** Indexing Documentos(name, filepath).");
+		
+		try {
+			DatabaseManager.connect.setAutoCommit(false);
+			startTime = System.currentTimeMillis();
+		
+			for (Documento doc : documents) {
+				String documentName = doc.toString().substring(doc.toString().lastIndexOf("/")+1);
+	
+				DatabaseManager.saveDoc(documentName, doc.getFilePath());
+			}
+			
+			DatabaseManager.connect.setAutoCommit(true);
+			estimatedTime = System.currentTimeMillis() - startTime;
+		} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+		System.out.println("--- Stored " + docsToStore + " documents in the DB.");
+		System.out.println("--- Time taken to persist Term table: " + estimatedTime + "ms.");
+	}
+	
 	/**
 	 * Takes the structure created in the dictionary and stores it in the database.
 	 * Term(term, IDF)
@@ -160,7 +192,7 @@ public class Controller {
 			for (Term term : allTerms.values()) {
 				currentTerm++;
 				DatabaseManager.saveTerm(term.getFilteredTerm(), term.getIDF());
-//				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
+				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
 			}
 			
 			
@@ -195,7 +227,7 @@ public class Controller {
 			
 			for (Term term : allTerms.values()) {
 				currentTerm++;
-				DatabaseManager.saveTerm(term.getFilteredTerm(), term.getIDF());
+//				DatabaseManager.saveTerm(term.getFilteredTerm(), term.getIDF());
 				
 //				Documento doc = (Documento) term.getListOfDocuments().iterator().next();
 				
@@ -208,7 +240,7 @@ public class Controller {
 					DatabaseManager.saveDocTerm(documentName, term.getFilteredTerm(), term.getTFInDocument(doc));
 				}
 				
-//				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
+				System.out.println("Indexed term " + currentTerm + " of " + termsToStore);
 			}
 			
 			
@@ -278,7 +310,7 @@ public class Controller {
 		con.connect();
 		
 		if(table.equals("Documentos")){
-			con.mostrarDocs();
+			con.mostrarDocumentos();
 		}
 		if(table.equals("DocTerm")){
 			con.mostrarDocTerms();
@@ -312,6 +344,64 @@ public class Controller {
 		con.createTable(table);
 		
 	    con.close();
+	}
+	
+	/**
+	 * Calculates the TFIDFVectors of all documents in the database.
+	 * @return
+	 */
+	public static ArrayList<DocVector> obtainAllTFIDFVectors() {
+		long startTime = System.currentTimeMillis();
+		long estimatedTime = 0;
+		
+		ArrayList<DocVector> vectors = new ArrayList<DocVector>();
+		
+		System.out.println("*** Creating DocVectors of all documents in Documents table.");
+		
+		ResultSet result = null;
+        try {
+        	
+        	PreparedStatement st = DatabaseManager.connect.prepareStatement("SELECT name, filepath FROM Documentos");
+        	result = st.executeQuery();
+        	
+        	Statement s = DatabaseManager.connect.createStatement();
+        	ResultSet r = s.executeQuery("SELECT COUNT(*) AS rowcount FROM Documentos");
+        	r.next();
+        	int count = r.getInt("rowcount");
+        	
+        	// For each document
+            for (int i=0; result.next(); i++) {
+            	// Obtain vector of current document
+            	String document = result.getString("name");
+            	String filepath = result.getString("filepath");
+            	
+            	// TODO: FIX THIS WHY ISNT IT WORKINGGGG OOOHOHFEHFE
+				String documentName = document.substring(document.lastIndexOf("\\")+1);
+
+            	
+            	DocVector vector = DatabaseManager.obtainTFIDFVector(documentName);
+            	
+//				System.out.println(documentName);
+//            	System.out.println(document);
+
+//            	System.out.println(filepath);
+//            	System.out.println(vector.getId() + vector.getSoftVector());
+            	
+            	vectors.add(vector);
+            	
+            	System.out.println("Vectorized " + i + " document of " + count);
+            	
+            }
+            estimatedTime = System.currentTimeMillis() - startTime;
+            System.out.println("--- Vectorized " + count + " documents from the DB.");
+    		System.out.println("--- Time taken to create vectors: " + estimatedTime + " ms.");
+            
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }    
+        
+        return vectors;
 	}
 	
 	

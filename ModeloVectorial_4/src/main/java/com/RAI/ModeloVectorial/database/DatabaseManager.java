@@ -219,8 +219,9 @@ public class DatabaseManager {
         }
     }
 	
+//	public static void storeDocs()
 	
-	public void saveDoc(String nom, String dir){
+	public static void saveDoc(String nom, String dir){
         try {
             PreparedStatement st = connect.prepareStatement("insert into Documentos values (?,?)");
             st.setString(1, nom);
@@ -576,7 +577,7 @@ public class DatabaseManager {
     }
 	
 	
-	public void mostrarDocs(){
+	public static void mostrarDocumentos(){
         ResultSet result = null;
         try {
             PreparedStatement st = connect.prepareStatement("select * from Documentos");
@@ -709,30 +710,70 @@ public class DatabaseManager {
         return null;
     }
 	
+//	/**
+//	 * Returns a list of all documents in the DB expressed as TFIDF vectors.
+//	 */
+//	public static void obtainAllTFIDFVectors() {
+//		ArrayList<DocVector> vectors = new ArrayList<DocVector>();
+//		
+//		 ResultSet result = null;
+//	        try {
+//	        	PreparedStatement st = connect.prepareStatement("SELECT * FROM Documentos");
+//	        	result = st.executeQuery();
+//	        	int rows = result.getInt(1);
+//	        	System.out.println("rows: "+rows);
+//	        	
+//	            for (int i=0; result.next(); i++) {
+//	            	Documento doc = new Documento(result.getString("filepath"));
+//	                System.out.print("File path: ");
+//	                System.out.println(doc.getFilePath());
+////	                System.out.println("=======================");
+//	            }
+//	            //System.out.println("");
+//	        } catch (SQLException ex) {
+//	            System.err.println(ex.getMessage());
+//	        }
+//	        
+//	}
+//	
+	
+	
 	/**
-	 * Returns a list of all documents in the DB expressed as TFIDF vectors.
+	 * Returns a DocVector representation of the provided document obtained
+	 * from the information stored in the database.
+	 * @param document
 	 */
-	public static void obtainAllTFIDFVectors() {
-		ArrayList<DocVector> vectors = new ArrayList<DocVector>();
+	public static DocVector obtainTFIDFVector(String document) {
+		HashMap<Term, Double> vector = new HashMap<Term, Double>();
+		DocVector vectorObject = null;
 		
-		 ResultSet result = null;
+		ResultSet resultSet = null;
 	        try {
-	        	PreparedStatement st = connect.prepareStatement("SELECT * FROM Documentos");
-	        	result = st.executeQuery();
-	        	int rows = result.getInt(1);
-	        	System.out.println("rows: "+rows);
 	        	
-	            for (int i=0; result.next(); i++) {
-	            	Documento doc = new Documento(result.getString("filepath"));
-	                System.out.print("File path: ");
-	                System.out.println(doc.getFilePath());
-//	                System.out.println("=======================");
+	        	// Query does a left outer join on Term and DocTerm table on "term", to have IDF and TF on same table. Then filters by document.
+	        	PreparedStatement st = connect.prepareStatement("SELECT DocTerm.term, DocTerm.termFrec, Term.idf FROM DocTerm LEFT OUTER JOIN Term on DocTerm.term = Term.term WHERE doc=?");
+	        	st.setString(1, document);
+	        	resultSet = st.executeQuery();
+	        	
+//	        	int rows = resultSet.getInt(1);
+//	        	System.out.println("rows: "+rows);
+	        	
+	            for (int i=0; resultSet.next(); i++) {
+//	            	System.out.println(resultSet.getString("term") + "\t" + resultSet.getString("termFrec") + "\t" + resultSet.getString("idf"));
+	            	Term term = new Term(resultSet.getString("term"));
+	            	Double TFIDFweight = resultSet.getInt("termFrec") * resultSet.getDouble("idf");
+	            	vector.put(term, TFIDFweight);
 	            }
-	            //System.out.println("");
+	            
+//	            System.out.println(vector);
+	            
+	            vectorObject = new DocVector(vector, document, 0);
+	            
 	        } catch (SQLException ex) {
 	            System.err.println(ex.getMessage());
-	        }
+	        }    
 	        
+        return vectorObject;
 	}
 	
 //	public void saveAllDocuments(Set<Documento> sd){
@@ -801,5 +842,259 @@ public class DatabaseManager {
 			}
 		}
 	}*/
+	
+	public static void dropQueryTables(){
+		try {
+        	PreparedStatement st;
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010001");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010002");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010003");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010004");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010005");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010006");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010007");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010008");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010009");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010010");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010011");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010012");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010013");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010014");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010015");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010016");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010017");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010018");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010019");
+            st.execute();
+            st = connect.prepareStatement("DROP TABLE IF EXISTS T2010020");
+            st.execute();
+            System.out.println("*** Tablas de queries borradas");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+	
+	
+	public static void createQueryTables(){
+		PreparedStatement st;
+		try {
+//        	PreparedStatement st = connect.prepareStatement("CREATE TABLE T001 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+//        	st.execute();
+//        	 st = connect.prepareStatement("CREATE TABLE T002 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+//        	st.execute();
+//        	 st = connect.prepareStatement("CREATE TABLE T003 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+//        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010001 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	
+        	st = connect.prepareStatement("CREATE TABLE T2010002 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010003 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010004 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010005 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010006 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010007 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010008 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010009 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010010 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010011 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010012 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010013 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010014 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010015 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010016 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010017 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010018 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010019 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+        	 st = connect.prepareStatement("CREATE TABLE T2010020 (doc VARCHAR2(80) NOT NULL, cos NUMBER(10) NOT NULL, PRIMARY KEY (doc))");	
+        	st.execute();
+            System.out.println("*** Tablas de queries creadas");
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+	
+	public static void saveSimilitud(String query_table, String doc, double similitud){
+		
+		
+        try {
+        	PreparedStatement st = connect.prepareStatement("");
+        	if(query_table.equals("2010-001")){
+        		st = connect.prepareStatement("insert into T2010001 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-002")){
+        		st = connect.prepareStatement("insert into T2010002 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-003")){
+        		st = connect.prepareStatement("insert into T2010003 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-004")){
+        		st = connect.prepareStatement("insert into T2010004 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-005")){
+        		st = connect.prepareStatement("insert into T2010005 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-006")){
+        		st = connect.prepareStatement("insert into T2010006 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-007")){
+        		st = connect.prepareStatement("insert into T2010007 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-008")){
+        		st = connect.prepareStatement("insert into T2010008 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-009")){
+        		st = connect.prepareStatement("insert into T2010009 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-010")){
+        		st = connect.prepareStatement("insert into T2010010 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-011")){
+        		st = connect.prepareStatement("insert into T2010011 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-012")){
+        		st = connect.prepareStatement("insert into T2010012 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-013")){
+        		st = connect.prepareStatement("insert into T2010013 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-014")){
+        		st = connect.prepareStatement("insert into T2010014 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-015")){
+        		st = connect.prepareStatement("insert into T2010015 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-016")){
+        		st = connect.prepareStatement("insert into T2010016 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-017")){
+        		st = connect.prepareStatement("insert into T2010017 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-018")){
+        		st = connect.prepareStatement("insert into T2010018 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-019")){
+        		st = connect.prepareStatement("insert into T2010019 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        	if(query_table.equals("2010-020")){
+        		st = connect.prepareStatement("insert into T2010020 values (?,?)");
+        		st.setString(1, doc);
+                st.setDouble(2, similitud);
+                st.execute();
+        	}
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+	
+	public static double obtainIDFofTerm(String term) {
+		ResultSet resultSet = null;
+		double idf = 0;
+        try {
+        	PreparedStatement st = connect.prepareStatement("SELECT idf FROM Term WHERE term=?");
+        	st.setString(1, term);
+        	resultSet = st.executeQuery();
+        
+        	resultSet.next();
+        	idf = resultSet.getDouble(1);
+        	
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }    
+        
+        return idf;
+	}
 	
 }

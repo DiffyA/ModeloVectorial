@@ -1,5 +1,9 @@
 package com.RAI.ModeloVectorial.database;
 
+import java.util.ArrayList;
+
+import com.RAI.ModeloVectorial.vector.DocVector;
+
 public class DatabaseTest {
 	
 	public static void main(String args[]) {
@@ -17,7 +21,31 @@ public class DatabaseTest {
 //		DatabaseManager.mostrarRelevancias();
 		
 		
-		DatabaseManager.obtainAllTFIDFVectors();
+//		System.out.println(DatabaseManager.obtainTFIDFVector("2010-60-020.html").getSoftVector());
+		
+//		DocVector vector = DatabaseManager.obtainTFIDFVector("2010-60-020.html");
+		
+//		System.out.println(vector.getId() + vector.getSoftVector());
+		
+//		ArrayList<DocVector> vectors = Controller.obtainAllTFIDFVectors();
+		
+//		System.out.println(vectors.size());
+		
+//		for (DocVector vector : vectors) {
+//			System.out.println(vector.getSoftVector());
+//		}
+
+//		DatabaseManager.mostrarDocumentos();
+		
+//		for (DocVector vector : vectors) {
+//			System.out.println(vector.getId() + vector.getSoftVector());
+//		}
+		
+		// Creamos query tables
+		DatabaseManager.dropQueryTables();
+		DatabaseManager.createQueryTables();
+		
+//		System.out.println(DatabaseManager.obtainIDFofTerm("taggart"));
 		
 		
 		DatabaseManager.close();

@@ -18,11 +18,24 @@ public class DocVector {
 	private HashMap<Term, Double> vector = new HashMap<Term, Double>();
 	private String id;
 	
+	private HashMap<String, Double> softVector = new HashMap<String, Double>();
+	
 	public DocVector(HashMap<Term, Double> vector) {
 		this.vector = vector;
 	}
 	
-	public DocVector(HashMap<Term, Double> vector, String id) {
+	public DocVector(HashMap<String, Double> vector, String id) {
+		this.softVector = vector;
+		this.id = id;
+	}
+	
+	/**
+	 * Int I does nothing, it's to fix a problem.
+	 * @param vector
+	 * @param id
+	 * @param i
+	 */
+	public DocVector(HashMap<Term, Double> vector, String id, int i) {
 		this.vector = vector;
 		this.id = id;
 	}
@@ -44,5 +57,9 @@ public class DocVector {
 
 	public HashMap<Term, Double> getVector(){
 		return vector;
+	}
+	
+	public HashMap<String, Double> getSoftVector() {
+		return this.softVector;
 	}
 }

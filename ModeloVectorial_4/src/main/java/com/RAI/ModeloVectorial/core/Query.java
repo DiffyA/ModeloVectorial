@@ -28,6 +28,7 @@ public class Query implements IText{
 	public Query(String id, String query) {
 		this.id = id;
 		this.content = query;
+		Indexer.processQuery(this);
 	}
 	
 	public String getCleanContent() {
