@@ -42,11 +42,17 @@ public class DatabaseTest {
 //		}
 		
 		// Creamos query tables
-		DatabaseManager.dropQueryTables();
-		DatabaseManager.createQueryTables();
+//		DatabaseManager.dropQueryTables();
+//		DatabaseManager.createQueryTables();
+		
+//		DatabaseManager.createTable("Relevancias");
+//		DatabaseManager.storeRelevance("src/main/resources/2010.union.trel");
+//		DatabaseManager.mostrarRelevancias();
+//		DatabaseManager.mostrarQueryTable("2010-001");
 		
 //		System.out.println(DatabaseManager.obtainIDFofTerm("taggart"));
 		
+		DatabaseManager.obtainRelevantDocumentSet("2010-001", 1);
 		
 		DatabaseManager.close();
 	}

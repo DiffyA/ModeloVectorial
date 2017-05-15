@@ -68,6 +68,13 @@ public class DocumentRecoveryEngine {
 		DatabaseManager.createTable("Documentos");
 	}
 	
+	/**
+	 * Calculates the similarities between the provided queries and document vectors.
+	 * Stores those occurrences that have a similarity greater than 0 into their corresponding
+	 * table in the database. This set of documents with similarities > 0 is known as the recovered set of documents.
+	 * @param queries
+	 * @param docVectors
+	 */
 	public void obtainSimilarities(List<Query> queries, List<DocVector> docVectors) {
 		long startTime = 0;
 		long estimatedTime = 0;
@@ -83,27 +90,21 @@ public class DocumentRecoveryEngine {
 				
 				// Obtain the query vector
 				DocVector queryVector = this.vectorSpaceModel.vectorizer.toVector(query);
-//				System.out.println(queryVector.getSoftVector());
-//				System.out.println(queryVector.getVector());
 		
 				// Iterate through each document vector in DB, obtaining its similarity with respect to the query.
 				for (DocVector docVector : docVectors) {
-	//				System.out.println(docVector.getSoftVector());
-	//				System.out.println(docVector.getVector());
 					double similarity = this.vectorSpaceModel.similitudCos.calculate(docVector, queryVector);
-//					System.out.println(similarity);
 					
 					// If similarity is greater than 0, add to the recovered documents set in the DB for that query.
 					if (similarity > 0) {
-//						System.out.println("Storing queryID: " + query.getId() + ", DocVectorID: " + docVector.getId() + ", similarity: " + similarity);
-						
-						DatabaseManager.saveSimilitud(query.getId(), docVector.getId(), similarity);
+						// Gets document ID without file extension for joining with relevance table later.
+						String docName = docVector.getId().substring(0, docVector.getId().lastIndexOf("."));
+						DatabaseManager.saveSimilitud(query.getId(), docName, similarity);
 						
 						// Increase counter
 						recoveredDocuments++;
 					}
 				}
-				
 				
 				estimatedTime = System.currentTimeMillis() - startTime;
 				cumulativeTime += estimatedTime;
@@ -166,24 +167,37 @@ public class DocumentRecoveryEngine {
 		
 		
 		// ---------- OBTAINING THE QUERIES FROM THE FILE --------------------------
-		// TODO: Obtain the queries from the file
 		// This will be done using JSoup to retrieve the relevant information from the 2010-topics.xml and 2010.union.trel files
 		ArrayList<Query> queries = Crawler.getQueries("src/main/resources/2010-topics.xml");
 		
+		// ---------- OBTAINING THE SIMILARITIES BETWEEN QUERIES AND DOCUMENTS IN THE DB --------------------------
 		// Obtain TFIDF vectors of all indexed documents in the DB
-		ArrayList<DocVector> vectors = Controller.obtainAllTFIDFVectors();
+//		ArrayList<DocVector> vectors = Controller.obtainAllTFIDFVectors();
+		
+		// Obtain similarities between queries and document vectors
+//		engine.obtainSimilarities(queries, vectors);
 		
 		// Clean Database
 //		DatabaseManager.dropQueryTables();
 //		DatabaseManager.createQueryTables();
 		
-		// Obtain similarities between queries and document vectors
-		engine.obtainSimilarities(queries, vectors);
+		// ---------- OBTAINING THE SET OF RECOVERED DOCUMENTS AND RELEVANT DOCUMENTS --------------------------
+		// Obtain the relevances from queries and documents from the union.trel file
+//		DatabaseManager.createTable("Relevancias");
+//		DatabaseManager.storeRelevance("src/main/resources/2010.union.trel");
 		
+		// The set of recovered documents are those stored in each query table (T2010001 ...).
+		Set<String> recoveredDocumentsQuery001 = DatabaseManager.obtainRecoveredDocumentSet("2010-001");
+		System.out.println(recoveredDocumentsQuery001.size());
 		
+		// The set of relevant documents is obtained from here: 
+		// First parameter is query id, second is minimum relevance
+		Set<String> relevantDocumentsQuery001 = DatabaseManager.obtainRelevantDocumentSet("2010-001", 0);
 		
+		System.out.println(relevantDocumentsQuery001.size());
+		System.out.println(relevantDocumentsQuery001);
+		System.out.println(recoveredDocumentsQuery001);
 		DatabaseManager.close();
-
 	}
 
 

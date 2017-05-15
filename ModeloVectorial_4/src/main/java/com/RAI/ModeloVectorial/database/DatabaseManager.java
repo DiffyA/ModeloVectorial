@@ -136,6 +136,26 @@ public class DatabaseManager {
 		}
 	}
 	
+	
+	public static void mostrarQueryTable(String queryID) {
+		ResultSet result = null;
+		
+		String queryTable = "T" + queryID.replace("-", "");
+		
+		System.out.println(queryTable);
+		
+        try {
+            PreparedStatement st = connect.prepareStatement("select * from " + queryTable);
+            result = st.executeQuery();
+            while (result.next()) {
+            	System.out.println(result.getString("doc") + "\t" + result.getString("cos"));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+	}
+	
+	
 
 	
 	public static ArrayList<String> consultarDocsRelevantes(String query, int rel){
@@ -510,16 +530,10 @@ public class DatabaseManager {
             PreparedStatement st = connect.prepareStatement("select * from Relevancias");
             result = st.executeQuery();
             System.out.println("--- Mostrar Relevancias ---");
-            int i=0;
             while (result.next()) {
             	System.out.print(result.getString("consulta"));
                 System.out.print("\t"+result.getString("documento"));
                 System.out.println("\t"+result.getString("relevancia"));
-                if(i<10){
-                	i++;
-                }else{
-                	i=0;
-                }
             }
             System.out.println("");
         } catch (SQLException ex) {
@@ -1097,4 +1111,55 @@ public class DatabaseManager {
         return idf;
 	}
 	
+	/**
+	 * Given a queryID and a minimum relevance value, returns a list of documents that meet the criteria of the query.
+	 * @param queryID
+	 * @param minimumRelevance
+	 */
+	public static Set<String> obtainRelevantDocumentSet(String queryID, int minimumRelevance) {
+		ResultSet resultSet = null;
+		Set<String> relevantDocuments = new HashSet<String>();
+		
+		String queryTable = "T" + queryID.replace("-", "");
+        try {
+        	PreparedStatement st = connect.prepareStatement("SELECT Relevancias.consulta, Relevancias.documento, Relevancias.relevancia, " + queryTable + ".cos FROM " + queryTable + " LEFT OUTER JOIN Relevancias ON " + queryTable + ".doc = Relevancias.documento WHERE Relevancias.consulta=? AND Relevancias.relevancia>=?");
+        	st.setString(1, queryID);
+        	st.setInt(2, minimumRelevance);
+        	resultSet = st.executeQuery();
+        	
+        	while (resultSet.next()) {
+        		relevantDocuments.add(resultSet.getString("documento"));
+        		
+//        		System.out.println(resultSet.getString("consulta") + "\t" + resultSet.getString("documento") +
+//        				"\t" + resultSet.getShort("relevancia") + "\t" + resultSet.getString("cos"));
+        	}
+        	
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }    
+        
+        return relevantDocuments;
+	}
+	
+	public static Set<String> obtainRecoveredDocumentSet (String queryID) {
+		ResultSet resultSet = null;
+		Set<String> recoveredDocuments = new HashSet<String>();
+		
+		String queryTable = "T" + queryID.replace("-", "");
+        try {
+        	// Select doc and cos from table where similarity is greater than 0
+        	PreparedStatement st = connect.prepareStatement("SELECT doc, cos FROM " + queryTable + " WHERE cos>0");
+        	resultSet = st.executeQuery();
+        	
+        	while (resultSet.next()) {
+        		recoveredDocuments.add(resultSet.getString("doc"));
+//        		System.out.println(resultSet.getString("doc") + "\t" + resultSet.getString("cos"));
+        	}
+        	
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }    
+        
+        return recoveredDocuments;
+	}
 }
