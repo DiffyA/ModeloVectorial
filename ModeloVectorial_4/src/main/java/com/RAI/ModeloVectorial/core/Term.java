@@ -6,15 +6,18 @@ public class Term {
 	private String term;
 	private String filteredTerm;
 	private Occurrences occurrences = new Occurrences();
-	private double IDF; 
-	
+	private double IDF;
+	private double weight;
+
 	public Term(String term) {
 		this.term = term.trim();
+		this.weight = 1.0;
 	}
 	
 	public Term(String term, String filteredTerm) {
 		this.term = term.trim();
 		this.filteredTerm = filteredTerm.trim();
+		this.weight = 1.0;
 	}
 	
 //	/**
@@ -38,7 +41,7 @@ public class Term {
 	
 	/**
 	 * Returns the list of documents in which the term appears at least once.
-	 * @param doc
+	 * @param documento
 	 * @return
 	 */
 	public Set<IText> getListOfDocuments() {
@@ -103,6 +106,8 @@ public class Term {
 	public void setIDF(double iDF) {
 		IDF = iDF;
 	}
+
+
 	
 	
 }
