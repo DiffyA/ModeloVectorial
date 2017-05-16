@@ -41,8 +41,6 @@ public class Term {
 	
 	/**
 	 * Returns the list of documents in which the term appears at least once.
-	 * @param documento
-	 * @return
 	 */
 	public Set<IText> getListOfDocuments() {
 		return occurrences.getDocuments();
