@@ -2,6 +2,10 @@ package com.RAI.ModeloVectorial.expansion;
 
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
+import net.didion.jwnl.data.IndexWord;
+import net.didion.jwnl.data.POS;
+import net.didion.jwnl.data.Synset;
+import net.didion.jwnl.data.Word;
 import net.didion.jwnl.dictionary.Dictionary;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -33,12 +37,23 @@ public class QueryExpansionTest {
     public void testDictionaryInitialization(){
         try {
             JWNL.initialize(new FileInputStream("/home/kgeetz/Programming/information_access_retrieval/ModeloVectorial/ModeloVectorial_4/src/main/resources/properties.xml"));
+
+            final Dictionary dictionary = Dictionary.getInstance();
+            final IndexWord indexWord = dictionary.lookupIndexWord(POS.NOUN, "test");
+
+            Synset[] senses = indexWord.getSenses();
+            //Synset[] synsets = dictionary.getSynsets("your word", SynsetType.NOUN);
+
+            for (Synset set : senses) {
+                for (Word w: set.getWords()){
+                    System.out.println(w.getLemma());
+                }
+            }
         } catch (JWNLException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        final Dictionary dictionary = Dictionary.getInstance();
     }
 
 }
