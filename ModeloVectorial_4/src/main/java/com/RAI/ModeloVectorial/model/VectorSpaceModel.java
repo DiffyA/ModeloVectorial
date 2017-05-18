@@ -3,6 +3,7 @@ package com.RAI.ModeloVectorial.model;
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.database.DatabaseManager;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
+import com.RAI.ModeloVectorial.queryExpansion.QueryExpander;
 import com.RAI.ModeloVectorial.similarities.CosineCalculator;
 import com.RAI.ModeloVectorial.similarities.ScalarProductCalculator;
 
@@ -33,6 +34,9 @@ public class VectorSpaceModel {
 	// Create the relevance metric calculators.
 	CosineCalculator similitudCos = new CosineCalculator();
 	ScalarProductCalculator similitudScalar = new ScalarProductCalculator();
+
+	// Create expander
+	QueryExpander queryExpander = new QueryExpander();
 	
 	
 	// Create the dictionary
@@ -53,6 +57,11 @@ public class VectorSpaceModel {
 	Query query1 = new Query("What video game won Spike's best driving game award in 2006?");
 	Query query2 = new Query("What is the default combination of Kensington cables?");
 	Query query3 = new Query("Who won the first ACM Gerard Salton prize?");
+
+
+	//TODO: Expand the queries
+
+
 
 	// Create the query array.
 	Query[] queryArray = {query1, query2, query3};

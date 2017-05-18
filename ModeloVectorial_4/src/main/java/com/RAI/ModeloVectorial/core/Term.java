@@ -19,6 +19,11 @@ public class Term {
 		this.filteredTerm = filteredTerm.trim();
 		this.weight = 1.0;
 	}
+
+	public Term(String term, double weight) {
+		this.term = term.trim();
+		this.weight = weight;
+	}
 	
 //	/**
 //	 * Gets the number of times this term appears at least once across the set of documents 

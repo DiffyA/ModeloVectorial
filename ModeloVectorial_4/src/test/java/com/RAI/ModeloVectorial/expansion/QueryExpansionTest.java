@@ -1,5 +1,8 @@
 package com.RAI.ModeloVectorial.expansion;
 
+import com.RAI.ModeloVectorial.core.Query;
+import com.RAI.ModeloVectorial.core.Term;
+import com.RAI.ModeloVectorial.queryExpansion.QueryExpander;
 import net.didion.jwnl.JWNL;
 import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.IndexWord;
@@ -12,14 +15,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 /**
- * Created by kgeetz on 5/16/17.
+ * Created by kgeetz on 5/18/17.
  */
 public class QueryExpansionTest {
-
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
@@ -35,25 +34,23 @@ public class QueryExpansionTest {
 
     @Test
     public void testDictionaryInitialization(){
-        try {
-            JWNL.initialize(new FileInputStream("/home/kgeetz/Programming/information_access_retrieval/ModeloVectorial/ModeloVectorial_4/src/main/resources/properties.xml"));
 
-            final Dictionary dictionary = Dictionary.getInstance();
-            final IndexWord indexWord = dictionary.lookupIndexWord(POS.NOUN, "test");
+        //Create expander
+        QueryExpander qe = new QueryExpander();
 
-            Synset[] senses = indexWord.getSenses();
-            //Synset[] synsets = dictionary.getSynsets("your word", SynsetType.NOUN);
+        //Create query
+        Query query = new Query("red car apple thing ice");
 
-            for (Synset set : senses) {
-                for (Word w: set.getWords()){
-                    System.out.println(w.getLemma());
-                }
-            }
-        } catch (JWNLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        System.out.println("The query terms before expansion are: ");
+        for (Term t : query.getTerms()){
+            System.out.println(t + ": " + t.getWeight());
+        }
+        System.out.println();
+
+        qe.expandQuery(query);
+        System.out.println("The query terms after expansion are: ");
+        for (Term t : query.getTerms()){
+            System.out.println(t + ": " + t.getWeight());
         }
     }
-
 }
