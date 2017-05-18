@@ -58,11 +58,6 @@ public class VectorSpaceModel {
 	Query query2 = new Query("What is the default combination of Kensington cables?");
 	Query query3 = new Query("Who won the first ACM Gerard Salton prize?");
 
-
-	//TODO: Expand the queries
-
-
-
 	// Create the query array.
 	Query[] queryArray = {query1, query2, query3};
 	
@@ -237,6 +232,11 @@ public class VectorSpaceModel {
 		// Create table
 		DatabaseManager.createTable("DocTerm"); // (Doc, Term, TF)
 		DatabaseManager.createTable("Term"); // (Term, IDF)
+
+		//Expand queries
+		for (Query q : model.queryArray){
+			model.queryExpander.expandQuery(q);
+		}
 		
 		// Indexes the documents in the docArray, making sure they go to the database.
 		// First boolean determines whether or not to store information in database.
