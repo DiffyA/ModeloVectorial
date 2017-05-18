@@ -199,6 +199,7 @@ public class DocumentRecoveryEngine {
 		
 		// Make an instance of the DocumentRecoveryEngine
 		DocumentRecoveryEngine engine = new DocumentRecoveryEngine();	
+		
 		/*
 		// ---------- CREATING THE DOCUMENT ARRAY FROM THE EIREX DIRECTORY ---------
 		// Get the EIREX directory path
@@ -212,7 +213,7 @@ public class DocumentRecoveryEngine {
 		
 		// Index all the files into main memory (vector space model's dictionary structure) and time it
 		engine.vectorSpaceModel.index(documents, true);
-//		engine.vectorSpaceModel.index(Arrays.copyOfRange(documents, 0, 3), false);
+		engine.vectorSpaceModel.index(Arrays.copyOfRange(documents, 0, 3), false);
 		
 		// Make references to the loaded structures.
 		HashMap<String, Term> allTerms = engine.vectorSpaceModel.dicc.getAllTerms();
@@ -257,7 +258,20 @@ public class DocumentRecoveryEngine {
 //		DatabaseManager.createTable("Relevancias");
 //		DatabaseManager.storeRelevance("src/main/resources/2010.union.trel");
 		
+		// The set of recovered documents are those stored in each query table (T2010001 ...).
+//		ArrayList<String> recoveredDocumentsQuery001 = DatabaseManager.obtainRecoveredDocumentSet("2010-001");
+//		System.out.println(recoveredDocumentsQuery001.size());
 		
+		// The set of relevant documents is obtained from here: 
+		// First parameter is query id, second is minimum relevance
+//		Set<String> relevantDocumentsQuery001 = DatabaseManager.obtainRelevantDocumentSet("2010-001", 0);
+//			  				  		
+//		System.out.println(relevantDocumentsQuery001.size());
+//		System.out.println(relevantDocumentsQuery001);
+//		System.out.println(recoveredDocumentsQuery001);
+		
+		
+		// ---------- MEASUREMENTS --------------------------
 		double[][] metricas15 = new double[5][20];
 		double[][] metricas110 = new double[5][20];
 		double[][] metricas25 = new double[5][20];
