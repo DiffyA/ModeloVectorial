@@ -2,8 +2,6 @@ package com.RAI.ModeloVectorial.model;
 
 import com.RAI.ModeloVectorial.core.Query;
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.database.Controller;
-import com.RAI.ModeloVectorial.database.DatabaseManager;
 import com.RAI.ModeloVectorial.dictionary.Dictionary;
 import com.RAI.ModeloVectorial.similarities.CosineCalculator;
 import com.RAI.ModeloVectorial.similarities.ISimilarityFunction;
@@ -187,18 +185,7 @@ public class VectorSpaceModel {
 			System.out.println(stringToPrint);
 		}
 	}
-	
-	/**
-	 * Drops affected tables and creates them again, to have a clean start.
-	 */
-	public void cleanDatabase() {
-		DatabaseManager.dropTable("DocTerm");
-		DatabaseManager.dropTable("Term");
 		
-		DatabaseManager.createTable("DocTerm");
-		DatabaseManager.createTable("Term");
-	}
-	
 	public static void main(String[] args) {
 		// Make an instance of the VectorSpaceModel
 		VectorSpaceModel model = new VectorSpaceModel();
@@ -221,19 +208,10 @@ public class VectorSpaceModel {
 		// Create the query array.
 		Query[] queryArray = {query1, query2, query3};
 		
-		// Connect to the DB.
-		DatabaseManager.connect();
-		
-		// Clean the database (OPTIONAL)
-		// model.cleanDatabase();
-		
 		// Indexes the documents in the docArray. Boolean tells us whether to print to console or not.
 		model.index(docArray, true);
 		
 		// Executes the similarity functions between the 5 documents and 3 queries.
 		model.printSimilarityFunctions(docArray, queryArray);
-
-		// Close the database
-		DatabaseManager.close();
 	}
 }

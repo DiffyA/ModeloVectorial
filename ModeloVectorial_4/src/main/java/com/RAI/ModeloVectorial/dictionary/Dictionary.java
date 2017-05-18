@@ -4,7 +4,6 @@ import com.RAI.ModeloVectorial.core.Documento;
 import com.RAI.ModeloVectorial.core.IText;
 import com.RAI.ModeloVectorial.core.Occurrences;
 import com.RAI.ModeloVectorial.core.Term;
-import com.RAI.ModeloVectorial.database.DatabaseManager;
 import com.RAI.ModeloVectorial.transformation.Indexer;
 
 import java.util.Collections;
