@@ -3,6 +3,7 @@ package com.RAI.ModeloVectorial.database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -639,45 +640,84 @@ public class DatabaseManager {
     }
 	
 	
-	public double[] sacarRelevancias (String query, Vector<String> recs, Vector<String> rels){
+	public static double[] calcularNDCG (String query, ArrayList<String> recs, Set<String> rels, int corte){
         ResultSet result = null;
         try {
+        	/*PreparedStatement st_count = connect.prepareStatement("SELECT COUNT (documento) FROM Relevancias WHERE consulta=?");
+        	st_count.setString(1, query);
+        	result = st_count.executeQuery();
+        	int count = 0;
+        	if(result.next()){
+        		count = result.getInt(1);
+        		System.out.println("count "+count);
+        	}*/
+        	
         	PreparedStatement st = connect.prepareStatement("SELECT documento,relevancia FROM Relevancias WHERE consulta=?");
         	st.setString(1, query);
         	result = st.executeQuery();
         	
-        	ArrayList<String> d = new ArrayList<String>();
-            ArrayList<Integer> r = new ArrayList<Integer>();	//necesario ?
+        	//result.next();
+        	//int count = (Integer) result.getObject(3);
+        	//System.out.println("count "+count);
+        	
+        	//ArrayList<String> d = new ArrayList<String>();
+            //ArrayList<Integer> r = new ArrayList<Integer>();	//necesario ?
+            //String[] d = new String[recs.size()];
+           	int[] r = new int[corte];
+            
+           	/*for(int j=0; j<recs.size(); j++){
+				if(result.getObject(1).toString().equals(recs.get(j))){
+					//d.add(j, result.getObject(1).toString());
+    				//r.add(j, (Integer) (result.getObject(2)));
+    				d[j] = result.getObject(1).toString();
+    				r[j] = (int) result.getInt(2);
+    				System.out.println("prueba2 result:"+r[j]+" en:"+j);
+				}
+			}*/
+           	
+           	for(int i=0; i<r.length; i++){
+           		r[i] = 0;
+           		//d[i] = recs.get(i);			//En principio, llenamos los arrays con todos los terminos recuperados y los ponemos con relevancia 0.
+           	}
             
             while(result.next()){
-            	for(int j=0; j<recs.size(); j++){
+            	for(int j=0; j<recs.size() && j<corte; j++){
     				if(result.getObject(1).toString().equals(recs.get(j))){
-    					d.add(j, result.getObject(1).toString());
-        				r.add(j, (Integer) (result.getObject(2)));
+    					//d.add(j, result.getObject(1).toString());
+        				//r.add(j, (Integer) (result.getObject(2)));
+        				//d[j] = result.getObject(1).toString();
+        				r[j] = (int) result.getInt(2)+1;			//Para tener en cuenta los que no aparecen, cambiamos el criterio de relevancia, y ahora los 0 no importan, y los 1 importan poco, como los 0 originales. 
     				}
     			}
             }
 			
-            int[] cg = new int[r.size()];
+            //CALCULOS DE CG
+            //int[] cg = new int[r.size()];
+            int[] cg = new int[r.length];
             int x = 0;
         	for(int i=0; i<cg.length; i++){
-        		x += r.get(i);
+        		//x += r.get(i);
+        		x += r[i];
         		cg[i] = x;
         	}
         	
+        	//CALCULOS DE DCG
         	double[] dcg = new double[cg.length];
-        	int y = 0;
+        	//int y = 0;
         	for(int i=0; i<dcg.length; i++){
-        		if(r.get(i) >= 2){				// b es 2 ???
-        			y += r.get(i) / (Math.log(i+1)/Math.log(2));
-            		dcg[i] = y;
+        		//if(r.get(i) >= 2){				// b es 2 ???
+        		if(i >= 2){				// b es 2 ???
+        			//y += r.get(i) / (Math.log(i+1)/Math.log(2));
+        			//y += r[i] / (Math.log(i+1)/Math.log(2));
+            		dcg[i] = dcg[i-1] + (cg[i] / (Math.log(i)/Math.log(2)));	//Seguro que esta bien ?
         		}else{
-        			dcg[i] = y;
+        			dcg[i] = cg[i];
         		}
+        		//System.out.println("prueba8 "+ r[i]);
         	}
         	
-        	//BUBBLE SORT
-			int j;
+        	//BUBBLE SORT ARRAYLIST
+			/*int j;
 			boolean flag = true;   // set flag to true to begin first pass
 			while (flag){
 				flag = false;    //set flag to false awaiting a possible swap
@@ -687,33 +727,57 @@ public class DatabaseManager {
 						flag = true;              //shows a swap occurred  
 					}
 				}
+			}*/
+        	
+        	//CALCULOS DE G IDEAL
+        	int[] ig = r.clone();
+        	//BUBBLE SORT ARRAY
+			int j;
+			boolean flag = true;   // set flag to true to begin first pass
+			int temp;   //holding variable
+			while (flag){
+				flag= false;    //set flag to false awaiting a possible swap
+				for( j=0;  j < ig.length -1;  j++ ){
+					if ( ig[ j ] < ig[j+1] ){   // change to > for ascending sort
+						temp = ig[ j ];                //swap elements
+						ig[ j ] = ig[ j+1 ];
+						ig[ j+1 ] = temp;
+						flag = true;              //shows a swap occurred  
+					}
+				}
 			}
-			
-			int[] icg = new int[d.size()];
+        	
+			//CALCULOS DE CG IDEAL
+			//int[] icg = new int[d.size()];
+            int[] icg = new int[ig.length];
             x = 0;
         	for(int i=0; i<icg.length; i++){
-        		x += r.get(i);
+        		//x += r.get(i);
+        		x += ig[i];
         		icg[i] = x;
         	}
         	
+        	//CALCULOS DE DCG IDEAL
         	double[] idcg = new double[icg.length];
-        	y = 0;
         	for(int i=0; i<idcg.length; i++){
-        		if(r.get(i) >= 2){				// b es 2 ???
-        			y += r.get(i) / (Math.log(i+1)/Math.log(2));
-            		idcg[i] = y;
+        		if(i >= 2){				// b es 2 ???
+            		idcg[i] = idcg[i-1] + (icg[i] / (Math.log(i)/Math.log(2)));		//Seguro que esta bien ?
         		}else{
-        			idcg[i] = y;
+        			idcg[i] = icg[i];
         		}
         	}
 			
+        	//CALCULOS DE DCG NORMALIZADO
         	double[] ndcg = new double[cg.length];
-        	System.out.print("nDCG:");
+        	DecimalFormat df = new DecimalFormat("0.0###");
+        	//System.out.println(" - Normalized Discounted Cumulative Gains con corte "+corte+" - ");
+        	//System.out.print("nDCG:");
         	for(int i=0; i<idcg.length; i++){
-        		ndcg[i] = dcg[i]/idcg[i];
-        		System.out.print(" "+ndcg[i]);
+        		ndcg[i] = (double) dcg[i]/idcg[i];
+        		//System.out.print(" "+df.format(ndcg[i]));
         	}
-        	System.out.println("-------------------------------------------");
+        	//System.out.println("");
+        	//System.out.println("--------------------------------------------------");
         	
         	return ndcg;
         	
@@ -1141,9 +1205,12 @@ public class DatabaseManager {
         return relevantDocuments;
 	}
 	
-	public static Set<String> obtainRecoveredDocumentSet (String queryID) {
+	public static ArrayList<String> obtainRecoveredDocumentSet (String queryID) {
 		ResultSet resultSet = null;
-		Set<String> recoveredDocuments = new HashSet<String>();
+		
+		ArrayList<String> recDocs = new ArrayList<String>();
+		ArrayList<Double> cos = new ArrayList<Double>();
+		//Set<String> recoveredDocuments = new HashSet<String>();
 		
 		String queryTable = "T" + queryID.replace("-", "");
         try {
@@ -1152,14 +1219,29 @@ public class DatabaseManager {
         	resultSet = st.executeQuery();
         	
         	while (resultSet.next()) {
-        		recoveredDocuments.add(resultSet.getString("doc"));
-//        		System.out.println(resultSet.getString("doc") + "\t" + resultSet.getString("cos"));
+        		recDocs.add(resultSet.getString("doc"));
+        		cos.add((double)resultSet.getDouble("cos"));
+        		//System.out.println(resultSet.getString("doc") + "\t" + resultSet.getString("cos"));
         	}
+        	
+        	//BUBBLE SORT
+			int j;
+			boolean flag = true;   // set flag to true to begin first pass
+			while (flag){
+				flag = false;    //set flag to false awaiting a possible swap
+				for(j=0; j<cos.size()-1; j++){
+					if ( cos.get(j) < cos.get(j+1) ){   // change to > for ascending sort
+						cos.add(j+1, cos.remove(j));	//swap elements
+						recDocs.add(j+1, recDocs.remove(j));
+						flag = true;              //shows a swap occurred  
+					}
+				}
+			}
         	
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }    
         
-        return recoveredDocuments;
+        return recDocs;
 	}
 }

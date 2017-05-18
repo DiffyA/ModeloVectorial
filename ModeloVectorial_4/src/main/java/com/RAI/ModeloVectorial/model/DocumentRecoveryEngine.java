@@ -11,10 +11,12 @@ import com.RAI.ModeloVectorial.similarities.ScalarProductCalculator;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -125,6 +127,74 @@ public class DocumentRecoveryEngine {
 		System.out.println("--- Calculated similarities between " + queries.size() + " queries and " + docVectors.size() + " documents and took " + cumulativeTime + " ms.");
 	}
 	
+	public static double[] calcEficacia (ArrayList<String> recs, Set<String> rels, int corte){	//Para hacer los cortes (5, 10) se le pasan solo los 5/10 primeros docs recuperados. 
+		DecimalFormat df = new DecimalFormat("0.0###");
+		double[] calcs = new double[5];
+		int Nrels = 0;
+		double precision;
+		double recall;
+		double valorF;
+		//int rank = 0;
+		double rrank;
+		ArrayList<Double> ranks = new ArrayList<Double>();
+		double suma_rranks = 0;
+		double ap;
+		
+		//Iterator<String> itrecs = recs.iterator();
+		
+		//boolean flag = false;
+		for(int i=0; i<recs.size() && i<corte; i++){
+			//String rec = itrecs.next();
+			Iterator<String> itrels = rels.iterator();
+			for(int j=0; itrels.hasNext(); j++){
+				String rel = itrels.next();
+				if(rel.equals(recs.get(i))){	//En el union.trel los docs no tienen .html ?
+					Nrels++;
+					//if(!flag){
+						//rank = i;
+						//flag = true;
+					//}
+					ranks.add((double) (i+1));
+				}
+			}
+		}
+		
+		for(int h=0; h<Nrels && h<100; h++){	//Av.Precision @100
+			suma_rranks += (h+1)/ranks.get(h);
+		}
+		
+		if(Nrels!=0 && ranks.size()!=0){
+			precision = (double) Nrels/(recs.size());
+			recall = (double) Nrels/rels.size();
+			valorF = (double) (2*precision*recall)/(precision+recall);
+			rrank = (double) 1/ranks.get(0);
+			ap = (double) suma_rranks/Nrels;
+		}else{		//Esto es para que no salga NaN: x/0 = 0/x = 0
+			precision = 0;
+			recall = 0;
+			valorF = 0;
+			rrank = 0;
+			ap = 0;
+		}
+		
+		calcs[0] = precision;
+		calcs[1] = recall;
+		calcs[2] = valorF;
+		calcs[3] = rrank;
+		calcs[4] = ap;
+		
+		/*System.out.println("");
+		System.out.println(" - M�TRICAS CON CORTE "+corte+" - ");
+		System.out.println("Precision: "+df.format(precision));
+		System.out.println("Recall: "+df.format(recall));
+		System.out.println("Valor F: "+df.format(valorF));
+		System.out.println("1st RRank: "+df.format(rrank));
+		System.out.println("Average Precision: "+df.format(ap));
+		System.out.println("-------------------------");*/
+		
+		return calcs;	//Es mejor calcular y devolver todos los valores de una vez para ahorrar bucles.
+	}
+	
 	public static void main(String[] args) {
 		
 		// Make an instance of the DocumentRecoveryEngine
@@ -183,20 +253,147 @@ public class DocumentRecoveryEngine {
 		
 		// ---------- OBTAINING THE SET OF RECOVERED DOCUMENTS AND RELEVANT DOCUMENTS --------------------------
 		// Obtain the relevances from queries and documents from the union.trel file
+//		DatabaseManager.dropTable("Relevancias");
 //		DatabaseManager.createTable("Relevancias");
 //		DatabaseManager.storeRelevance("src/main/resources/2010.union.trel");
 		
-		// The set of recovered documents are those stored in each query table (T2010001 ...).
-		Set<String> recoveredDocumentsQuery001 = DatabaseManager.obtainRecoveredDocumentSet("2010-001");
-		System.out.println(recoveredDocumentsQuery001.size());
 		
-		// The set of relevant documents is obtained from here: 
-		// First parameter is query id, second is minimum relevance
-		Set<String> relevantDocumentsQuery001 = DatabaseManager.obtainRelevantDocumentSet("2010-001", 0);
+		double[][] metricas15 = new double[5][20];
+		double[][] metricas110 = new double[5][20];
+		double[][] metricas25 = new double[5][20];
+		double[][] metricas210 = new double[5][20];
+		double[][] ndcg10 = new double[10][20];
+		double[][] ndcg100 = new double[100][20];
 		
-		System.out.println(relevantDocumentsQuery001.size());
-		System.out.println(relevantDocumentsQuery001);
-		System.out.println(recoveredDocumentsQuery001);
+		for(int i=1; i<=20; i++){
+			String query = "2010-0";
+			if(i<10){
+				query += "0" + i;
+			}else{
+				query += i;
+			}
+			
+			//System.out.println("*** Query: "+query);
+			
+			ArrayList<String> recDocs = DatabaseManager.obtainRecoveredDocumentSet(query);
+			
+			// The set of relevant documents is obtained from here: 
+			// First parameter is query id, second is minimum relevance
+			Set<String> relDocs1 = DatabaseManager.obtainRelevantDocumentSet(query, 1);
+			Set<String> relDocs2 = DatabaseManager.obtainRelevantDocumentSet(query, 2);
+			
+			double[] m15 = calcEficacia(recDocs, relDocs1, 5);	//El int indica el corte
+			double[] m110 = calcEficacia(recDocs, relDocs1, 10);
+			double[] m1100 = calcEficacia(recDocs, relDocs1, 100); //Con 100 es la misma que con 1000 
+			
+			
+			double[] m25 = calcEficacia(recDocs, relDocs2, 5);
+			double[] m210 = calcEficacia(recDocs, relDocs2, 10);
+			double[] m2100 = calcEficacia(recDocs, relDocs2, 100); //Con 100 es la misma que con 1000 
+			
+			double[] n10 = DatabaseManager.calcularNDCG(query, recDocs, relDocs1, 10);
+			double[] n100 = DatabaseManager.calcularNDCG(query, recDocs, relDocs1, 100);
+			
+			for (int j=0; j<5; j++){
+				metricas15[j][i-1] = m15[j];
+				metricas25[j][i-1] = m25[j];
+				metricas110[j][i-1] = m110[j];
+				metricas210[j][i-1] = m210[j];
+			}
+			for (int j=0; j<10; j++){
+				ndcg10[j][i-1] = n10[j];
+			}
+			for (int j=0; j<100; j++){
+				ndcg100[j][i-1] = n100[j];
+			}
+			
+		}
+		
+		System.out.println("");
+		System.out.println("*** Metricas ***");
+		System.out.println("(Todas calculadas con relevancia m�nima 1 salvo indicaci�n)");
+		for(int i=0; i<20; i++){
+			DecimalFormat df = new DecimalFormat("0.0###");
+			System.out.println("");
+			String query = " ** CONSULTA 2010-0";
+			if(i<9){
+				query += "0" + (i+1);
+			}else{
+				query += (i+1);
+			}
+			System.out.println(query);
+			System.out.println("  * Precision en corte 5 = "+df.format(metricas15[0][i]));
+			System.out.println("  * Precision en corte 10 = "+df.format(metricas110[0][i]));
+			System.out.println("  * Exhaustividad en corte 5 = "+df.format(metricas15[1][i]));
+			System.out.println("  * Exhaustividad en corte 10 = "+df.format(metricas110[1][i]));
+			System.out.println("  * Valor F en corte 5 = "+df.format(metricas15[2][i]));
+			System.out.println("  * Valor F en corte 10 = "+df.format(metricas110[2][i]));
+			System.out.println("  * Reciprocal Rank  = "+df.format(metricas15[3][i]));
+			System.out.println("  * Reciprocal Rank con relevancia 2 = "+df.format(metricas25[3][i]));
+			System.out.println("  * Average precision @100 en corte 5 = "+df.format(metricas15[4][i]));
+			System.out.println("  * Average precision @100 en corte 10 = "+df.format(metricas110[4][i]));
+			
+			df = new DecimalFormat("0.0000");
+			System.out.println("  * NDCG en corte 10 = "+df.format(ndcg10[9][i]));
+			System.out.print("    ndcg: ");
+			for(int j=0; j<10; j++){
+				System.out.print(df.format(ndcg10[j][i])+" ");
+			}
+			System.out.println();
+			System.out.print("    docs:      ");
+			for(int j=0; j<10; j++){
+				System.out.print((j+1)+"     ");
+			}
+			System.out.println();
+			System.out.println("  * NDCG en corte 100 = "+df.format(ndcg100[99][i]));
+			System.out.print("    ndcg: ");
+			for(int j=0; j<100; j++){
+				System.out.print(df.format(ndcg100[j][i])+" ");
+			}
+			System.out.println();
+			System.out.print("    docs:      ");
+			for(int j=0; j<100; j++){
+				System.out.print((j+1)+"     ");
+			}
+			System.out.println();
+		}
+		
+		//Para calcular las medias
+		double[] medias = new double[12];
+		for(int i=0; i<20; i++){
+			medias[0] += metricas15[0][i];
+			medias[1] += metricas110[0][i];
+			medias[2] += metricas15[1][i];
+			medias[3] += metricas110[1][i];
+			medias[4] += metricas15[2][i];
+			medias[5] += metricas110[2][i];
+			medias[6] += metricas15[3][i];
+			medias[7] += metricas25[3][i];
+			medias[8] += metricas15[4][i];
+			medias[9] += metricas110[4][i];
+			medias[10] += ndcg100[9][i];
+			medias[11] += ndcg100[99][i];
+		}
+		for(int i=0; i<12; i++){
+			medias[i] = medias[i] / 20;
+		}
+		
+		DecimalFormat df = new DecimalFormat("0.0###");
+		System.out.println("");
+		System.out.println(" ** METRICAS MEDIAS entre las 20 consultas");
+		System.out.println("  * Precision en corte 5 = "+df.format(medias[0]));
+		System.out.println("  * Precision en corte 10 = "+df.format(medias[1]));
+		System.out.println("  * Exhaustividad en corte 5 = "+df.format(medias[2]));
+		System.out.println("  * Exhaustividad en corte 10 = "+df.format(medias[3]));
+		System.out.println("  * Valor F en corte 5 = "+df.format(medias[4]));
+		System.out.println("  * Valor F en corte 10 = "+df.format(medias[5]));
+		System.out.println("  * Reciprocal Rank  = "+df.format(medias[6]));
+		System.out.println("  * Reciprocal Rank con relevancia 2 = "+df.format(medias[7]));
+		System.out.println("  * Average precision @100 en corte 5 = "+df.format(medias[8]));
+		System.out.println("  * Average precision @100 en corte 10 = "+df.format(medias[9]));
+		System.out.println("  * NDCG en corte 10 = "+df.format(medias[10]));
+		System.out.println("  * NDCG en corte 100 = "+df.format(medias[11]));
+		
 		DatabaseManager.close();
 	}
 

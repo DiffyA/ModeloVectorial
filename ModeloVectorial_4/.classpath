@@ -32,7 +32,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/vdego/workspaceRAI/git/ModeloVectorial/ModeloVectorial_4/lib/sqlite-jdbc-3.8.6.jar"/>
 	<classpathentry kind="lib" path="C:/Users/vdego/workspaceRAI/git/ModeloVectorial/ModeloVectorial_4/lib/jsoup-1.10.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
