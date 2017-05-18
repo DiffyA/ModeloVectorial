@@ -24,6 +24,7 @@ public class ScalarProductCalculator implements ISimilarityFunction {
             for ( Term tq : queryTerms.keySet()){
                 if (t.equals(tq)){
                     sum += docTerms.get(t) * queryTerms.get(tq);
+
                 }
             }
         }

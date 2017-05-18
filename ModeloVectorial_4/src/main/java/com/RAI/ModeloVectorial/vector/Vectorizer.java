@@ -47,7 +47,7 @@ public class Vectorizer {
 				queryTerm.setIDF(dicc.getAllTerms().get(queryTerm.getFilteredTerm()).getIDF());
 			}
 			// Put it in the vector
-			vector.put(queryTerm, calc.calculate(queryTerm, query));
+			vector.put(queryTerm, calc.calculate(queryTerm, query)*queryTerm.getWeight());
 		}
 		
 		// Create the DocumentVector object
