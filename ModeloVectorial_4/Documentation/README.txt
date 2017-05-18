@@ -1,5 +1,7 @@
 -- README --
 
+Se puede encontrar el control de versiones de esta parte del proyecto en https://github.com/DiffyA/ModeloVectorial en la rama de DocumentRecoveryEngine, solo pedir permisos de acceso!
+
 Propósito: explicación del método main para la clase DocumentRecoveryEngine, que es la clase principal de la parte 2 de la práctica.
 
 SECCIONES Y FASES DEL PROCESO DEL MOTOR DE RECUPERACIÓN DE DOCUMENTOS
