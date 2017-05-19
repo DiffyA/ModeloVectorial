@@ -52,15 +52,15 @@ public class VectorSpaceModel {
 	// Create the document array.
 	Documento[] docArray = {document1, document2, document3, document4, document5};
 //	Documento[] docArray = {document1};
-	
+
 	// Create the queries.
-	Query query1 = new Query("What video game won Spike's best driving game award in 2006?");
+	Query query1 = new Query("What video game won Spike's best driving game award in year 2006?");
 	Query query2 = new Query("What is the default combination of Kensington cables?");
 	Query query3 = new Query("Who won the first ACM Gerard Salton prize?");
 
 	// Create the query array.
 	Query[] queryArray = {query1, query2, query3};
-	
+
 	/**
  	 * Indexes the documents found in the docArray structure.
 	 * By setting the parameter to True, the method will store the indexed documents 
@@ -234,9 +234,9 @@ public class VectorSpaceModel {
 		DatabaseManager.createTable("Term"); // (Term, IDF)
 
 		//Expand queries
-		for (Query q : model.queryArray){
-			model.queryExpander.expandQuery(q);
-		}
+		//for (Query q : model.queryArray){
+		//	model.queryExpander.expandQuery(q);
+		//}
 		
 		// Indexes the documents in the docArray, making sure they go to the database.
 		// First boolean determines whether or not to store information in database.

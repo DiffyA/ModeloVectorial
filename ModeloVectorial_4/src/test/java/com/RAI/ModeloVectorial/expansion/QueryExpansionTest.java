@@ -39,7 +39,7 @@ public class QueryExpansionTest {
         QueryExpander qe = new QueryExpander();
 
         //Create query
-        Query query = new Query("red car apple thing ice");
+        Query query = new Query("red car apple thing ice award");
 
         System.out.println("The query terms before expansion are: ");
         for (Term t : query.getTerms()){

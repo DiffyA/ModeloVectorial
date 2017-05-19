@@ -79,7 +79,7 @@ public class QueryExpander {
                     for (int i = 0; i < synsets.length; i++){
                         for (Word w : synsets[i].getWords()){
                             if(!newWords.contains(w.getLemma().toLowerCase())){
-                                double weight = pow(0.5, i+1);
+                                double weight = pow(0.8, i+1);
                                 if(weight >= 0.0625)
                                 expandedTerms.add(new Term(w.getLemma().toLowerCase(), weight));
                             }
