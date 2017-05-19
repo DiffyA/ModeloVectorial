@@ -643,38 +643,12 @@ public class DatabaseManager {
 	public static double[] calcularNDCG (String query, ArrayList<String> recs, Set<String> rels, int corte){
         ResultSet result = null;
         try {
-        	/*PreparedStatement st_count = connect.prepareStatement("SELECT COUNT (documento) FROM Relevancias WHERE consulta=?");
-        	st_count.setString(1, query);
-        	result = st_count.executeQuery();
-        	int count = 0;
-        	if(result.next()){
-        		count = result.getInt(1);
-        		System.out.println("count "+count);
-        	}*/
-        	
         	PreparedStatement st = connect.prepareStatement("SELECT documento,relevancia FROM Relevancias WHERE consulta=?");
         	st.setString(1, query);
         	result = st.executeQuery();
         	
-        	//result.next();
-        	//int count = (Integer) result.getObject(3);
-        	//System.out.println("count "+count);
-        	
-        	//ArrayList<String> d = new ArrayList<String>();
-            //ArrayList<Integer> r = new ArrayList<Integer>();	//necesario ?
-            //String[] d = new String[recs.size()];
            	int[] r = new int[corte];
             
-           	/*for(int j=0; j<recs.size(); j++){
-				if(result.getObject(1).toString().equals(recs.get(j))){
-					//d.add(j, result.getObject(1).toString());
-    				//r.add(j, (Integer) (result.getObject(2)));
-    				d[j] = result.getObject(1).toString();
-    				r[j] = (int) result.getInt(2);
-    				System.out.println("prueba2 result:"+r[j]+" en:"+j);
-				}
-			}*/
-           	
            	for(int i=0; i<r.length; i++){
            		r[i] = 0;
            		//d[i] = recs.get(i);			//En principio, llenamos los arrays con todos los terminos recuperados y los ponemos con relevancia 0.
@@ -769,7 +743,7 @@ public class DatabaseManager {
 			
         	//CALCULOS DE DCG NORMALIZADO
         	double[] ndcg = new double[cg.length];
-        	DecimalFormat df = new DecimalFormat("0.0###");
+        	//DecimalFormat df = new DecimalFormat("0.0###");
         	//System.out.println(" - Normalized Discounted Cumulative Gains con corte "+corte+" - ");
         	//System.out.print("nDCG:");
         	for(int i=0; i<idcg.length; i++){
@@ -854,53 +828,11 @@ public class DatabaseManager {
         return vectorObject;
 	}
 	
-//	public void saveAllDocuments(Set<Documento> sd){
-//        try{
-//        	Documento aux;
-//        	PreparedStatement st = connect.prepareStatement("insert into DocTerm values (?,?,?)");
-//        	for(int i=0; i<sd.size(); i++){
-//        		aux = sd.iterator().next();
-//        		st.setString(1, aux.getDoc());
-//        		st.setString(2, aux.getTerm());
-//        		st.setDouble(3, aux.getTF());
-//        		st.executeQuery();
-//        	}
-//        } catch (SQLException ex) {
-//            System.err.println(ex.getMessage());
-//        }
-//    }
 	
 	/**
 	 * Method used to take a dictionary index into the database
 	 * @param hat
 	 */
-//	public void saveAllTerms(HashMap<String, Term> allTerms){
-//		
-//		try {
-//			// To enable multiple operations per transaction
-//			connect.setAutoCommit(false);
-//			PreparedStatement st = connect.prepareStatement("insert into DocTerm values (?,?,?)");
-//            st.setString(1, d);
-//            st.setString(2, t);
-//            st.setDouble(3, tf);
-//            st.execute();
-//			
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//        try{
-//        	
-//        	for(int i=0; i<hat.size(); i++){
-//        		st.setString(1, hat.get(i).getTerm());
-//        		st.setDouble(2, hat.get(i).getIDF());
-//        		st.executeQuery();
-//        	}
-//        } catch (SQLException ex) {
-//            System.err.println(ex.getMessage());
-//        }
-//    }
 	
 	
 	/*public static void BubbleSort( int [ ] num ){

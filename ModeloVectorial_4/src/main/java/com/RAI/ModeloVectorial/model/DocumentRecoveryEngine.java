@@ -272,6 +272,8 @@ public class DocumentRecoveryEngine {
 		
 		
 		// ---------- MEASUREMENTS --------------------------
+		//Arrays donde guardaremos las metricas calculadas (rel.min. 1 y 2, cortes 5 y 10)
+		//Guardamos todos los datos por is queremos probar calculos adicionales
 		double[][] metricas15 = new double[5][20];
 		double[][] metricas110 = new double[5][20];
 		double[][] metricas25 = new double[5][20];
@@ -279,6 +281,7 @@ public class DocumentRecoveryEngine {
 		double[][] ndcg10 = new double[10][20];
 		double[][] ndcg100 = new double[100][20];
 		
+		//Calculamos las metricas para cada consulta
 		for(int i=1; i<=20; i++){
 			String query = "2010-0";
 			if(i<10){
@@ -305,9 +308,10 @@ public class DocumentRecoveryEngine {
 			double[] m210 = calcEficacia(recDocs, relDocs2, 10);
 			double[] m2100 = calcEficacia(recDocs, relDocs2, 100); //Con 100 es la misma que con 1000 
 			
-			double[] n10 = DatabaseManager.calcularNDCG(query, recDocs, relDocs1, 10);
+			double[] n10 = DatabaseManager.calcularNDCG(query, recDocs, relDocs1, 10);	//El int indica el corte
 			double[] n100 = DatabaseManager.calcularNDCG(query, recDocs, relDocs1, 100);
 			
+			//Aqu� guardamos las metricas
 			for (int j=0; j<5; j++){
 				metricas15[j][i-1] = m15[j];
 				metricas25[j][i-1] = m25[j];
@@ -323,6 +327,7 @@ public class DocumentRecoveryEngine {
 			
 		}
 		
+		//Aqu� imprimimos las m�tricas de cada consulta
 		System.out.println("");
 		System.out.println("*** Metricas ***");
 		System.out.println("(Todas calculadas con relevancia m�nima 1 salvo indicaci�n)");
@@ -357,6 +362,7 @@ public class DocumentRecoveryEngine {
 			System.out.print("    docs:      ");
 			for(int j=0; j<10; j++){
 				System.out.print((j+1)+"     ");
+				if(j<8)System.out.print(" ");
 			}
 			System.out.println();
 			System.out.println("  * NDCG en corte 100 = "+df.format(ndcg100[99][i]));
@@ -368,6 +374,7 @@ public class DocumentRecoveryEngine {
 			System.out.print("    docs:      ");
 			for(int j=0; j<100; j++){
 				System.out.print((j+1)+"     ");
+				if(j<8)System.out.print(" ");
 			}
 			System.out.println();
 		}
